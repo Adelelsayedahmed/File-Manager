@@ -8,13 +8,6 @@
 ## Background
 A file manager/archiver project is a software program designed to help users organize and manage their files.
 ## Features
-
-
- 
- ## Launch
- 
- 
- 
- 
- ## Technologies
+## Launch
+## Technologies
 + C++
