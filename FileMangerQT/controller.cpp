@@ -9,6 +9,7 @@ void Controller::mRegisterSignals()
 {
 //    connect(dView->contentUi->ui->saveAction &QAction::triggered, this, &FileContentView::on_saveAction_triggered);
     QObject::connect(dView, &View::copyFile, this, &Controller::copyFile);
+    QObject::connect(dView, &View::delFile, this, &Controller::delFile);
 
 }
 
@@ -37,5 +38,24 @@ void Controller::copyFile(fs::path source_path, fs::path destination_path)
     }
     catch (const std::exception& ex) {
         qInfo() << "Error: " ;
+    }
+}
+
+void Controller::delFile(boost::filesystem::path filePath)
+{
+    if (!fs::exists(filePath))
+    {
+        qInfo() << "File does not exist!";
+        return ;
+    }
+    try
+    {
+        // Remove the file
+        fs::remove(filePath);
+        qInfo() << "File deleted successfully!";
+    }
+    catch (fs::filesystem_error const &e)
+    {
+        qInfo() << "Error deleting file: ";
     }
 }

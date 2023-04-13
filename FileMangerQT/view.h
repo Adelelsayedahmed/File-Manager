@@ -30,21 +30,14 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
     void onCopy();
     void onPaste();
+    void onDel();
     void on_treeView_pressed(const QModelIndex &index);
 
     void on_lineEditPath_textEdited(const QString &arg1);
-
+    void on_tableView_doubleClicked(const QModelIndex &index);
 signals:
     void copyFile(std::string source_path, std::string destination_path);
+    void delFile(std::string filePath);
 
 };
 #endif // VIEW_H
-//QFileSystemModel* fileSystemModel = new QFileSystemModel(this);
-//QModelIndex modelIndex = fileSystemModel->setRootPath(QDir::rootPath());
-//ui->treeView->setModel(fileSystemModel);
-//ui->treeView->setColumnHidden(1,true);
-//ui->treeView->setColumnHidden(2,true);
-//ui->treeView->setColumnHidden(3,true);
-//ui->treeView->header()->resizeSections(QHeaderView::Interactive);
-//ui->treeView->header()->setStretchLastSection(true);
-//ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
