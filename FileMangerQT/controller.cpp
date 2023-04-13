@@ -10,7 +10,7 @@ void Controller::mRegisterSignals()
 //    connect(dView->contentUi->ui->saveAction &QAction::triggered, this, &FileContentView::on_saveAction_triggered);
     QObject::connect(dView, &View::copyFile, this, &Controller::copyFile);
     QObject::connect(dView, &View::delFile, this, &Controller::delFile);
-//    QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
+    QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
 
 }
 

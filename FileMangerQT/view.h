@@ -40,6 +40,5 @@ signals:
     void copyFile(std::string source_path, std::string destination_path);
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
-
 };
 #endif // VIEW_H

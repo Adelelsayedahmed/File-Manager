@@ -15,7 +15,7 @@ void View::mRegisterSignals()
     QObject::connect(shortcutCopy, &QShortcut::activated, this, &View::onCopy);
     QObject::connect(shortcutPaste, &QShortcut::activated, this, &View::onPaste);
     QObject::connect(shortcutDel, &QShortcut::activated, this, &View::onDel);
-//    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
+    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
 }
 
 View::View(QWidget *parent)
@@ -89,11 +89,11 @@ void View::onDel()
         emit delFile(filePath.toStdString());
 }
 
-//void View::onCut()
-//{
-//        filePath = fileSystemModel->filePath(index);
-//        emit cutFile(filePath.toStdString());
-//}
+void View::onCut()
+{
+        filePath = fileSystemModel->filePath(index);
+        emit cutFile(filePath.toStdString());
+}
 
 
 
