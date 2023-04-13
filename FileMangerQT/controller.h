@@ -18,8 +18,7 @@ private:
 
     void mRegisterSignals();
 public slots:
-    void copyFile(fs::path source_path, fs::path destination_path);
-    void delFile(fs::path filePath);
+        void copyFile(fs::path source_path, fs::path destination_path);
 };
 
 #endif // CONTROLLER_H

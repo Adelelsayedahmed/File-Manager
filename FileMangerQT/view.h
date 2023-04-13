@@ -30,16 +30,12 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
     void onCopy();
     void onPaste();
-    void onDel();
     void on_treeView_pressed(const QModelIndex &index);
 
     void on_lineEditPath_textEdited(const QString &arg1);
 
-    void on_tableView_doubleClicked(const QModelIndex &index);
-
 signals:
     void copyFile(std::string source_path, std::string destination_path);
-    void delFile(std::string filePath);
 
 };
 #endif // VIEW_H

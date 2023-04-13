@@ -1,8 +1,0 @@
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/FileManger.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/edit_cache.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/rebuild_cache.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/list_install_components.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/install.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/install/local.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/install/strip.dir
-/home/ziad/Documents/GitHub/File-Manager/CMakeFiles/FileManger_autogen.dir
