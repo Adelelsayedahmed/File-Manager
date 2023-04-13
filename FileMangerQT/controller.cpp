@@ -10,6 +10,7 @@ void Controller::mRegisterSignals()
 //    connect(dView->contentUi->ui->saveAction &QAction::triggered, this, &FileContentView::on_saveAction_triggered);
     QObject::connect(dView, &View::copyFile, this, &Controller::copyFile);
     QObject::connect(dView, &View::delFile, this, &Controller::delFile);
+//    QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
 
 }
 
@@ -58,4 +59,12 @@ void Controller::delFile(boost::filesystem::path filePath)
     {
         qInfo() << "Error deleting file: ";
     }
+}
+
+void Controller::cutFile(const boost::filesystem::path &path)
+{
+    m_cutPath = path;
+    m_tempCutPath = path.parent_path() / (path.filename().string() + ".tmp");
+    boost::filesystem::copy(path, m_tempCutPath);
+    boost::filesystem::remove(path);
 }

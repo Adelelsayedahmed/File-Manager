@@ -31,6 +31,7 @@ private slots:
     void onCopy();
     void onPaste();
     void onDel();
+    void onCut();
     void on_treeView_pressed(const QModelIndex &index);
 
     void on_lineEditPath_textEdited(const QString &arg1);
@@ -38,6 +39,7 @@ private slots:
 signals:
     void copyFile(std::string source_path, std::string destination_path);
     void delFile(std::string filePath);
+    void cutFile(std::string filePath);
 
 };
 #endif // VIEW_H
