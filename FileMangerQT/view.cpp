@@ -9,10 +9,13 @@ void View::mRegisterSignals()
     // create a QShortcut object for Ctrl+V
     QShortcut *shortcutPaste = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V), this);
     QShortcut *shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
+    QShortcut *shortcutCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), this);
+
     // connect the shortcuts to your copy and paste functions
     QObject::connect(shortcutCopy, &QShortcut::activated, this, &View::onCopy);
     QObject::connect(shortcutPaste, &QShortcut::activated, this, &View::onPaste);
     QObject::connect(shortcutDel, &QShortcut::activated, this, &View::onDel);
+//    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
 }
 
 View::View(QWidget *parent)
@@ -85,6 +88,13 @@ void View::onDel()
         filePath = fileSystemModel->filePath(index);
         emit delFile(filePath.toStdString());
 }
+
+//void View::onCut()
+//{
+//        filePath = fileSystemModel->filePath(index);
+//        emit cutFile(filePath.toStdString());
+//}
+
 
 
 
