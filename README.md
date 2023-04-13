@@ -7,7 +7,7 @@
 + [Launch](#launch)
 + [Technologies](#technologies)
 
-##Installation
+## Installation
 run the script in order to download the library on linux
 steps to run:
 1-chmod +x boost_install.sh
