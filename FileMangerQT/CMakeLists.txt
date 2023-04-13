@@ -13,12 +13,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Boost REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
         view.cpp
         view.h
         view.ui
+        filecontentview.h
+        filecontentview.cpp
+        filecontentview.ui
+        controller.h
+        controller.cpp
 
 )
 
@@ -45,7 +51,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets boost_filesystem)
 
 set_target_properties(FileManger PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -62,3 +68,4 @@ install(TARGETS FileManger
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(FileManger)
 endif()
+
