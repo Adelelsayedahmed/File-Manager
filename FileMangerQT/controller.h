@@ -20,7 +20,7 @@ private:
 
     void mRegisterSignals();
 public slots:
-    void copyFile(fs::path source_path, fs::path destination_path);
+    void copyFile(fs::path source_path, fs::path destination_path, CopyCutAction action);
     void delFile(fs::path filePath);
     void cutFile(const boost::filesystem::path& path);
 };
