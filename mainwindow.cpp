@@ -12,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     for (const auto& pair : statsMap) {
         qDebug() << pair.first.c_str() << ": " << pair.second;
     }
-   // PieChart::chartProperties prop={"Sizes of files","Arial",true,"KB",false,true,true};
-    PieChart::chartProperties prop("Sizes of files");
+    PieChart::chartProperties prop("Sizes of files","Arial",true,"KB",false,true,true);
+    //PieChart::chartProperties prop("Sizes of files");
 
     new PieChart(ui->gridLayoutWidget,statsMap,prop);
 
