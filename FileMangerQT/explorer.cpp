@@ -41,6 +41,7 @@ QTableView* Explorer::ShowTableView()
     table->setMinimumHeight(120);
 //    table->setMinimumWidth(2000);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    table->verticalHeader()->hide();
     return table;
 
 }
