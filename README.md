@@ -17,3 +17,5 @@ A file manager/archiver project is a software program designed to help users org
 ## Launch
 ## Technologies
 + C++
++ Qt
++ Boost library
