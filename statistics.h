@@ -27,6 +27,9 @@ public:
     // static function to get the size of a directory
     static uintmax_t directory_size(const path& directory_path);
 
+    // static function to get the number of files/directories in a given path
+    static int numberOfItems(path& path);
+
 private:
     // function to convert from bytes to kilo bytes
     int convertToKB(uintmax_t bytes);

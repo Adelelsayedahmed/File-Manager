@@ -103,6 +103,20 @@ uintmax_t statistics::directory_size(const path& directory_path)
      return size;
 }
 
+int statistics::numberOfItems(path& path)
+{
+     int numberOfItems=0;
+
+     directory_iterator end_itr;
+
+     // Iterate through directory
+     for (directory_iterator itr(path); itr != end_itr; itr++)
+     {
+        numberOfItems++;
+     }
+     return numberOfItems;
+}
+
 int statistics::convertToKB(uintmax_t bytes)
 {     
      return bytes/1000;
