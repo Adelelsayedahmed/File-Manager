@@ -10,12 +10,14 @@ CONFIG += boost_1_74
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    identifyduplicates.cpp \
     main.cpp \
     mainwindow.cpp \
     piechart.cpp \
     statistics.cpp
 
 HEADERS += \
+    identifyduplicates.h \
     mainwindow.h \
     piechart.h \
     statistics.h

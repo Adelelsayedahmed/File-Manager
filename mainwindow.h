@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <piechart.h>
 #include "statistics.h"
+#include "identifyduplicates.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

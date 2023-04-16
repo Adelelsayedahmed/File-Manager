@@ -24,9 +24,10 @@ public:
     // static function to get the current directory path
     static path getCurrentPath();
 
-    // function to get the size of a directory
-    uintmax_t directory_size(const path& directory_path);
+    // static function to get the size of a directory
+    static uintmax_t directory_size(const path& directory_path);
 
+private:
     // function to convert from bytes to kilo bytes
     int convertToKB(uintmax_t bytes);
 
