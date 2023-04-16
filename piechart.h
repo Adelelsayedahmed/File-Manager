@@ -26,18 +26,11 @@ public:
         bool mouseTracking;
         bool renderHint_Antialiasing;
 
-        /* struct constructor
-           takes the title and sets the other
-           values to default
-                                             */
-        chartProperties(QString title)
-            : chartTitle(title), fontType("Arial"), showValue(false), addToValue("")
-            , setSpecialColors(false), mouseTracking(true), renderHint_Antialiasing(true)  {}
 
         /* struct constructor
            takes every value to be set
                                              */
-        chartProperties(QString title = "", QString font = "Arial", bool showVal = false,
+        chartProperties(QString title, QString font = "Arial", bool showVal = false,
                         QString addToVal = "", bool setSpecColors = false, bool mouseTrack = true,
                         bool antialias = true)
             : chartTitle(title), fontType(font), showValue(showVal), addToValue(addToVal),
