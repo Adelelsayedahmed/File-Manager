@@ -7,13 +7,9 @@ Controller::Controller(View *view)
 
 void Controller::mRegisterSignals()
 {
-//    connect(dView->contentUi->ui->saveAction &QAction::triggered, this, &FileContentView::on_saveAction_triggered);
     QObject::connect(dView, &View::copyFile, this, &Controller::copyFile);
     QObject::connect(dView, &View::delFile, this, &Controller::delFile);
     QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
-    QObject::connect(dView, &View::renameFile, this, &Controller::renameFile);
-
-
 }
 
 void Controller::copyFile(fs::path source_path, fs::path destination_path, CopyCutAction action)
@@ -82,30 +78,3 @@ void Controller::cutFile(const boost::filesystem::path &path)
 //    fs::copy(path, m_tempCutPath);
 //    delFile(path);
 }
-
-
-std::string removeNameFromPath(std::string path) {
-    size_t found = path.find_last_of("/\\");
-    if (found != std::string::npos) {
-        return path.substr(0, found+1);
-    }
-    return path;
-}
-
-
-void Controller::renameFile(const boost::filesystem::path &path ,const std::string newFileName )
-{
-    qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
-    std::string temp_path = removeNameFromPath(path.string());
-    std::string new_path_str  = temp_path + newFileName ;
-    qInfo() << "File path = " << QString::fromStdString(temp_path) << QString::fromStdString(new_path_str);
-    fs::path new_path_p(new_path_str);
-    try
-    {
-        fs::rename(path,new_path_p);
-    }
-    catch (const std::exception& ex) {
-    std::cerr << "Error renaming file: " << ex.what() << std::endl;    }
-
-}
-
