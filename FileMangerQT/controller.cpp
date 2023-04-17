@@ -1,4 +1,5 @@
 #include "controller.h"
+#include <string>
 Controller::Controller(View *view)
 {
     dView = view;
@@ -109,8 +110,15 @@ void Controller::renameFile(const boost::filesystem::path &path ,const std::stri
 
 }
 
-//void Cotroller::batchRenaming(const boost::filesystem::path &path,const std::string newBaseName){
 
+void Controller::batchRenaming( std::vector< boost::filesystem::path>& oldPaths,const std::string newBaseName){
+    unsigned int counter = 1 ;
+    std::string tempName ;
+    for ( auto & path : oldPaths)
+    {
+        tempName = newBaseName ;
+        Controller::renameFile(path,tempName.append(std::to_string(counter++)));
+    }
 
-//}
+}
 
