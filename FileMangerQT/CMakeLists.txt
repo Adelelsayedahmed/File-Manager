@@ -25,6 +25,8 @@ set(PROJECT_SOURCES
         filecontentview.ui
         controller.h
         controller.cpp
+        explorer.h
+        explorer.cpp
 
 )
 
