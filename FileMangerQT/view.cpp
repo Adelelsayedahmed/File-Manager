@@ -15,7 +15,9 @@ void View::mRegisterSignals()
     QObject::connect(shortcutCopy, &QShortcut::activated, this, &View::onCopy);
     QObject::connect(shortcutPaste, &QShortcut::activated, this, &View::onPaste);
     QObject::connect(shortcutDel, &QShortcut::activated, this, &View::onDel);
-//    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
+    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
+
+//    connect(ui->tableView, &QTableView::customContextMenuRequested, this, &View::onCustomContextMenuRequested);
 }
 
 View::View(QWidget *parent)
@@ -74,26 +76,37 @@ void View::on_tableView_clicked(const QModelIndex &index)
 }
 void View::onCopy()
 {
-        filePath = fileSystemModel->filePath(index);
+    qInfo() << "Copying";
+    filePath = fileSystemModel->filePath(index);
+    action = CopyCutAction::Copy;
 }
 
 void View::onPaste()
 {
-
-        emit copyFile(filePath.toStdString(), fileSystemModel->filePath(index).toStdString());
+    std::string dest =  fileSystemModel->filePath(index).toStdString();
+    emit copyFile(filePath.toStdString(),dest,action);
 }
 
 void View::onDel()
 {
-        filePath = fileSystemModel->filePath(index);
-        emit delFile(filePath.toStdString());
+    filePath = fileSystemModel->filePath(index);
+    emit delFile(filePath.toStdString());
 }
 
-//void View::onCut()
-//{
-//        filePath = fileSystemModel->filePath(index);
-//        emit cutFile(filePath.toStdString());
-//}
+void View::onCut()
+{
+    action = CopyCutAction::Cut;
+    filePath = fileSystemModel->filePath(index);
+    emit cutFile(filePath.toStdString());
+}
+
+void View::onRename()
+{
+    filePath = fileSystemModel->filePath(index);
+    emit renameFile(filePath.toStdString() , "New name");
+}
+
+
 
 
 
@@ -104,23 +117,56 @@ void View::on_lineEditPath_textEdited(const QString &arg1)
 }
 void View::on_tableView_doubleClicked(const QModelIndex &index)
 {
-        qInfo() << "95";
-        this->index = index;
-        on_treeView_clicked(index);
-            // Get the path of the selected file
+    qInfo() << "95";
+    this->index = index;
+    on_treeView_clicked(index);
+        // Get the path of the selected file
 
-        filePath = fileSystemModel->filePath(index);
-        qInfo() << filePath;
-        // Open the file and read its contents
-        contentUi->file = new QFile (filePath);
-        if (!contentUi->file->open(QIODevice::ReadWrite))
+    filePath = fileSystemModel->filePath(index);
+    qInfo() << filePath;
+    // Open the file and read its contents
+    contentUi->file = new QFile (filePath);
+    if (!contentUi->file->open(QIODevice::ReadWrite))
         return;
-        QString fileContents = contentUi->file->readAll();
-        //        file.close();
-        //| QIODevice::Text
+    QString fileContents = contentUi->file->readAll();
+    //        file.close();
+    //| QIODevice::Text
 
-        // Display the contents of the file in a QTextEdit widget
-        contentUi->ui->textEdit->clear();
-        contentUi->ui->textEdit->setPlainText(fileContents);
-        contentUi->show();
+    // Display the contents of the file in a QTextEdit widget
+    contentUi->ui->textEdit->clear();
+    contentUi->ui->textEdit->setPlainText(fileContents);
+    contentUi->show();
+}
+
+void View::contextMenuEvent(QContextMenuEvent *event)
+{
+    qInfo() << "right click pressed";
+//    // Convert the position to global coordinates
+//    QPoint globalPos = ui->tableView->viewport()->mapToGlobal(pos);
+
+//    // Create a context menu
+//    QMenu myContextMenu;
+//    myContextMenu.addAction("Action 1");
+//    myContextMenu.addAction("Action 2");
+
+//    // Show the context menu at the global position
+//    myContextMenu.exec(globalPos);
+    QMenu menu(this);
+    QAction *cutAction = menu.addAction(tr("Cut"));
+    QAction *copyAction = menu.addAction(tr("Copy"));
+    QAction *pasteAction = menu.addAction(tr("Paste"));
+    QAction *delAction = menu.addAction(tr("Delete"));
+
+    /*Make rename Action here*/
+    QAction *renameAction = menu.addAction(tr("Rename"));
+
+    connect(copyAction, &QAction::triggered, this, &View::onCopy);
+    connect(pasteAction, &QAction::triggered, this, &View::onPaste);
+    connect(delAction, &QAction::triggered, this, &View::onDel);
+    connect(cutAction, &QAction::triggered, this, &View::onCut);
+
+
+    connect(renameAction,&QAction::triggered, this, &View::onRename );
+
+    menu.exec(event->globalPos());
 }

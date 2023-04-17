@@ -9,6 +9,10 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
+enum class CopyCutAction {
+    Copy,
+    Cut
+};
 
 class View : public QMainWindow
 {
@@ -18,8 +22,8 @@ private:
     QFileSystemModel* fileSystemModel;
     void mRegisterSignals();
     QModelIndex index;
-
     QString filePath;
+    CopyCutAction action;
 public:
     View(QWidget *parent = nullptr);
     void TreeView();
@@ -36,10 +40,13 @@ private slots:
 
     void on_lineEditPath_textEdited(const QString &arg1);
     void on_tableView_doubleClicked(const QModelIndex &index);
+    void contextMenuEvent(QContextMenuEvent *event);
+    void onRename();
 signals:
-    void copyFile(std::string source_path, std::string destination_path);
+    void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
-
+    void renameFile(std::string filePath , const std::string newFileName);
 };
+
 #endif // VIEW_H
