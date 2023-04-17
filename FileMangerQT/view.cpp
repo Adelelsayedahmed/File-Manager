@@ -73,6 +73,8 @@ void View::on_treeView_clicked(const QModelIndex &index)
 void View::on_tableView_clicked(const QModelIndex &index)
 {
     this->index = index;
+    qInfo()<<this->index<<"  ok \n";
+
 }
 void View::onCopy()
 {

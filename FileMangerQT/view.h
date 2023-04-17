@@ -21,6 +21,7 @@ private:
      Ui::View *ui;
     QFileSystemModel* fileSystemModel;
     void mRegisterSignals();
+    QVector<QModelIndex> indexVector;
     QModelIndex index;
     QString filePath;
     CopyCutAction action;

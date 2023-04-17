@@ -109,3 +109,8 @@ void Controller::renameFile(const boost::filesystem::path &path ,const std::stri
 
 }
 
+//void Cotroller::batchRenaming(const boost::filesystem::path &path,const std::string newBaseName){
+
+
+//}
+
