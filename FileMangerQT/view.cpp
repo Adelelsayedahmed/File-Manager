@@ -100,6 +100,14 @@ void View::onCut()
     emit cutFile(filePath.toStdString());
 }
 
+void View::onRename()
+{
+    filePath = fileSystemModel->filePath(index);
+    emit renameFile(filePath.toStdString() , "New name");
+}
+
+
+
 
 
 
@@ -148,9 +156,17 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
+
+    /*Make rename Action here*/
+    QAction *renameAction = menu.addAction(tr("Rename"));
+
     connect(copyAction, &QAction::triggered, this, &View::onCopy);
     connect(pasteAction, &QAction::triggered, this, &View::onPaste);
     connect(delAction, &QAction::triggered, this, &View::onDel);
     connect(cutAction, &QAction::triggered, this, &View::onCut);
+
+
+    connect(renameAction,&QAction::triggered, this, &View::onRename );
+
     menu.exec(event->globalPos());
 }

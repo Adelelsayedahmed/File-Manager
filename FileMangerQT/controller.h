@@ -23,6 +23,7 @@ public slots:
     void copyFile(fs::path source_path, fs::path destination_path, CopyCutAction action);
     void delFile(fs::path filePath);
     void cutFile(const boost::filesystem::path& path);
+    void renameFile(const boost::filesystem::path &path , const std::string newFileName);
 };
 
 #endif // CONTROLLER_H
