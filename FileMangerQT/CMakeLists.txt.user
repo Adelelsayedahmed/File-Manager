@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 10.0.0, 2023-04-18T03:41:53. -->
+<!-- Written by QtCreator 10.0.0, 2023-04-19T00:14:51. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -398,6 +398,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/adel/coding/siemens_diploma_project/File-Manager/build-FileMangerQT-Desktop_Qt_6_5_0_GCC_64bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

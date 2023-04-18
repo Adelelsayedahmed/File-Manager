@@ -1,5 +1,6 @@
 #include "controller.h"
 #include <string>
+#include <stack>
 Controller::Controller(View *view)
 {
     dView = view;
@@ -105,6 +106,7 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
     fs::path new_path_p(new_path_str);
     try
     {
+        //home/dir/adel.txt , /home/dir/newfile.txt
         fs::rename(path,new_path_p);
     }
     catch (const std::exception& ex) {
@@ -115,12 +117,24 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
+
+    /*to be used by wafyola*/
+    std::vector< std::string>& new_paths ;
     std::string tempName ;
     for ( auto & path : oldPaths)
     {
         tempName = newBaseName ;
-        Controller::renameFileControllerSlot(path,tempName.append(std::to_string(counter++)));
+        Controller::renameFileControllerSlot(path,tempName.append(std::to_string(counter)));
+        new_paths.push_back(tempName.append(std::to_string(counter)));
+        counter++;
     }
 
+
 }
+
+
+
+
+
+
 
