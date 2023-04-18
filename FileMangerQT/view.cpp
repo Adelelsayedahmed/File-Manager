@@ -1,7 +1,7 @@
 #include "view.h"
 #include "./ui_view.h"
 #include "controller.h"
-
+#include<QThread>
 void View::mRegisterSignals()
 {
     // create a QShortcut object for Ctrl+C
@@ -29,6 +29,10 @@ View::View(QWidget *parent)
     mRegisterSignals();
     TreeView();
     contentUi = new FileContentView(this);
+    QThread* thread = new QThread(this);
+    Controller* object = new Controller();
+    object->moveToThread(thread);
+    connect(this, &Dialog::on_stop, object, &Controller::paste, Qt::QueuedConnection);
 }
 
 void View::TreeView()
@@ -85,6 +89,9 @@ void View::onPaste()
 {
     std::string dest =  fileSystemModel->filePath(index).toStdString();
     emit copyFile(filePath.toStdString(),dest,action);
+    QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
+    thread->start();
+
 }
 
 void View::onDel()
