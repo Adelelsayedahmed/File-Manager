@@ -2,10 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <piechart.h>
+#include <PiechartWidget.h>
 #include "statistics.h"
 #include "identifyduplicates.h"
-
+#include "identifyduplicatespagewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

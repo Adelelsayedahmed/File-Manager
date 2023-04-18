@@ -1,5 +1,6 @@
 QT       += core gui
 QT       += charts
+QT       += widgets
 LIBS += -lboost_filesystem
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,20 +11,24 @@ CONFIG += boost_1_74
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    PiechartWidget.cpp \
     identifyduplicates.cpp \
+    identifyduplicatespagewidget.cpp \
     main.cpp \
     mainwindow.cpp \
-    piechart.cpp \
     statistics.cpp
 
 HEADERS += \
+    PiechartWidget.h \
     identifyduplicates.h \
+    identifyduplicatespagewidget.h \
     mainwindow.h \
-    piechart.h \
     statistics.h
 
 FORMS += \
     mainwindow.ui
+
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -7,8 +7,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this);
+    setCentralWidget(pageWidget);
+    show();
 
-//    IdentifyDuplicates dupsObj;
+    //    IdentifyDuplicates dupsObj;
 //    std::vector<boost::filesystem::path> paths;
 //    paths.push_back(statistics::getCurrentPath());
 //    paths.push_back(statistics::getCurrentPath().parent_path());
@@ -21,25 +24,25 @@ MainWindow::MainWindow(QWidget *parent)
 //        qDebug() << str;
 //    }
 
-    ui->tabWidget->setTabText(0,"sizes");
-    ui->tabWidget->setTabText(1,"types");
+//    ui->tabWidget->setTabText(0,"sizes");
+//    ui->tabWidget->setTabText(1,"types");
 
-    statistics statObj;
-  std::unordered_map<std::string, int> sizesMap=statObj.directoryFilesSizes(statistics::getCurrentPath());
-//    for (const auto& pair : statsMap) {
-//        qDebug() << pair.first.c_str() << ": " << pair.second;
-//    }
-    PieChart::chartProperties sizesChartprop("Sizes of files","Arial",true,"KB",false,true,true);
-//    PieChart::chartProperties prop("Sizes of files");
+//    statistics statObj;
+//  std::unordered_map<std::string, int> sizesMap=statObj.directoryFilesSizes(statistics::getCurrentPath());
+////    for (const auto& pair : statsMap) {
+////        qDebug() << pair.first.c_str() << ": " << pair.second;
+////    }
+//    PieChart::chartProperties sizesChartprop("Sizes of files","Arial",true,"KB",false,true,true);
+////    PieChart::chartProperties prop("Sizes of files");
 
 
 
-    new PieChart(ui->tab_3,sizesMap,sizesChartprop);
+//    new PieChart(ui->tab_3,sizesMap,sizesChartprop);
 
-    std::unordered_map<std::string, int> typesMap=statObj.directoryFilesTypes(statistics::getCurrentPath());
-    PieChart::chartProperties typesprop("Types of files");
-    //PieChart::chartProperties typesprop("Types of files","Arial",true," items",false,true,true);
-    new PieChart(ui->tab_4,typesMap,typesprop);
+//    std::unordered_map<std::string, int> typesMap=statObj.directoryFilesTypes(statistics::getCurrentPath());
+//    PieChart::chartProperties typesprop("Types of files");
+//    //PieChart::chartProperties typesprop("Types of files","Arial",true," items",false,true,true);
+//    new PieChart(ui->tab_4,typesMap,typesprop);
 
 
 }

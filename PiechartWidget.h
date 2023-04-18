@@ -1,5 +1,5 @@
-#ifndef PIECHART_H
-#define PIECHART_H
+#ifndef PIECHARTWIDGET_H
+#define PIECHARTWIDGET_H
 
 #include <QObject>
 #include <QWidget>
@@ -71,4 +71,4 @@ private slots:
 };
 
 
-#endif // PIECHART_H
+#endif // PIECHARTWIDGET_H

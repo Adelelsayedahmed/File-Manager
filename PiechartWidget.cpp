@@ -1,4 +1,4 @@
-#include "piechart.h"
+#include "PiechartWidget.h"
 
 
 PieChart::PieChart(QWidget *parent,std::unordered_map<std::string, int>& statsMap,PieChart::chartProperties& prop)
