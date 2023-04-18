@@ -12,7 +12,9 @@ void Controller::mRegisterSignals()
     QObject::connect(dView, &View::copyFile, this, &Controller::copyFile);
     QObject::connect(dView, &View::delFile, this, &Controller::delFile);
     QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
-    QObject::connect(dView, &View::renameFile, this, &Controller::renameFile);
+    QObject::connect(dView, &View::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
+    QObject::connect(dView, &View::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
+
 
 
 }
@@ -94,7 +96,7 @@ std::string removeNameFromPath(std::string path) {
 }
 
 
-void Controller::renameFile(const boost::filesystem::path &path ,const std::string newFileName )
+void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,const std::string newFileName )
 {
     qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
     std::string temp_path = removeNameFromPath(path.string());
@@ -111,13 +113,13 @@ void Controller::renameFile(const boost::filesystem::path &path ,const std::stri
 }
 
 
-void Controller::batchRenaming( std::vector< boost::filesystem::path>& oldPaths,const std::string newBaseName){
+void Controller::batchRenamingControllerSlot( std::vector< boost::filesystem::path>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
     std::string tempName ;
     for ( auto & path : oldPaths)
     {
         tempName = newBaseName ;
-        Controller::renameFile(path,tempName.append(std::to_string(counter++)));
+        Controller::renameFileControllerSlot(path,tempName.append(std::to_string(counter++)));
     }
 
 }

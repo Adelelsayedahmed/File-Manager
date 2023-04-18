@@ -6,6 +6,8 @@
 #include <filecontentview.h>
 #include "ui_filecontentview.h"
 #include <stdio.h>
+#include "vector"
+#include <boost/filesystem.hpp>
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
@@ -42,12 +44,14 @@ private slots:
     void on_lineEditPath_textEdited(const QString &arg1);
     void on_tableView_doubleClicked(const QModelIndex &index);
     void contextMenuEvent(QContextMenuEvent *event);
-    void onRename();
+    void onRenameFilesViewSlot();
+    void onBatchRenameViewSlot();
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
-    void renameFile(std::string filePath , const std::string newFileName);
+    void renameFileViewSignal(std::string filePath , const std::string newFileName);
+    void batchRenameViewSignal(std::vector< boost::filesystem::path>& oldPaths,const std::string &newBaseName);
 };
 
 #endif // VIEW_H

@@ -102,10 +102,21 @@ void View::onCut()
     emit cutFile(filePath.toStdString());
 }
 
-void View::onRename()
+void View::onRenameFilesViewSlot()
 {
+
     filePath = fileSystemModel->filePath(index);
-    emit renameFile(filePath.toStdString() , "New name");
+    emit renameFileViewSignal(filePath.toStdString() , "New_name");
+}
+
+void View::onBatchRenameViewSlot()
+{
+    std::vector< boost::filesystem::path> oldPaths ;
+    std::string newBaseName = "newfile_";
+    // make for loop logic to get the paths and fill the oldPaths vector
+    oldPaths.push_back("/home/adel/playing/old_adel");
+    oldPaths.push_back("/home/adel/playing/old_sarah");
+    emit batchRenameViewSignal(oldPaths,newBaseName);
 }
 
 
@@ -158,17 +169,20 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
-
     /*Make rename Action here*/
     QAction *renameAction = menu.addAction(tr("Rename"));
+
+    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
+
 
     connect(copyAction, &QAction::triggered, this, &View::onCopy);
     connect(pasteAction, &QAction::triggered, this, &View::onPaste);
     connect(delAction, &QAction::triggered, this, &View::onDel);
     connect(cutAction, &QAction::triggered, this, &View::onCut);
+    connect(renameAction,&QAction::triggered, this, &View::onRenameFilesViewSlot );
 
+    connect(batchRenameAction,&QAction::triggered, this, &View::onBatchRenameViewSlot );
 
-    connect(renameAction,&QAction::triggered, this, &View::onRename );
 
     menu.exec(event->globalPos());
 }
