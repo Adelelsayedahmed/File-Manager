@@ -27,6 +27,8 @@ set(PROJECT_SOURCES
         controller.cpp
         explorer.h
         explorer.cpp
+        customtwopathwidget.cpp
+        customtwopathwidget.h
 
 )
 
