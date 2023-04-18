@@ -106,7 +106,6 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
     fs::path new_path_p(new_path_str);
     try
     {
-        //home/dir/adel.txt , /home/dir/newfile.txt
         fs::rename(path,new_path_p);
     }
     catch (const std::exception& ex) {
@@ -119,7 +118,7 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
     unsigned int counter = 1 ;
 
     /*to be used by wafyola*/
-    std::vector< std::string>& new_paths ;
+    std::vector< std::string> new_paths ;
     std::string tempName ;
     for ( auto & path : oldPaths)
     {
@@ -131,7 +130,6 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
 
 
 }
-
 
 
 

@@ -135,14 +135,6 @@ void View::onBatchRenameViewSlot()
 
 
 
-
-/*
-                                                    /adel.txt
-                                                    /wafy.txt
-    rename (/adel.txt) --> wafy.txt
-    rename (/wafy.txt) --> tawfek.txt
-*/
-
 void View::on_lineEditPath_textEdited(const QString &arg1)
 {
 
