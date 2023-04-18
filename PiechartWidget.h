@@ -11,7 +11,7 @@
 #include <QString>
 
 
-class PieChart : public QWidget
+class PieChartWidget : public QWidget
 {
     Q_OBJECT
 public:
@@ -41,7 +41,7 @@ public:
     };
 
     // Constructor that takes a parent widget, a map of statistics to display, and chart properties
-    explicit PieChart(QWidget *parent ,std::unordered_map<std::string, int>& statsMap,PieChart::chartProperties& prop);
+    explicit PieChartWidget(QWidget *parent ,std::unordered_map<std::string, int>& statsMap,PieChartWidget::chartProperties& prop);
 
 private:
 

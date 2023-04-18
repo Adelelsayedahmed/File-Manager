@@ -1,7 +1,7 @@
 #include "PiechartWidget.h"
 
 
-PieChart::PieChart(QWidget *parent,std::unordered_map<std::string, int>& statsMap,PieChart::chartProperties& prop)
+PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string, int>& statsMap,PieChartWidget::chartProperties& prop)
     : QWidget{parent}
 {
    // Create the QChartView object and set its parent to this widget
@@ -10,7 +10,7 @@ PieChart::PieChart(QWidget *parent,std::unordered_map<std::string, int>& statsMa
 
 }
 
-QPieSeries* PieChart::fillPieSeries(std::unordered_map<std::string,int> statsMap)
+QPieSeries* PieChartWidget::fillPieSeries(std::unordered_map<std::string,int> statsMap)
 {
     // Create the QPieSeries object and fill it with data from statsMap
     QPieSeries *series=new QPieSeries();
@@ -22,7 +22,7 @@ QPieSeries* PieChart::fillPieSeries(std::unordered_map<std::string,int> statsMap
     return series;
 }
 
-void PieChart::setupPieSeriesProperties(QPieSeries* &series,struct chartProperties& chartProperties)
+void PieChartWidget::setupPieSeriesProperties(QPieSeries* &series,struct chartProperties& chartProperties)
 {
     // Set up properties of the QPieSeries object based on chartProperties
     if(chartProperties.showValue){
@@ -39,7 +39,7 @@ void PieChart::setupPieSeriesProperties(QPieSeries* &series,struct chartProperti
     }
 }
 
-void PieChart::setupChartViewProperties(QChartView* &chartView,struct chartProperties& chartProperties)
+void PieChartWidget::setupChartViewProperties(QChartView* &chartView,struct chartProperties& chartProperties)
 {
     // Set up properties of the QChartView object based on chartProperties
     chartView->setRenderHint(QPainter::Antialiasing,chartProperties.renderHint_Antialiasing);
@@ -51,7 +51,7 @@ void PieChart::setupChartViewProperties(QChartView* &chartView,struct chartPrope
 
 }
 
-QChart* PieChart::initializeTheChart(QPieSeries* series,QString chartTitle)
+QChart* PieChartWidget::initializeTheChart(QPieSeries* series,QString chartTitle)
 {
     // Initializes and Setup the chart
     QChart *chart=new QChart();
@@ -70,7 +70,7 @@ QChart* PieChart::initializeTheChart(QPieSeries* series,QString chartTitle)
     return chart;
 }
 
-QChartView* PieChart::createTheChartView(std::unordered_map<std::string, int> statsMap,struct chartProperties& chartProperties)
+QChartView* PieChartWidget::createTheChartView(std::unordered_map<std::string, int> statsMap,struct chartProperties& chartProperties)
 {
     // Fill the pie series with the statistics map data.
     QPieSeries* series=fillPieSeries(statsMap);
@@ -95,13 +95,13 @@ QChartView* PieChart::createTheChartView(std::unordered_map<std::string, int> st
     setupPieSeriesProperties(series,chartProperties);
 
     // Connect the hovered signal of the pie series to the hoveringSlot function.
-    QObject::connect(series, &QPieSeries::hovered, this, &PieChart::hoveringSlot);
+    QObject::connect(series, &QPieSeries::hovered, this, &PieChartWidget::hoveringSlot);
 
 
     return chartView;
 }
 
-void PieChart::hoveringSlot(QPieSlice *slice, bool state){
+void PieChartWidget::hoveringSlot(QPieSlice *slice, bool state){
     if (slice) {
           if (state) {
 
