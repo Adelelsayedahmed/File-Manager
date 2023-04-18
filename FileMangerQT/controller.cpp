@@ -113,7 +113,7 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
 }
 
 
-void Controller::batchRenamingControllerSlot( std::vector< boost::filesystem::path>& oldPaths,const std::string &newBaseName){
+void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
     std::string tempName ;
     for ( auto & path : oldPaths)

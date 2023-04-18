@@ -51,7 +51,7 @@ signals:
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
     void renameFileViewSignal(std::string filePath , const std::string newFileName);
-    void batchRenameViewSignal(std::vector< boost::filesystem::path>& oldPaths,const std::string &newBaseName);
+    void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
 };
 
 #endif // VIEW_H

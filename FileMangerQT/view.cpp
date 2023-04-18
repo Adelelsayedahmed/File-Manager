@@ -47,6 +47,11 @@ void View::TreeView()
     for (int i=1; i<4; ++i) ui->treeView->hideColumn(i);
     ui->treeView->header()->setStretchLastSection(true);
     ui->treeView->setColumnWidth(0, 1000);
+
+    ui->treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    // set the selection behavior to SelectItems
+    ui->treeView->setSelectionBehavior(QAbstractItemView::SelectItems);
 }
 
 View::~View()
@@ -57,7 +62,7 @@ View::~View()
 
 void View::on_treeView_clicked(const QModelIndex &index)
 {
-
+    qInfo()<<"Clicked\n";
     this->index = index;
     ui->tableView->setModel(fileSystemModel);
     ui->tableView->setRootIndex(index);
@@ -111,12 +116,20 @@ void View::onRenameFilesViewSlot()
 
 void View::onBatchRenameViewSlot()
 {
-    std::vector< boost::filesystem::path> oldPaths ;
+
+    std::vector< std::string> oldPaths ;
     std::string newBaseName = "newfile_";
-    // make for loop logic to get the paths and fill the oldPaths vector
-    oldPaths.push_back("/home/adel/playing/old_adel");
-    oldPaths.push_back("/home/adel/playing/old_sarah");
-    emit batchRenameViewSignal(oldPaths,newBaseName);
+
+    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
+    QModelIndexList indexes = selectionModel->selection().indexes();
+
+    foreach (QModelIndex index, indexes)
+    {
+        qInfo() << "In veiew " << index ;
+        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+    }
+
+      emit batchRenameViewSignal(oldPaths,newBaseName);
 }
 
 
