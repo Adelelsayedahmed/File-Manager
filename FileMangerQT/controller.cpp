@@ -1,4 +1,9 @@
 #include "controller.h"
+Controller::Controller()
+{
+
+}
+
 Controller::Controller(View *view)
 {
     dView = view;
@@ -9,7 +14,7 @@ Controller::Controller(View *view)
 
 void Controller::mRegisterSignals()
 {
-    QObject::connect(dView, &View::copyFile, this, &Controller::paste);
+//    QObject::connect(dView, &View::copyFile, this, &Controller::paste);
     QObject::connect(dView, &View::delFile, this, &Controller::del);
     QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
 }
@@ -28,7 +33,6 @@ void Controller::mRegisterSignals()
 
 void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
-
     if (!fs::exists(source_path)) {
         qInfo() << "Source file does not exist!\n" ;
         return ;

@@ -13,6 +13,7 @@ class Controller : public QObject
 {
     Q_OBJECT
 public:
+    Controller();
     Controller(View* view);
 
 private:

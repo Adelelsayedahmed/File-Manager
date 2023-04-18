@@ -11,6 +11,8 @@ void View::mRegisterSignals()
     QShortcut *shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
     QShortcut *shortcutCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), this);
 
+
+
     // connect the shortcuts to your copy and paste functions
     QObject::connect(shortcutCopy, &QShortcut::activated, this, &View::onCopy);
     QObject::connect(shortcutPaste, &QShortcut::activated, this, &View::onPaste);
@@ -32,7 +34,7 @@ View::View(QWidget *parent)
     QThread* thread = new QThread(this);
     Controller* object = new Controller();
     object->moveToThread(thread);
-    connect(this, &Dialog::on_stop, object, &Controller::paste, Qt::QueuedConnection);
+    connect(this, &View::copyFile, object, &Controller::paste, Qt::QueuedConnection);
 }
 
 void View::TreeView()
@@ -87,10 +89,12 @@ void View::onCopy()
 
 void View::onPaste()
 {
+
     std::string dest =  fileSystemModel->filePath(index).toStdString();
     emit copyFile(filePath.toStdString(),dest,action);
     QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
     thread->start();
+    qInfo()<< "thread started";
 
 }
 
@@ -111,6 +115,29 @@ void View::onRename()
 {
     filePath = fileSystemModel->filePath(index);
     emit renameFile(filePath.toStdString() , "New name");
+}
+
+void View::onCompress()
+{
+    qInfo() << "line 122";
+    CustomTwoPathWidget *customWidget = new CustomTwoPathWidget(COMPRESS);
+    customWidget->show();
+}
+
+void View::onDeCompress()
+{
+    CustomTwoPathWidget *customWidget = new CustomTwoPathWidget(DECOMPRESS);
+    customWidget->show();
+}
+
+void View::onCompressHere()
+{
+
+}
+
+void View::onDecompressHere()
+{
+
 }
 
 
@@ -163,14 +190,22 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
+    QAction *compressAction = menu.addAction(tr("Compress"));
+    QAction *decompressAction = menu.addAction(tr("Decompress"));
+
+
+
+
 
     /*Make rename Action here*/
     QAction *renameAction = menu.addAction(tr("Rename"));
-
     connect(copyAction, &QAction::triggered, this, &View::onCopy);
     connect(pasteAction, &QAction::triggered, this, &View::onPaste);
     connect(delAction, &QAction::triggered, this, &View::onDel);
     connect(cutAction, &QAction::triggered, this, &View::onCut);
+    connect(compressAction, &QAction::triggered, this, &View::onCompress);
+    connect(decompressAction, &QAction::triggered, this, &View::onDeCompress);
+
 
 
     connect(renameAction,&QAction::triggered, this, &View::onRename );
