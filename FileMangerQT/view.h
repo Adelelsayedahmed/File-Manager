@@ -11,7 +11,8 @@ namespace Ui { class View; }
 QT_END_NAMESPACE
 enum class CopyCutAction {
     Copy,
-    Cut
+    Cut,
+    CopyDirectory
 };
 
 class View : public QMainWindow
@@ -36,7 +37,7 @@ private slots:
     void onPaste();
     void onDel();
     void onCut();
-    void on_treeView_pressed(const QModelIndex &index);
+//    void on_treeView_pressed(const QModelIndex &index);
 
     void on_lineEditPath_textEdited(const QString &arg1);
     void on_tableView_doubleClicked(const QModelIndex &index);
