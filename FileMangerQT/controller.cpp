@@ -1,6 +1,5 @@
 #include "controller.h"
-#include <string>
-#include <stack>
+
 Controller::Controller()
 {
 
@@ -143,6 +142,7 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
     qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
     std::string temp_path = removeNameFromPath(path.string());
     std::string new_path_str  = temp_path + newFileName ;
+
     qInfo() << "File path = " << QString::fromStdString(temp_path) << QString::fromStdString(new_path_str);
     fs::path new_path_p(new_path_str);
     try
@@ -154,6 +154,22 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
 
 }
 
+void Controller::addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths)
+{
+    paths.push(oldPaths);
+    paths.push(newPaths);
+}
+
+void Controller::undoRename()
+{
+   std::vector<std::string> oldPaths=paths.top();
+   paths.pop();
+   std::vector<std::string> newPaths=paths.top();
+   paths.pop();
+   for(int i=0;i<oldPaths.size();i++){
+        fs::rename(oldPaths[i],newPaths[i]);
+    }
+}
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
@@ -168,8 +184,7 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
         new_paths.push_back(tempName.append(std::to_string(counter)));
         counter++;
     }
-
-
+    addPaths( oldPaths,new_paths);
 }
 
 

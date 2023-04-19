@@ -164,7 +164,7 @@ void View::onBatchRenameViewSlot()
     }
 
     emit batchRenameViewSignal(oldPaths,newBaseName);
-
+    /*emit with old paths*/
 }
 
 
