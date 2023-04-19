@@ -11,37 +11,72 @@
 #include <QHeaderView>
 #include <QDialog>
 #include <QLineEdit>
+#include <QItemSelection>
+#include <QMessageBox>
+#include "identifyduplicates.h"
+
 class IdentifyDuplicatesPageWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit IdentifyDuplicatesPageWidget(QWidget *parent = nullptr);
+    explicit IdentifyDuplicatesPageWidget(QWidget *parent = nullptr,IdentifyDuplicates* duplicatesObj=nullptr);
 
     void setTheTable(std::vector<std::vector<std::string>> duplicates);
 
 private:
+    IdentifyDuplicates* duplicatesObj;
+
+    QGridLayout *gridLayout;
+
+    QLabel *pathsLabel;
+
+    QPushButton *addButton;
+
+    QPushButton *removeButton;
+
+    QPushButton *identifyDuplicatesButton;
+
+    QTableView *pathsTableView;
+
+    QStandardItemModel *pathsTableModel;
+
     QTableView *duplicatesTableView;
 
     QStandardItemModel *duplicatesTableModel;
-
-    void fillTheModel(QStandardItemModel *model,std::vector<std::vector<std::string>> duplicates);
-
-    QDialog* createAddPopupWindow();
 
     QLineEdit* pathLineEdit;
 
     QDialog* Addpopup;
 
-    std::vector<std::string> searchingPaths;
+    std::vector<boost::filesystem::path> searchingPaths;
 
-    QTextBrowser *pathsBrowser;
+    std::vector<std::vector<std::string>> duplicates;
+
+    void fillTheModel(QStandardItemModel *model,std::vector<std::vector<std::string>> duplicates);
+
+    QDialog* createAddPopupWindow();
+
+    void initializeThePage();
+
+    void initializeTables();
+
+    void setPageConnections();
 
 public slots:
     void showAddPopupWindow();
 
     void addButtonClicked();
+
+    void duplicatesSlot();
+
+    void updateDuplicatesTableSlot();
+
+    void rowSelected(const QItemSelection& selected, const QItemSelection& deselected);
+
+    void removeSelectedRow();
 signals:
 
+    void updateDuplicatesTable();
 
 };
 

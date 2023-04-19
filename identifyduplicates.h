@@ -19,6 +19,11 @@ public:
     // function to return a vector of vector of strings containing the suspected duplicates files/directories paths
     std::vector<std::vector<std::string>> checkDuplication(const std::vector<path>& paths);
 
+    path convertStringToPath(std::string stringPath);
+
+    bool checkPathValidation(const path& path);
+
+
 private:
 
     // function to generate a unique number for each file/directory

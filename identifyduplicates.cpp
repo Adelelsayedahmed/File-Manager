@@ -91,3 +91,11 @@ std::vector<std::vector<std::string>> IdentifyDuplicates::convertMapToVectorOfVe
     }
     return elementsVector;
 }
+bool IdentifyDuplicates::checkPathValidation(const path& path)
+{
+    return exists(path);
+}
+path IdentifyDuplicates::convertStringToPath(std::string stringPath)
+{
+    return path(stringPath);
+}

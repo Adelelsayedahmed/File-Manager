@@ -7,11 +7,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this);
+    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+
+    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this,dupsObj);
     setCentralWidget(pageWidget);
     show();
 
-    //    IdentifyDuplicates dupsObj;
+
 //    std::vector<boost::filesystem::path> paths;
 //    paths.push_back(statistics::getCurrentPath());
 //    paths.push_back(statistics::getCurrentPath().parent_path());
