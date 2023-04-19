@@ -27,7 +27,8 @@ public slots:
     void paste(fs::path source_path, fs::path destination_path, CopyCutAction action);
     void del(fs::path filePath);
     void cutFile(const boost::filesystem::path& path);
-//    void renameFile(const boost::filesystem::path &path , const std::string newFileName);
+    void renameFileControllerSlot(const boost::filesystem::path &path , const std::string newFileName);
+    void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
 };
 
 #endif // CONTROLLER_H

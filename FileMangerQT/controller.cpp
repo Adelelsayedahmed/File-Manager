@@ -1,8 +1,11 @@
 #include "controller.h"
+#include <string>
+#include <stack>
 Controller::Controller()
 {
 
 }
+
 
 Controller::Controller(View *view)
 {
@@ -17,6 +20,11 @@ void Controller::mRegisterSignals()
 //    QObject::connect(dView, &View::copyFile, this, &Controller::paste);
     QObject::connect(dView, &View::delFile, this, &Controller::del);
     QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
+    QObject::connect(dView, &View::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
+    QObject::connect(dView, &View::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
+
+
+
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
@@ -119,3 +127,53 @@ void Controller::cutFile(const fs::path &path)
 {
     m_cutPath = path;
 }
+
+
+std::string removeNameFromPath(std::string path) {
+    size_t found = path.find_last_of("/\\");
+    if (found != std::string::npos) {
+        return path.substr(0, found+1);
+    }
+    return path;
+}
+
+
+void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,const std::string newFileName )
+{
+    qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
+    std::string temp_path = removeNameFromPath(path.string());
+    std::string new_path_str  = temp_path + newFileName ;
+    qInfo() << "File path = " << QString::fromStdString(temp_path) << QString::fromStdString(new_path_str);
+    fs::path new_path_p(new_path_str);
+    try
+    {
+        fs::rename(path,new_path_p);
+    }
+    catch (const std::exception& ex) {
+    std::cerr << "Error renaming file: " << ex.what() << std::endl;    }
+
+}
+
+
+void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
+    unsigned int counter = 1 ;
+
+    /*to be used by wafyola*/
+    std::vector< std::string> new_paths ;
+    std::string tempName ;
+    for ( auto & path : oldPaths)
+    {
+        tempName = newBaseName ;
+        Controller::renameFileControllerSlot(path,tempName.append(std::to_string(counter)));
+        new_paths.push_back(tempName.append(std::to_string(counter)));
+        counter++;
+    }
+
+
+}
+
+
+
+
+
+
