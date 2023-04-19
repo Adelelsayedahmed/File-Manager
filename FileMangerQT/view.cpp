@@ -216,16 +216,23 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     QAction *delAction = menu.addAction(tr("Delete"));
     QAction *compressAction = menu.addAction(tr("Compress"));
     QAction *decompressAction = menu.addAction(tr("Decompress"));
-
-
-
-
-
-    /*Make rename Action here*/
     QAction *renameAction = menu.addAction(tr("Rename"));
-    /*Make rename Action here*/
-
     QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
+
+    if ( isMultipleSelected() )
+    {
+        batchRenameAction->setEnabled(true);
+        renameAction->setEnabled(false);
+    }
+    else
+    {
+        batchRenameAction->setEnabled(false);
+        renameAction->setEnabled(true);
+    }
+
+
+
+
 
 
     connect(copyAction, &QAction::triggered, this, &View::onCopy);
@@ -236,9 +243,19 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     connect(decompressAction, &QAction::triggered, this, &View::onDeCompress);
 
     connect(renameAction,&QAction::triggered, this, &View::onRenameFilesViewSlot );
-
     connect(batchRenameAction,&QAction::triggered, this, &View::onBatchRenameViewSlot );
 
 
     menu.exec(event->globalPos());
+}
+
+bool View::isMultipleSelected(){
+    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
+    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
+    if (selectedIndexes.length() == 1) {
+        return false ;
+    } else if (selectedIndexes.length() > 1) {
+        return true ;
+    }
+
 }

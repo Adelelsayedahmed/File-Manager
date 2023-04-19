@@ -29,6 +29,7 @@ private:
     QModelIndex index;
     QString filePath;
     CopyCutAction action;
+    bool isMultipleSelected();
 public:
     View(QWidget *parent = nullptr);
     void TreeView();
