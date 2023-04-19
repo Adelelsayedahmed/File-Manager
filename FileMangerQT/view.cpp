@@ -224,7 +224,6 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     /*Make rename Action here*/
     QAction *renameAction = menu.addAction(tr("Rename"));
     /*Make rename Action here*/
-    QAction *renameAction = menu.addAction(tr("Rename"));
 
     QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
 
