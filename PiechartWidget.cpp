@@ -65,7 +65,12 @@ QChart* PieChartWidget::initializeTheChart(QPieSeries* series,QString chartTitle
     // Make the chart dynamically animated.
     chart->setAnimationOptions(QChart::AllAnimations);
 
-    chart->legend()->setVisible(true);
+    if(series->count()>10){
+          chart->legend()->setVisible(false);
+    }else{
+
+          chart->legend()->setVisible(true);
+    }
 
     return chart;
 }
@@ -84,12 +89,13 @@ QChartView* PieChartWidget::createTheChartView(std::unordered_map<std::string, i
     // Select the font for the chart.
     QFont font(chartProperties.fontType);
 
+    qDebug() << series->count();
     // Set the font size of the chart
-    if(series->count()>=8){
-
+    if(series->count()>=7){
           font.setPointSize(8);
     }
     chartView->chart()->legend()->setFont(font);
+
 
     // Customize the pie series by setting its properties.
     setupPieSeriesProperties(series,chartProperties);

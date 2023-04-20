@@ -14,15 +14,21 @@ SOURCES += \
     PiechartWidget.cpp \
     identifyduplicates.cpp \
     identifyduplicatespagewidget.cpp \
+    integrate.cpp \
     main.cpp \
     mainwindow.cpp \
+    piechartpagewidget.cpp \
+    propertiespagewidget.cpp \
     statistics.cpp
 
 HEADERS += \
     PiechartWidget.h \
     identifyduplicates.h \
     identifyduplicatespagewidget.h \
+    integrate.h \
     mainwindow.h \
+    piechartpagewidget.h \
+    propertiespagewidget.h \
     statistics.h
 
 FORMS += \

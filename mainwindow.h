@@ -6,6 +6,8 @@
 #include "statistics.h"
 #include "identifyduplicates.h"
 #include "identifyduplicatespagewidget.h"
+#include "propertiespagewidget.h"
+#include "piechartpagewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
