@@ -184,3 +184,6 @@ build-FileMangerQT-Desktop_Qt_6_5_0_GCC_64bit-Debug/CMakeFiles/FileManger.dir/cu
 build-FileMangerQT-Desktop_Qt_6_5_0_GCC_64bit-Debug/CMakeFiles/FileManger.dir/explorer.cpp.o
 build-FileMangerQT-Desktop_Qt_6_5_0_GCC_64bit-Debug/FileManger_autogen/EWIEGA46WW/moc_customtwopathwidget.cpp
 build-FileMangerQT-Desktop_Qt_6_5_0_GCC_64bit-Debug/FileManger_autogen/EWIEGA46WW/moc_customtwopathwidget.cpp.d
+boost*
+build*
+CMake*
