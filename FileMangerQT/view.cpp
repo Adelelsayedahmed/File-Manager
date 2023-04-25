@@ -27,28 +27,30 @@ View::View(QWidget *parent)
     ui->setupUi(this);
     fileSystemModel = new QFileSystemModel(this);
     mRegisterSignals();
-    TreeView();
+    //TreeView();
     contentUi = new FileContentView(this);
+    Explorer *e = new Explorer();
+    ui->formLayout->addWidget(e);
 }
 
-void View::TreeView()
-{
+//void View::TreeView()
+//{
 
-    QModelIndex modelIndex = fileSystemModel->setRootPath(QDir::rootPath());
-    ui->treeView->setModel(fileSystemModel);
-    //    ui->treeView->horizontalScrollBar();
-    ui->treeView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    //hide the columns we don't want
-    /*The first column shows the names of the files and folders in the hierarchy.
-     * The second column shows the size of the files in bytes.
-     * The third column shows the type of the files (e.g. directory, file, symlink, etc.).
-     * The fourth column shows the date and time when the files were last modified.
-     */
-    for (int i=1; i<4; ++i) ui->treeView->hideColumn(i);
-    ui->treeView->header()->setStretchLastSection(true);
-    ui->treeView->setColumnWidth(0, 1000);
+//    QModelIndex modelIndex = fileSystemModel->setRootPath(QDir::rootPath());
+//    ui->treeView->setModel(fileSystemModel);
+//    //    ui->treeView->horizontalScrollBar();
+//    ui->treeView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+//    //hide the columns we don't want
+//    /*The first column shows the names of the files and folders in the hierarchy.
+//     * The second column shows the size of the files in bytes.
+//     * The third column shows the type of the files (e.g. directory, file, symlink, etc.).
+//     * The fourth column shows the date and time when the files were last modified.
+//     */
+//    for (int i=1; i<4; ++i) ui->treeView->hideColumn(i);
+//    ui->treeView->header()->setStretchLastSection(true);
+//    ui->treeView->setColumnWidth(0, 1000);
 
-}
+//}
 
 View::~View()
 {
@@ -56,26 +58,26 @@ View::~View()
 }
 
 
-void View::on_treeView_clicked(const QModelIndex &index)
-{
+//void View::on_treeView_clicked(const QModelIndex &index)
+//{
 
-    this->index = index;
-    ui->tableView->setModel(fileSystemModel);
-    ui->tableView->setRootIndex(index);
-    ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->setColumnWidth(0,250);
-    ui->tableView->setColumnWidth(3,250);
-    ui->tableView->horizontalScrollBar();
-    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-
-
-}
+//    this->index = index;
+//    ui->tableView->setModel(fileSystemModel);
+//    ui->tableView->setRootIndex(index);
+//    ui->tableView->verticalHeader()->setVisible(false);
+//    ui->tableView->setColumnWidth(0,250);
+//    ui->tableView->setColumnWidth(3,250);
+//    ui->tableView->horizontalScrollBar();
+//    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
 
-void View::on_tableView_clicked(const QModelIndex &index)
-{
-    this->index = index;
-}
+//}
+
+
+//void View::on_tableView_clicked(const QModelIndex &index)
+//{
+//    this->index = index;
+//}
 void View::onCopy()
 {
     qInfo() << "Copying";
@@ -117,28 +119,28 @@ void View::on_lineEditPath_textEdited(const QString &arg1)
 {
 
 }
-void View::on_tableView_doubleClicked(const QModelIndex &index)
-{
-    qInfo() << "95";
-    this->index = index;
-    on_treeView_clicked(index);
-        // Get the path of the selected file
+//void View::on_tableView_doubleClicked(const QModelIndex &index)
+//{
+//    qInfo() << "95";
+//    this->index = index;
+//    on_treeView_clicked(index);
+//        // Get the path of the selected file
 
-    filePath = fileSystemModel->filePath(index);
-    qInfo() << filePath;
-    // Open the file and read its contents
-    contentUi->file = new QFile (filePath);
-    if (!contentUi->file->open(QIODevice::ReadWrite))
-        return;
-    QString fileContents = contentUi->file->readAll();
-    //        file.close();
-    //| QIODevice::Text
+//    filePath = fileSystemModel->filePath(index);
+//    qInfo() << filePath;
+//    // Open the file and read its contents
+//    contentUi->file = new QFile (filePath);
+//    if (!contentUi->file->open(QIODevice::ReadWrite))
+//        return;
+//    QString fileContents = contentUi->file->readAll();
+//    //        file.close();
+//    //| QIODevice::Text
 
-    // Display the contents of the file in a QTextEdit widget
-    contentUi->ui->textEdit->clear();
-    contentUi->ui->textEdit->setPlainText(fileContents);
-    contentUi->show();
-}
+//    // Display the contents of the file in a QTextEdit widget
+//    contentUi->ui->textEdit->clear();
+//    contentUi->ui->textEdit->setPlainText(fileContents);
+//    contentUi->show();
+//}
 
 void View::contextMenuEvent(QContextMenuEvent *event)
 {

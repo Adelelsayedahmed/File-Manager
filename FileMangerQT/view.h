@@ -6,6 +6,7 @@
 #include <filecontentview.h>
 #include "ui_filecontentview.h"
 #include <stdio.h>
+#include <explorer.h>>
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
@@ -31,8 +32,8 @@ public:
     ~View();
     FileContentView *contentUi;
 private slots:
-    void on_treeView_clicked(const QModelIndex &index);
-    void on_tableView_clicked(const QModelIndex &index);
+//    void on_treeView_clicked(const QModelIndex &index);
+//    void on_tableView_clicked(const QModelIndex &index);
     void onCopy();
     void onPaste();
     void onDel();
