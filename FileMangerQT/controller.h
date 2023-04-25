@@ -27,6 +27,7 @@ public slots:
     void del(fs::path filePath);
     void cutFile(const boost::filesystem::path& path);
 //    void renameFile(const boost::filesystem::path &path , const std::string newFileName);
+    void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
 };
 
 #endif // CONTROLLER_H

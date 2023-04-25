@@ -115,3 +115,23 @@ void Controller::cutFile(const fs::path &path)
 {
     m_cutPath = path;
 }
+
+void Controller::SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths)
+{
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+
+        if(file.is_regular_file())
+        {
+            std::string searchbyname = file.path();
+            if(searchbyname.find(file_name)!= std::string::npos)
+                file_paths.push_back(searchbyname);
+        }
+    }
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+
+        if(file.is_directory())
+        {
+           SearchForFileByName(file.path() , file_name , file_paths);
+        }
+    }
+}
