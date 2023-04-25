@@ -47,6 +47,7 @@ void View::TreeView()
     for (int i=1; i<4; ++i) ui->treeView->hideColumn(i);
     ui->treeView->header()->setStretchLastSection(true);
     ui->treeView->setColumnWidth(0, 1000);
+
 }
 
 View::~View()
@@ -66,6 +67,7 @@ void View::on_treeView_clicked(const QModelIndex &index)
     ui->tableView->setColumnWidth(3,250);
     ui->tableView->horizontalScrollBar();
     ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
 
 }
 
