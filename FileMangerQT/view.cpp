@@ -227,8 +227,8 @@ void View::on_lineEditPath_textEdited(const QString &arg1)
 {
 
 }
-//void View::on_tableView_doubleClicked(const QModelIndex &index)
-//{
+void View::on_tableView_doubleClicked(const QModelIndex &index)
+{
 //    qInfo() << "95";
 //    this->index = index;
 //    on_treeView_clicked(index);
@@ -248,7 +248,7 @@ void View::on_lineEditPath_textEdited(const QString &arg1)
 //    contentUi->ui->textEdit->clear();
 //    contentUi->ui->textEdit->setPlainText(fileContents);
 //    contentUi->show();
-//}
+}
 
 void View::contextMenuEvent(QContextMenuEvent *event)
 {

@@ -3,9 +3,9 @@
 
 #include <QObject>
 #include <QWidget>
-#include <QtCharts/QtCharts>
-#include <QtCharts/QChartView>
-#include <QtCharts/QPieSeries>
+//#include <QtCharts/QtCharts>
+//#include <QtCharts/QChartView>
+//#include <QtCharts/QPieSeries>
 #include <unordered_map>
 #include <string>
 #include <QString>
