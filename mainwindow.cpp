@@ -9,41 +9,26 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     /////identify duplicates main//////
-////    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+    ///
+    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
 
-////    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this,dupsObj);
-////    setCentralWidget(pageWidget);
-////    show();
-
-    //controller of pie chart
-////    pieChartPageWidget *pieChartWidget = new pieChartPageWidget(parent);
-////    setCentralWidget(pieChartWidget);
-
-////    statistics statObj;
-////    std::unordered_map<std::string, int> sizesMap=statObj.directoryFilesSizes(statistics::getCurrentPath());
-
-////    PieChartWidget::chartProperties sizesChartprop("Sizes of files","Arial",true,"KB",false,true,true);
-////    new PieChartWidget(pieChartWidget->returnTabs(0),sizesMap,sizesChartprop);
-
-////    std::unordered_map<std::string, int> typesMap=statObj.directoryFilesTypes(statistics::getCurrentPath());
-
-////    PieChartWidget::chartProperties typesprop("Types of files","Arial",true," items",false,true,true);
-////    new PieChartWidget(pieChartWidget->returnTabs(1),typesMap,typesprop);
+    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this,dupsObj);
+    setCentralWidget(pageWidget);
+    show();
 
 
     //setCentralWidget(pieChartWidget);
 
 
-    //still needs to be adjusted
-    statistics *statObj = new statistics;
+/// controller for properties window
+ ///   statistics *statObj = new statistics;
 
-    pieChartPageWidget *pieChartWidget = new pieChartPageWidget(parent);
-    PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(parent, statObj, pieChartWidget);
+///    pieChartPageWidget *pieChartWidget = new pieChartPageWidget(parent);
+///    PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(parent, statObj, pieChartWidget);
+                // take the path from the selection and pass it
+///    propertiesWidget->path=boost::filesystem::path("/home/fady/Documents/cheatsheet.pdf");
 
-    propertiesWidget->path=boost::filesystem::path("/home/fady/Documents/cheatsheet.pdf");
-
-    // Create and show the properties page widget last
-    propertiesWidget->showPropertiesWindow();
+///    propertiesWidget->showPropertiesWindow();
 
 
 
@@ -65,9 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 //    statistics statObj;
 //  std::unordered_map<std::string, int> sizesMap=statObj.directoryFilesSizes(statistics::getCurrentPath());
-////    for (const auto& pair : statsMap) {
-////        qDebug() << pair.first.c_str() << ": " << pair.second;
-////    }
+//    for (const auto& pair : statsMap) {
+//        qDebug() << pair.first.c_str() << ": " << pair.second;
+//    }
 
     //PieChartWidget::chartProperties prop("Sizes of files");
 

@@ -29,8 +29,8 @@ void IdentifyDuplicatesPageWidget::initializeThePage()
 
     removeButton=new QPushButton("remove path");
     removeButton->setFixedSize(100,30);
-    removeButton->setStyleSheet("background-color: red");
     removeButton->setEnabled(false);
+    removeButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
 
     gridLayout->addWidget(removeButton,2,0);
 
@@ -63,6 +63,7 @@ void IdentifyDuplicatesPageWidget::initializeTables()
     //duplicatesTableModel->setHeaderData(1,Qt::Horizontal,"file/directory size");
 
     duplicatesTableView->setModel(duplicatesTableModel);
+    duplicatesTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     duplicatesTableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     duplicatesTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -80,6 +81,7 @@ void IdentifyDuplicatesPageWidget::setPageConnections()
     connect(this, &IdentifyDuplicatesPageWidget::updateDuplicatesTable, this, &IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot);
     connect(pathsTableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &IdentifyDuplicatesPageWidget::rowSelected);
     connect(removeButton, &QPushButton::clicked, this, &IdentifyDuplicatesPageWidget::removeSelectedRow);
+    connect(duplicatesTableView, QOverload<const QModelIndex &>::of(&QTableView::clicked), this, &IdentifyDuplicatesPageWidget::showMenu);
 
 }
 QDialog* IdentifyDuplicatesPageWidget::createAddPopupWindow()
@@ -94,6 +96,7 @@ QDialog* IdentifyDuplicatesPageWidget::createAddPopupWindow()
     addButton->setFixedSize(100,50);
 
     pathLineEdit = new QLineEdit(Addpopup);
+    pathLineEdit->setPlaceholderText("Write the path here");
 
     connect(addButton, SIGNAL(clicked()), this, SLOT(addButtonClicked()));
 
@@ -178,7 +181,16 @@ void IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot()
 
 void IdentifyDuplicatesPageWidget::rowSelected(const QItemSelection& selected, const QItemSelection& deselected)
 {
-    removeButton->setEnabled(!selected.isEmpty());
+     if (!deselected.isEmpty())
+    {
+        removeButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
+        removeButton->setEnabled(false);
+    }
+    else
+    {
+        removeButton->setStyleSheet("background-color: red;");
+        removeButton->setEnabled(!selected.isEmpty());
+    }
 }
 void IdentifyDuplicatesPageWidget::removeSelectedRow()
 {
@@ -188,5 +200,36 @@ void IdentifyDuplicatesPageWidget::removeSelectedRow()
         searchingPaths.erase(searchingPaths.begin() + row);
         pathsTableModel->removeRow(row);
         removeButton->setEnabled(false);
+    }
+}
+
+void IdentifyDuplicatesPageWidget::showMenu(const QModelIndex &index)
+{
+    if (index.isValid() && index.model() == duplicatesTableModel)
+    {
+        QString value = duplicatesTableModel->data(duplicatesTableModel->index(index.row(), 0)).toString();
+        if (value != "" && value !="Duplicates") // replace with the value you want to exclude
+        {
+        menu.clear();
+        selectedDuplicateIndex = index;
+        deleteAction = menu.addAction("delete the selected item");
+        connect(deleteAction, &QAction::triggered, this, &IdentifyDuplicatesPageWidget::deleteSlot);
+        menu.exec(duplicatesTableView->viewport()->mapToGlobal(duplicatesTableView->visualRect(index).center()));
+        }
+    }
+}
+
+void IdentifyDuplicatesPageWidget::deleteSlot()
+{
+    if (selectedDuplicateIndex.isValid())
+    {
+        QString filePath = selectedDuplicateIndex.data().toString();
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Delete item?", "Do you want to delete the file/directory \"" + filePath + "\"?", QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            boost::filesystem::remove_all(boost::filesystem::path(filePath.toStdString()));
+            duplicatesTableModel->removeRow(selectedDuplicateIndex.row());
+            selectedDuplicateIndex = QModelIndex();
+        }
     }
 }

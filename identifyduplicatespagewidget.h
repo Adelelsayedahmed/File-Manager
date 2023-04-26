@@ -13,6 +13,7 @@
 #include <QLineEdit>
 #include <QItemSelection>
 #include <QMessageBox>
+#include <QMenu>
 #include "identifyduplicates.h"
 
 class IdentifyDuplicatesPageWidget : public QWidget
@@ -56,6 +57,12 @@ private:
 
     QDialog* createAddPopupWindow();
 
+    QMenu menu;
+
+    QAction *deleteAction;
+
+    QModelIndex selectedDuplicateIndex;
+
     void initializeThePage();
 
     void initializeTables();
@@ -74,6 +81,10 @@ public slots:
     void rowSelected(const QItemSelection& selected, const QItemSelection& deselected);
 
     void removeSelectedRow();
+
+    void showMenu(const QModelIndex &index);
+
+    void deleteSlot();
 signals:
 
     void updateDuplicatesTable();
