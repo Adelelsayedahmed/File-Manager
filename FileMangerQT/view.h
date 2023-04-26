@@ -15,11 +15,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
-enum class CopyCutAction {
-    Copy,
-    Cut,
-    CopyDirectory
-};
+
 
 class View : public QMainWindow
 {
@@ -30,7 +26,7 @@ private:
     void mRegisterSignals();
     QVector<QModelIndex> indexVector;
     QModelIndex index;
-    QString filePath;
+
     CopyCutAction action;
     bool isMultipleSelected();
 public:
@@ -38,18 +34,19 @@ public:
     void TreeView();
     ~View();
     FileContentView *contentUi;
+    Explorer *explorer;
 private slots:
 //    void on_treeView_clicked(const QModelIndex &index);
 //    void on_tableView_clicked(const QModelIndex &index);
-    void onCopy();
-    void onPaste();
-    void onDel();
-    void onCut();
-    void onProperties();
+//    void onCopy();
+//    void onPaste();
+//    void onDel();
+//    void onCut();
+//    void onProperties();
 //    void on_treeView_pressed(const QModelIndex &index);
     void on_lineEditPath_textEdited(const QString &arg1);
     void on_tableView_doubleClicked(const QModelIndex &index);
-    void contextMenuEvent(QContextMenuEvent *event);
+//    void contextMenuEvent(QContextMenuEvent *event);
    
    
     void onCompress();
@@ -57,15 +54,15 @@ private slots:
     void onCompressHere();
     void onDecompressHere();
 
-    void onRenameFilesViewSlot();
+//    void onRenameFilesViewSlot();
     void onBatchRenameViewSlot();
-signals:
-    void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
-    void delFile(std::string filePath);
-    void cutFile(std::string filePath);
-    void propertiesOfFile(std::string filePath);
-    void renameFileViewSignal(std::string filePath , const std::string newFileName);
-    void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
+//signals:
+//    void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
+//    void delFile(std::string filePath);
+//    void cutFile(std::string filePath);
+//    void propertiesOfFile(std::string filePath);
+//    void renameFileViewSignal(std::string filePath , const std::string newFileName);
+//    void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
 };
 
 #endif // VIEW_H

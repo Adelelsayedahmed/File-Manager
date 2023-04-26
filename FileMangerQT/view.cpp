@@ -4,20 +4,15 @@
 #include<QThread>
 void View::mRegisterSignals()
 {
-    // create a QShortcut object for Ctrl+C
-    QShortcut *shortcutCopy = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C), this);
-    // create a QShortcut object for Ctrl+V
-    QShortcut *shortcutPaste = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V), this);
-    QShortcut *shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
-    QShortcut *shortcutCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), this);
+//    QShortcut *shortcutCopy = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C), this);
+//    QShortcut *shortcutPaste = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V), this);
+//    QShortcut *shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
+//    QShortcut *shortcutCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), this);
 
-
-
-    // connect the shortcuts to your copy and paste functions
-    QObject::connect(shortcutCopy, &QShortcut::activated, this, &View::onCopy);
-    QObject::connect(shortcutPaste, &QShortcut::activated, this, &View::onPaste);
-    QObject::connect(shortcutDel, &QShortcut::activated, this, &View::onDel);
-    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
+//    QObject::connect(shortcutCopy, &QShortcut::activated, this, &View::onCopy);
+//    QObject::connect(shortcutPaste, &QShortcut::activated, this, &View::onPaste);
+//    QObject::connect(shortcutDel, &QShortcut::activated, this, &View::onDel);
+//    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
 
 //    connect(ui->tableView, &QTableView::customContextMenuRequested, this, &View::onCustomContextMenuRequested);
 }
@@ -32,13 +27,16 @@ View::View(QWidget *parent)
     //TreeView();
     contentUi = new FileContentView(this);
 
-    QThread* thread = new QThread(this);
-    Controller* object = new Controller();
-    object->moveToThread(thread);
-    connect(this, &View::copyFile, object, &Controller::paste, Qt::QueuedConnection);
+//    QThread* thread = new QThread(this);
+//    Controller* object = new Controller();
+//    object->moveToThread(thread);
+//    connect(this, &View::copyFile, object, &Controller::paste, Qt::QueuedConnection);
 
-    ExplorerMin *e = new ExplorerMin();
-    ui->formLayout->addRow("dewwqwwwwwwwwwwwww",e);
+    explorer = new Explorer("/home/ziad",this);
+    ui->formLayout->addWidget(explorer);
+       this->setCentralWidget(explorer);
+
+
 
 }
 
@@ -133,51 +131,71 @@ View::~View()
 //    this->index = index;
 //}
 
-void View::onCopy()
-{
-    qInfo() << "Copying";
-    filePath = fileSystemModel->filePath(index);
-    action = CopyCutAction::Copy;
-}
+//void View::onCopy()
+//{
+//    qInfo() << "Copying";
+//    filePath = fileSystemModel->filePath(index);
+//    action = CopyCutAction::Copy;
+//}
 
-void View::onPaste()
-{
+//void View::onPaste()
+//{
 
-    std::string dest =  fileSystemModel->filePath(index).toStdString();
-    emit copyFile(filePath.toStdString(),dest,action);
-    QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
-    thread->start();
-    qInfo()<< "thread started";
+//    std::string dest =  fileSystemModel->filePath(index).toStdString();
+//    emit copyFile(filePath.toStdString(),dest,action);
+//    QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
+//    thread->start();
+//    qInfo()<< "thread started";
 
-}
+//}
 
-void View::onDel()
-{
-    filePath = fileSystemModel->filePath(index);
-    emit delFile(filePath.toStdString());
-}
+//void View::onDel()
+//{
+//    filePath = fileSystemModel->filePath(index);
+//    emit delFile(filePath.toStdString());
+//}
 
-void View::onCut()
-{
-    action = CopyCutAction::Cut;
-    filePath = fileSystemModel->filePath(index);
-    emit cutFile(filePath.toStdString());
-}
+//void View::onCut()
+//{
+//    action = CopyCutAction::Cut;
+//    filePath = fileSystemModel->filePath(index);
+//    emit cutFile(filePath.toStdString());
+//}
 
-void View::onProperties()
-{
-    qDebug() << "here in the properties slot of the view class";
-    filePath = fileSystemModel->filePath(index);
-     qDebug() << filePath.toStdString();
-    emit propertiesOfFile(filePath.toStdString());
-}
+//void View::onProperties()
+//{
+//    qDebug() << "here in the properties slot of the view class";
+//    filePath = fileSystemModel->filePath(index);
+//    qDebug() << filePath.toStdString();
+//    emit propertiesOfFile(filePath.toStdString());
+//}
 
-void View::onRenameFilesViewSlot()
-{
+//void View::onRenameFilesViewSlot()
+//{
 
-    filePath = fileSystemModel->filePath(index);
-    emit renameFileViewSignal(filePath.toStdString() , "New_name");
-}
+//    filePath = fileSystemModel->filePath(index);
+//    emit renameFileViewSignal(filePath.toStdString() , "New_name");
+//}d View::onCut()
+//{
+//    action = CopyCutAction::Cut;
+//    filePath = fileSystemModel->filePath(index);
+//    emit cutFile(filePath.toStdString());
+//}
+
+//void View::onProperties()
+//{
+//    qDebug() << "here in the properties slot of the view class";
+//    filePath = fileSystemModel->filePath(index);
+//     qDebug() << filePath.toStdString();
+//    emit propertiesOfFile(filePath.toStdString());
+//}
+
+//void View::onRenameFilesViewSlot()
+//{
+
+//    filePath = fileSystemModel->filePath(index);
+//    emit renameFileViewSignal(filePath.toStdString() , "New_name");
+//}
 
 void View::onCompress()
 {
@@ -205,20 +223,20 @@ void View::onDecompressHere()
 void View::onBatchRenameViewSlot()
 {
 
-    std::vector< std::string> oldPaths ;
-    std::string newBaseName = "newfile_";
+//    std::vector< std::string> oldPaths ;
+//    std::string newBaseName = "newfile_";
 
-//    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
-//    QModelIndexList indexes = selectionModel->selection().indexes();
+////    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
+////    QModelIndexList indexes = selectionModel->selection().indexes();
 
-//    foreach (QModelIndex index, indexes)
-//    {
-//        qInfo() << "In veiew " << index ;
-//        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
-//    }
+////    foreach (QModelIndex index, indexes)
+////    {
+////        qInfo() << "In veiew " << index ;
+////        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+////    }
 
-    emit batchRenameViewSignal(oldPaths,newBaseName);
-    /*emit with old paths*/
+//    emit batchRenameViewSignal(oldPaths,newBaseName);
+//    /*emit with old paths*/
 }
 
 
@@ -250,68 +268,65 @@ void View::on_tableView_doubleClicked(const QModelIndex &index)
 //    contentUi->show();
 }
 
-void View::contextMenuEvent(QContextMenuEvent *event)
-{
-    qInfo() << "right click pressed";
-//    // Convert the position to global coordinates
-//    QPoint globalPos = ui->tableView->viewport()->mapToGlobal(pos);
+//void View::contextMenuEvent(QContextMenuEvent *event)
+//{
+//    qInfo() << "right click pressed";
+////    // Convert the position to global coordinates
+////    QPoint globalPos = ui->tableView->viewport()->mapToGlobal(pos);
 
-//    // Create a context menu
-//    QMenu myContextMenu;
-//    myContextMenu.addAction("Action 1");
-//    myContextMenu.addAction("Action 2");
+////    // Create a context menu
+////    QMenu myContextMenu;
+////    myContextMenu.addAction("Action 1");
+////    myContextMenu.addAction("Action 2");
 
-//    // Show the context menu at the global position
-//    myContextMenu.exec(globalPos);
-    QMenu menu(this);
-    QAction *cutAction = menu.addAction(tr("Cut"));
-    QAction *copyAction = menu.addAction(tr("Copy"));
-    QAction *pasteAction = menu.addAction(tr("Paste"));
-    QAction *delAction = menu.addAction(tr("Delete"));
-    QAction *compressAction = menu.addAction(tr("Compress"));
-    QAction *decompressAction = menu.addAction(tr("Decompress"));
-    QAction *renameAction = menu.addAction(tr("Rename"));
-    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
-    QAction *PropertiesAction= menu.addAction(tr("properties"));
+////    // Show the context menu at the global position
+////    myContextMenu.exec(globalPos);
+//    QMenu menu(this);
+//    QAction *cutAction = menu.addAction(tr("Cut"));
+//    QAction *copyAction = menu.addAction(tr("Copy"));
+//    QAction *pasteAction = menu.addAction(tr("Paste"));
+//    QAction *delAction = menu.addAction(tr("Delete"));
+//    QAction *compressAction = menu.addAction(tr("Compress"));
+//    QAction *decompressAction = menu.addAction(tr("Decompress"));
+//    QAction *renameAction = menu.addAction(tr("Rename"));
+//    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
+//    QAction *PropertiesAction= menu.addAction(tr("properties"));
 
-    if ( isMultipleSelected() )
-    {
-        batchRenameAction->setEnabled(true);
-        renameAction->setEnabled(false);
-    }
-    else
-    {
-        batchRenameAction->setEnabled(false);
-        renameAction->setEnabled(true);
-    }
-
-
-
-
-
-
-    connect(copyAction, &QAction::triggered, this, &View::onCopy);
-    connect(pasteAction, &QAction::triggered, this, &View::onPaste);
-    connect(delAction, &QAction::triggered, this, &View::onDel);
-    connect(cutAction, &QAction::triggered, this, &View::onCut);
-    connect(compressAction, &QAction::triggered, this, &View::onCompress);
-    connect(decompressAction, &QAction::triggered, this, &View::onDeCompress);
-
-    connect(renameAction,&QAction::triggered, this, &View::onRenameFilesViewSlot );
-    connect(batchRenameAction,&QAction::triggered, this, &View::onBatchRenameViewSlot );
-
-    connect(PropertiesAction, &QAction::triggered, this, &View::onProperties);
-
-    menu.exec(event->globalPos());
-}
-
-bool View::isMultipleSelected(){
-//    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
-//    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
-//    if (selectedIndexes.length() == 1) {
-//        return false ;
-//    } else if (selectedIndexes.length() > 1) {
-//        return true ;
+//    if ( isMultipleSelected() )
+//    {
+//        batchRenameAction->setEnabled(true);
+//        renameAction->setEnabled(false);
 //    }
+//    else
+//    {
+//        batchRenameAction->setEnabled(false);
+//        renameAction->setEnabled(true);
+//    }
+//    connect(copyAction, &QAction::triggered, e, &ExplorerMin::onCopy);
+//    connect(pasteAction, &QAction::triggered, e, &ExplorerMin::onPaste);
+//    connect(delAction, &QAction::triggered, this, &ExplorerMin::onDel);
+//    connect(cutAction, &QAction::triggered, this, &ExplorerMin::onCut);
+//    connect(compressAction, &QAction::triggered, this, &View::onCompress);
+//    connect(decompressAction, &QAction::triggered, this, &View::onDeCompress);
 
-}
+//    connect(renameAction,&QAction::triggered, this, &View::onRenameFilesViewSlot );
+//    connect(batchRenameAction,&QAction::triggered, this, &View::onBatchRenameViewSlot );
+
+//    connect(PropertiesAction, &QAction::triggered, this, &View::onProperties);
+
+//    menu.exec(event->globalPos());
+//}
+
+
+
+
+//bool View::isMultipleSelected(){
+////    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
+////    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
+////    if (selectedIndexes.length() == 1) {
+////        return false ;
+////    } else if (selectedIndexes.length() > 1) {
+////        return true ;
+////    }
+
+//}

@@ -9,21 +9,18 @@
 #include <QDesktopServices>
 
 #include <QHeaderView>
-class Explorer: public QWidget, public ExplorerMin
+#include "explorermin.h"
+class Explorer: public ExplorerMin
 {
     Q_OBJECT
-    public:
-    Explorer(QWidget *parent = nullptr);
+public:
+    Explorer(QString rootPath = QString(), QWidget *parent = nullptr);
     QTreeView* ShowTreeView();
 
-   private:
+protected slots:
+    void on_treeView_clicked(const QModelIndex &index);
+private:
     QTreeView *tree;
-    QTableView *table;
-    QFileSystemModel* fileSystemModel;
-    QModelIndex index;
-private slots:
-    QTableView* ShowTableView();
-
+    void registerSignals();
 };
-
 #endif // EXPLORER_H

@@ -1,18 +1,24 @@
 #include "explorer.h"
 #include <QObject>
-Explorer::Explorer(QWidget *parent ): QWidget(parent)
+#include <QLabel>
+Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,parent)
 
 {
+    tree = new QTreeView(this);
+    layout->insertRow(0,ShowTreeView(),table);
 
-     fileSystemModel = new QFileSystemModel(this);
-     tree = new QTreeView(this);
-     table = new QTableView(this);
-     QFormLayout *form = new QFormLayout(this);
-     form->addRow(ShowTreeView(),ShowTableView());
-     index = fileSystemModel->setRootPath(QString());
-     QObject::connect(tree,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
-     QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    registerSignals();
+
 }
+void Explorer::registerSignals()
+{
+    QObject::connect(tree,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    QObject::connect(tree, SIGNAL(clicked(QModelIndex)), this, SLOT(on_treeView_clicked(QModelIndex)));
+
+}
+
+
 QTreeView* Explorer::ShowTreeView()
 {
     tree->setModel(fileSystemModel);
@@ -24,22 +30,11 @@ QTreeView* Explorer::ShowTreeView()
     tree->setColumnWidth(0, 500);
     tree->show();
     tree->setMinimumHeight(120);
-
     return tree;
 }
-
-QTableView* Explorer::ShowTableView()
+void Explorer::on_treeView_clicked(const QModelIndex &index)
 {
 
-    table->setModel(fileSystemModel);
-    table->setRootIndex(index);
-    table->setColumnWidth(0,250);
-    table->setColumnWidth(3,250);
-    table->horizontalScrollBar();
-    table->setMinimumHeight(120);
-//    table->setMinimumWidth(2000);
-    table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    table->verticalHeader()->hide();
-    return table;
-
+    this->index = index;
 }
+

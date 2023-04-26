@@ -16,11 +16,11 @@ Controller::Controller(View *view)
 
 void Controller::mRegisterSignals()
 {
-//    QObject::connect(dView, &View::copyFile, this, &Controller::paste);
-    QObject::connect(dView, &View::delFile, this, &Controller::del);
-    QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
-    QObject::connect(dView, &View::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
-    QObject::connect(dView, &View::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
+    QObject::connect(dView->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
+    QObject::connect(dView->explorer, &ExplorerMin::delFile, this, &Controller::del);
+    QObject::connect(dView->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
+    QObject::connect(dView->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
+    QObject::connect(dView->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
 //    QObject::connect(dView, &View::propertiesOfFile,this,&Controller::propertiesOfFile);
 
 
