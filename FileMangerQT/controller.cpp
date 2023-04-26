@@ -131,7 +131,15 @@ void Controller::cutFile(const fs::path &path)
 void Controller::propertiesOfFile(const fs::path &path)
 {
     qDebug() <<"here in the properties slot of controller";
-    //still to be integrated
+       statistics *statObj = new statistics;
+
+        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView);
+       PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView, statObj, pieChartWidget);
+        qDebug() << path.string();
+        propertiesWidget->path=path;
+
+        propertiesWidget->showPropertiesWindow();
+
 }
 
 std::string removeNameFromPath(std::string path) {

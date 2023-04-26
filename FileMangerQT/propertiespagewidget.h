@@ -13,7 +13,6 @@
 #include "statistics.h"
 #include <PiechartWidget.h>
 #include "piechartpagewidget.h"
-#include "integrate.h"
 
 class PropertiesPageWidget : public QWidget
 {

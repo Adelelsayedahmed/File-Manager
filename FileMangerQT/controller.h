@@ -2,6 +2,11 @@
 #define CONTROLLER_H
 #include <QObject>
 #include "view.h"
+#include <PiechartWidget.h>
+#include "statistics.h"
+#include "propertiespagewidget.h"
+#include "piechartpagewidget.h"
+
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <filesystem>

@@ -11,8 +11,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Charts)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Charts)
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS filesystem REQUIRED)
 
@@ -28,6 +29,18 @@ set(PROJECT_SOURCES
         controller.cpp
         explorer.h
         explorer.cpp
+        identifyduplicates.cpp
+        identifyduplicates.h
+        identifyduplicatespagewidget.cpp
+        identifyduplicatespagewidget.h
+        piechartpagewidget.cpp
+        piechartpagewidget.h
+        PiechartWidget.cpp
+        PiechartWidget.h
+        propertiespagewidget.cpp
+        propertiespagewidget.h
+        statistics.cpp
+        statistics.h
 
 )
 
@@ -54,7 +67,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Boost::filesystem)
 
 set_target_properties(FileManger PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

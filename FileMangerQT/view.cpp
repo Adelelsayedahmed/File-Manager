@@ -168,6 +168,7 @@ void View::onProperties()
 {
     qDebug() << "here in the properties slot of the view class";
     filePath = fileSystemModel->filePath(index);
+     qDebug() << filePath.toStdString();
     emit propertiesOfFile(filePath.toStdString());
 }
 
