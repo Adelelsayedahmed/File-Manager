@@ -9,7 +9,7 @@
 #include <QDesktopServices>
 
 #include <QHeaderView>
-class Explorer: public QWidget
+class Explorer: public QWidget, public ExplorerMin
 {
     Q_OBJECT
     public:

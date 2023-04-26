@@ -10,6 +10,7 @@
 #include "vector"
 #include <boost/filesystem.hpp>
 #include <explorer.h>
+#include "explorermin.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }

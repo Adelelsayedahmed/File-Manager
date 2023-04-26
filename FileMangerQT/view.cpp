@@ -37,8 +37,8 @@ View::View(QWidget *parent)
     object->moveToThread(thread);
     connect(this, &View::copyFile, object, &Controller::paste, Qt::QueuedConnection);
 
-    Explorer *e = new Explorer();
-    ui->formLayout->addWidget(e);
+    ExplorerMin *e = new ExplorerMin();
+    ui->formLayout->addRow("dewwqwwwwwwwwwwwww",e);
 
 }
 

@@ -12,7 +12,6 @@ Explorer::Explorer(QWidget *parent ): QWidget(parent)
      index = fileSystemModel->setRootPath(QString());
      QObject::connect(tree,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
      QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
-
 }
 QTreeView* Explorer::ShowTreeView()
 {
