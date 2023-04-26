@@ -164,6 +164,13 @@ void View::onCut()
     emit cutFile(filePath.toStdString());
 }
 
+void View::onProperties()
+{
+    qDebug() << "here in the properties slot of the view class";
+    filePath = fileSystemModel->filePath(index);
+    emit propertiesOfFile(filePath.toStdString());
+}
+
 void View::onRenameFilesViewSlot()
 {
 
@@ -264,6 +271,7 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     QAction *decompressAction = menu.addAction(tr("Decompress"));
     QAction *renameAction = menu.addAction(tr("Rename"));
     QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
+    QAction *PropertiesAction= menu.addAction(tr("properties"));
 
     if ( isMultipleSelected() )
     {
@@ -291,6 +299,7 @@ void View::contextMenuEvent(QContextMenuEvent *event)
     connect(renameAction,&QAction::triggered, this, &View::onRenameFilesViewSlot );
     connect(batchRenameAction,&QAction::triggered, this, &View::onBatchRenameViewSlot );
 
+    connect(PropertiesAction, &QAction::triggered, this, &View::onProperties);
 
     menu.exec(event->globalPos());
 }

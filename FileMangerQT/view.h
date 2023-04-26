@@ -44,6 +44,7 @@ private slots:
     void onPaste();
     void onDel();
     void onCut();
+    void onProperties();
 //    void on_treeView_pressed(const QModelIndex &index);
     void on_lineEditPath_textEdited(const QString &arg1);
     void on_tableView_doubleClicked(const QModelIndex &index);
@@ -61,6 +62,7 @@ signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
+    void propertiesOfFile(std::string filePath);
     void renameFileViewSignal(std::string filePath , const std::string newFileName);
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
 };

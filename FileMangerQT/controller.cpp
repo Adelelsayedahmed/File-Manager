@@ -21,6 +21,7 @@ void Controller::mRegisterSignals()
     QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
     QObject::connect(dView, &View::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView, &View::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
+    QObject::connect(dView, &View::propertiesOfFile,this,&Controller::propertiesOfFile);
 
 
 
@@ -127,7 +128,11 @@ void Controller::cutFile(const fs::path &path)
     m_cutPath = path;
 }
 
-
+void Controller::propertiesOfFile(const fs::path &path)
+{
+    qDebug() <<"here in the properties slot of controller";
+    //still to be integrated
+}
 
 std::string removeNameFromPath(std::string path) {
     size_t found = path.find_last_of("/\\");
