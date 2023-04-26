@@ -19,6 +19,7 @@ void View::mRegisterSignals()
     QObject::connect(shortcutDel, &QShortcut::activated, this, &View::onDel);
     QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
 
+
 //    connect(ui->tableView, &QTableView::customContextMenuRequested, this, &View::onCustomContextMenuRequested);
 }
 
@@ -30,6 +31,7 @@ View::View(QWidget *parent)
     fileSystemModel = new QFileSystemModel(this);
     mRegisterSignals();
     TreeView();
+    LocationandSearchBar();
     contentUi = new FileContentView(this);
     QThread* thread = new QThread(this);
     Controller* object = new Controller();
@@ -60,6 +62,14 @@ void View::TreeView()
     ui->treeView->setSelectionBehavior(QAbstractItemView::SelectItems);
 }
 
+void View::LocationandSearchBar()
+{
+    QModelIndex modelIndex = fileSystemModel->setRootPath(QDir::rootPath());
+    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(modelIndex));
+    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(modelIndex));
+}
+
+
 View::~View()
 {
     delete ui;
@@ -77,6 +87,8 @@ void View::on_treeView_clicked(const QModelIndex &index)
     ui->tableView->setColumnWidth(3,250);
     ui->tableView->horizontalScrollBar();
     ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(index));
+    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
 
 }
 
@@ -196,6 +208,7 @@ void View::on_tableView_doubleClicked(const QModelIndex &index)
     contentUi->show();
 }
 
+
 void View::contextMenuEvent(QContextMenuEvent *event)
 {
     qInfo() << "right click pressed";
@@ -259,3 +272,36 @@ bool View::isMultipleSelected(){
     }
 
 }
+
+void  View::folderClicked(QString returnedFilePath)
+{
+    //Get index of clicked folder
+    this->index = fileSystemModel->index(returnedFilePath);
+
+    //Open folder in tableView
+    ui->tableView->setModel(fileSystemModel);
+    ui->tableView->setRootIndex(index);
+    ui->tableView->verticalHeader()->setVisible(false);
+    ui->tableView->setColumnWidth(0,250);
+    ui->tableView->setColumnWidth(3,250);
+    ui->tableView->horizontalScrollBar();
+    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
+    ui->searchBar->clear();
+    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(index));
+}
+
+void View::on_findButton_pressed()
+{
+    //Initialize search window and connect signal/slot
+    SearchWindow *searchWindow = new SearchWindow();
+    QObject::connect(searchWindow, &SearchWindow::folderClicked, this, &View::folderClicked);
+
+
+    emit searchWindwCreated(searchWindow);
+
+    //Set file path to search in and show results
+    searchWindow->search(fileSystemModel->filePath(index), ui->searchBar->text());
+    searchWindow->show();
+}
+

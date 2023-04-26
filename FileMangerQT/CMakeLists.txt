@@ -29,6 +29,9 @@ set(PROJECT_SOURCES
         explorer.cpp
         customtwopathwidget.cpp
         customtwopathwidget.h
+        searchwindow.h
+        searchwindow.cpp
+        searchwindow.ui
 
 )
 

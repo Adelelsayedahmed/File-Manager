@@ -1,7 +1,9 @@
+
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 #include <QObject>
 #include "view.h"
+#include "searchwindow.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <filesystem>
@@ -25,6 +27,7 @@ public:
 private:
     std::stack<std::vector<std::string>> paths;
     View *dView;
+    SearchWindow *dSearchWindow;
     fs::path m_cutPath;
     fs::path m_tempCutPath;
     void pasteFromCut(fs::path destination_path);
@@ -37,6 +40,9 @@ public slots:
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
     void undoRename();
+    void searchWindwCreated(SearchWindow *search);
+    void searchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
+
 };
 
 #endif // CONTROLLER_H

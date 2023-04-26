@@ -20,11 +20,20 @@ void Controller::mRegisterSignals()
     QObject::connect(dView, &View::delFile, this, &Controller::del);
     QObject::connect(dView, &View::cutFile, this, &Controller::cutFile);
     QObject::connect(dView, &View::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
-    QObject::connect(dView, &View::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
+    QObject::connect(dView, &View::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot); 
+    QObject::connect(dView, &View::searchWindwCreated, this, &Controller::searchWindwCreated);
 
 
 
 }
+
+void Controller::searchWindwCreated(SearchWindow *search)
+{
+    dSearchWindow = search;
+    QObject::connect(dSearchWindow, &SearchWindow::searchForFileByName, this, &Controller::searchForFileByName);
+
+}
+
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
  *
@@ -188,7 +197,22 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
 }
 
 
+void Controller::searchForFileByName(std::string starting_point_drictory_path, std::string file_name, std::vector<std::string> &file_paths)
+{
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
 
+//        if(file.is_regular_file())
+        {
+            std::string searchbyname = file.path();
+            if(searchbyname.find(file_name)!= std::string::npos)
+                file_paths.push_back(searchbyname);
+        }
+    }
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
 
-
-
+        if(file.is_directory())
+        {
+           searchForFileByName(file.path() , file_name , file_paths);
+        }
+    }
+}
