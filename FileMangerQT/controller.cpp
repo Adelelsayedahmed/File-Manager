@@ -10,21 +10,19 @@ Controller::Controller(View *view)
 {
     dView = view;
     mRegisterSignals();
+    fileOperations = new FileOperations();
 }
 
 
 
 void Controller::mRegisterSignals()
 {
-    QObject::connect(dView->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
+//    QObject::connect(dView->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
     QObject::connect(dView->explorer, &ExplorerMin::delFile, this, &Controller::del);
     QObject::connect(dView->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
     QObject::connect(dView->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
 //    QObject::connect(dView, &View::propertiesOfFile,this,&Controller::propertiesOfFile);
-
-
-
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
@@ -41,91 +39,18 @@ void Controller::mRegisterSignals()
 
 void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
-    if (!fs::exists(source_path)) {
-        qInfo() << "Source file does not exist!\n" ;
-        return ;
-    }
-    if(action == CopyCutAction::Copy)
-    {
-        try {
-            destination_path = destination_path / source_path.filename();
-            if (fs::exists(destination_path)) {
-                qInfo() << "Destination already exists!\n";
-                return ;
-            }
-            if (fs::is_directory(source_path))
-            {
-                fs::copy(source_path, destination_path, fs::copy_options::recursive);
-            }
-            else
-            {
-                fs::copy_file(source_path, destination_path);
-            }
-            return ;
-        }
-        catch (const std::exception& ex) {
-            qInfo() << "Error: "  ;
-            std::cout<<destination_path;
-        }
-    }
-    else if(action == CopyCutAction::Cut)
-    {
-        destination_path = destination_path / m_cutPath.filename();
-        pasteFromCut(destination_path);
-    }
+    fileOperations->paste(source_path, destination_path, action);
 }
-void Controller::pasteFromCut(fs::path destination_path)
-{
-    try {
-        if (fs::exists(destination_path)) {
-            qInfo() << "Destination already exists!\n";
-            return;
-        }
 
-        if (m_cutPath.empty()) {
-            return; // Nothing to paste
-        }
-
-        fs::rename(m_cutPath, destination_path);
-        m_cutPath.clear();
-
-    } catch (const std::exception& ex) {
-        qInfo() << "Error: " << ex.what() << '\n';
-    }
-}
 
 void Controller::del(fs::path filePath)
 {
-    if (!fs::exists(filePath))
-    {
-        qInfo() << "File does not exist!";
-        return ;
-    }
-    try
-    {
-        if (fs::is_directory(filePath))
-        {
-
-            fs::remove_all(filePath);
-            qInfo() << "directory deleted successfully!";
-        }
-        else
-        {
-            fs::remove(filePath);
-            qInfo() << "File deleted successfully!";
-        }
-
-
-    }
-    catch (const std::exception& ex)
-    {
-        qInfo() << "Error deleting";
-    }
+    fileOperations->del(filePath);
 }
 
 void Controller::cutFile(const fs::path &path)
 {
-    m_cutPath = path;
+   fileOperations->cutFile(path);
 }
 
 //void Controller::propertiesOfFile(const fs::path &path)

@@ -1,6 +1,8 @@
 #include "explorermin.h"
 #include <QBoxLayout>
-
+#include <QPushButton>
+#include "fileoperations.h"
+#include <QThread>
 ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
@@ -12,34 +14,19 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     index = fileSystemModel->setRootPath(rootPath);
     registerSignals();
     layout->addRow("",ShowTableView());
+     QThread* thread = new QThread(this);
+     FileOperations * object = new FileOperations();
+    object->moveToThread(thread);
+    connect(this, &ExplorerMin::copyFile, object, &FileOperations::paste, Qt::QueuedConnection);
 }
 
-void ExplorerMin::onTableViewClicked(QModelIndex index)
-{
-    //    qInfo() << "95";
-    //    this->index = index;
-    //    on_treeView_clicked(index);
-    //        // Get the path of the selected file
 
-    //    filePath = fileSystemModel->filePath(index);
-    //    qInfo() << filePath;
-    //    // Open the file and read its contents
-    //    contentUi->file = new QFile (filePath);
-    //    if (!contentUi->file->open(QIODevice::ReadWrite))
-    //        return;
-    //    QString fileContents = contentUi->file->readAll();
-    //    //        file.close();
-    //    //| QIODevice::Text
-
-    //    // Display the contents of the file in a QTextEdit widget
-    //    contentUi->ui->textEdit->clear();
-    //    contentUi->ui->textEdit->setPlainText(fileContents);
-    //    contentUi->show();
-}
 
 void ExplorerMin::registerSignals()
 {
-    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+//    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(on_tableView_doubleClicked(QModelIndex)));
+
     QObject::connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(on_tableView_clicked(QModelIndex)));
 
     /*Register shortcusts*/
@@ -66,55 +53,45 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     //    table->setMinimumWidth(2000);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-//    table->verticalHeader()->hide();
+    //    table->verticalHeader()->hide();
     return table;
 }
 
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     qInfo() << "right click pressed";
-    //    // Convert the position to global coordinates
-    //    QPoint globalPos = ui->tableView->viewport()->mapToGlobal(pos);
-
-    //    // Create a context menu
-    //    QMenu myContextMenu;
-    //    myContextMenu.addAction("Action 1");
-    //    myContextMenu.addAction("Action 2");
-
-    //    // Show the context menu at the global position
-    //    myContextMenu.exec(globalPos);
     QMenu menu(this);
     QAction *cutAction = menu.addAction(tr("Cut"));
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
-//    QAction *compressAction = menu.addAction(tr("Compress"));
-//    QAction *decompressAction = menu.addAction(tr("Decompress"));
-//    QAction *renameAction = menu.addAction(tr("Rename"));
-//    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
-//    QAction *PropertiesAction= menu.addAction(tr("properties"));
+    //    QAction *compressAction = menu.addAction(tr("Compress"));
+    //    QAction *decompressAction = menu.addAction(tr("Decompress"));
+    //    QAction *renameAction = menu.addAction(tr("Rename"));
+    //    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
+    //    QAction *PropertiesAction= menu.addAction(tr("properties"));
 
-//    if ( isMultipleSelected() )
-//    {
-//        batchRenameAction->setEnabled(true);
-//        renameAction->setEnabled(false);
-//    }
-//    else
-//    {
-//        batchRenameAction->setEnabled(false);
-//        renameAction->setEnabled(true);
-//    }
+    //    if ( isMultipleSelected() )
+    //    {
+    //        batchRenameAction->setEnabled(true);
+    //        renameAction->setEnabled(false);
+    //    }
+    //    else
+    //    {
+    //        batchRenameAction->setEnabled(false);
+    //        renameAction->setEnabled(true);
+    //    }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);
     connect(pasteAction, &QAction::triggered, this, &ExplorerMin::onPaste);
     connect(delAction, &QAction::triggered, this, &ExplorerMin::onDel);
     connect(cutAction, &QAction::triggered, this, &ExplorerMin::onCut);
-//    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
-//    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
+    //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
+    //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
-//    connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
-//    connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
+    //    connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
+    //    connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
-//    connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
+    //    connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
 
     menu.exec(event->globalPos());
 }
@@ -126,7 +103,7 @@ void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 void ExplorerMin::onCopy()
 {
     qInfo() << "Copying";
-    filePath = fileSystemModel->filePath(index);
+    sourceFilePathCopy = fileSystemModel->filePath(index);
     action = CopyCutAction::Copy;
 }
 
@@ -134,11 +111,11 @@ void ExplorerMin::onPaste()
 {
 
     std::string dest =  fileSystemModel->filePath(index).toStdString();
-    emit copyFile(filePath.toStdString(),dest,action);
-//    QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
-//    thread->start();
+    qInfo()<<sourceFilePathCopy.toStdString();
+    emit copyFile(sourceFilePathCopy.toStdString(),dest,action);
+        QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
+        thread->start();
     qInfo()<< "pasting";
-
 }
 
 void ExplorerMin::onDel()
@@ -156,12 +133,16 @@ void ExplorerMin::onCut()
 
 void ExplorerMin::onProperties()
 {
-
+    qDebug() << "here in the properties slot of the view class";
+    filePath = fileSystemModel->filePath(index);
+    qDebug() << filePath.toStdString();
+    emit propertiesOfFile(filePath.toStdString());
 }
 
 void ExplorerMin::onRenameFilesViewSlot()
 {
-
+    filePath = fileSystemModel->filePath(index);
+    emit renameFileViewSignal(filePath.toStdString() , "New_name");
 }
 void ExplorerMin::onCompress()
 {
@@ -202,4 +183,24 @@ void ExplorerMin::onBatchRenameViewSlot()
 
     //    emit batchRenameViewSignal(oldPaths,newBaseName);
     //    /*emit with old paths*/
+}
+void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
+{
+    filePath = fileSystemModel->filePath(index);
+    qInfo() << filePath;
+    qInfo() << "tableView double clicked";
+    // Open the file and read its contents
+    contentUi->file = new QFile (filePath);
+    if (!contentUi->file->open(QIODevice::ReadWrite))
+        return;
+    QString fileContents = contentUi->file->readAll();
+    qInfo() << "tableView double clicked";
+
+    //        file.close();
+    //| QIODevice::Text
+
+    // Display the contents of the file in a QTextEdit widget
+    contentUi->ui->textEdit->clear();
+    contentUi->ui->textEdit->setPlainText(fileContents);
+    contentUi->show();
 }

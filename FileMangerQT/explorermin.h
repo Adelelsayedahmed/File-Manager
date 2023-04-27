@@ -10,11 +10,9 @@
 #include <QShortcut>
 #include <QMenu>
 #include <QContextMenuEvent>
-enum class CopyCutAction {
-    Copy,
-    Cut,
-    CopyDirectory
-};
+#include "Actions.h"
+#include <filecontentview.h>
+#include "ui_filecontentview.h"
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
@@ -27,7 +25,8 @@ protected:
     QModelIndex index;
     CopyCutAction action;
     QString filePath;
-
+    QString sourceFilePathCopy;
+    FileContentView *contentUi;
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
 
@@ -56,6 +55,7 @@ signals:
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
+    void on_tableView_doubleClicked(QModelIndex index);
 };
 
 #endif // EXPLORERMIN_H

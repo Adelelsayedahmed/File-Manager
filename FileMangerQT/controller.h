@@ -16,6 +16,7 @@
 #include <string>
 #include <stack>
 #include <vector>
+#include "fileoperations.h"
 
 
 namespace fs = boost::filesystem;
@@ -32,9 +33,10 @@ private:
     View *dView;
     fs::path m_cutPath;
     fs::path m_tempCutPath;
+    FileOperations *fileOperations;
     void pasteFromCut(fs::path destination_path);
-
     void mRegisterSignals();
+
 public slots:
     void paste(fs::path source_path, fs::path destination_path, CopyCutAction action);
     void del(fs::path filePath);

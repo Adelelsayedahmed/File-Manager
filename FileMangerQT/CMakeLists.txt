@@ -28,6 +28,10 @@ set(PROJECT_SOURCES
         explorer.cpp
         explorermin.cpp
         explorermin.h
+        fileoperations.cpp
+        fileoperations.h
+        Actions.h
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

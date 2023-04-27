@@ -5,7 +5,7 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 
 {
     tree = new QTreeView(this);
-    layout->insertRow(0,ShowTreeView(),table);
+    layout->insertRow(0,ShowTreeView(rootPath),table);
 
     registerSignals();
 
@@ -19,7 +19,7 @@ void Explorer::registerSignals()
 }
 
 
-QTreeView* Explorer::ShowTreeView()
+QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 {
     tree->setModel(fileSystemModel);
     tree->setRootIndex(fileSystemModel->setRootPath(QString()));
@@ -32,9 +32,9 @@ QTreeView* Explorer::ShowTreeView()
     tree->setMinimumHeight(120);
     return tree;
 }
+
 void Explorer::on_treeView_clicked(const QModelIndex &index)
 {
-
     this->index = index;
 }
 

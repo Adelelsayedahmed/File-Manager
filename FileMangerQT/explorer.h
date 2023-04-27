@@ -15,12 +15,13 @@ class Explorer: public ExplorerMin
     Q_OBJECT
 public:
     Explorer(QString rootPath = QString(), QWidget *parent = nullptr);
-    QTreeView* ShowTreeView();
+    QTreeView* ShowTreeView(const QString &rootPath);
 
 protected slots:
     void on_treeView_clicked(const QModelIndex &index);
 private:
     QTreeView *tree;
     void registerSignals();
+    void expandPath(const QString &path);
 };
 #endif // EXPLORER_H
