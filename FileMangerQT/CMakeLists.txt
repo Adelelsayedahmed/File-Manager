@@ -19,6 +19,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets )
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets )
+find_package(Boost REQUIRED)
+
 set(PROJECT_SOURCES
         main.cpp
         view.cpp
@@ -36,6 +38,11 @@ set(PROJECT_SOURCES
         fileoperations.cpp
         fileoperations.h
         Actions.h
+        searchwindow.h
+        searchwindow.cpp
+        searchwindow.ui
+        searchbar.h
+        searchbar.cpp
 #        identifyduplicates.cpp
 #        identifyduplicates.h
 #        identifyduplicatespagewidget.cpp

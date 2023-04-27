@@ -1,3 +1,4 @@
+
 #include "explorer.h"
 #include <QObject>
 #include <QLabel>
@@ -5,7 +6,8 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 
 {
     tree = new QTreeView(this);
-    layout->insertRow(0,ShowTreeView(rootPath),table);
+    layout->insertRow(0, search);
+    layout->insertRow(1,ShowTreeView(rootPath),table);
 
     registerSignals();
 
@@ -36,5 +38,6 @@ QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 void Explorer::on_treeView_clicked(const QModelIndex &index)
 {
     this->index = index;
+    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
 

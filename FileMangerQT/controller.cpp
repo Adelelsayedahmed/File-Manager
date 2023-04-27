@@ -23,6 +23,7 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
+    QObject::connect(dView->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
@@ -135,14 +136,19 @@ void Controller::identifyDuplicates()
 }
 
 
+void Controller::SearchWindowCreated(SearchWindow *search)
+{
+    dWindow = search;
+    QObject::connect(dWindow, &SearchWindow::searchForFileByName, this, &Controller::SearchForFileByName);
 
+}
 
 
 void Controller::SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths)
 {
     for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
 
-        if(file.is_regular_file())
+//      if(file.is_regular_file())
         {
             std::string searchbyname = file.path();
             if(searchbyname.find(file_name)!= std::string::npos)
