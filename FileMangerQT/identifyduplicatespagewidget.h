@@ -29,6 +29,8 @@ private:
 
     QGridLayout *gridLayout;
 
+    QDialog *dialog;
+
     QLabel *pathsLabel;
 
     QPushButton *addButton;
@@ -69,6 +71,8 @@ private:
 
     void setPageConnections();
 
+    void showThePage();
+
 public slots:
     void showAddPopupWindow();
 
@@ -88,6 +92,8 @@ public slots:
 signals:
 
     void updateDuplicatesTable();
+
+    void removedItem();
 
 };
 

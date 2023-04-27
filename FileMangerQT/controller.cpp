@@ -22,7 +22,7 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
     QObject::connect(dView->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
-//    QObject::connect(dView, &View::propertiesOfFile,this,&Controller::propertiesOfFile);
+    QObject::connect(dView->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
@@ -53,19 +53,19 @@ void Controller::cutFile(const fs::path &path)
    fileOperations->cutFile(path);
 }
 
-//void Controller::propertiesOfFile(const fs::path &path)
-//{
-//    qDebug() <<"here in the properties slot of controller";
-//       statistics *statObj = new statistics;
+void Controller::propertiesOfFile(const fs::path &path)
+{
+//        statistics *statObj = new statistics;
 
-//        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView);
-//       PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView, statObj, pieChartWidget);
-//        qDebug() << path.string();
+//        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->explorer);
+
+//        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->explorer, statObj, pieChartWidget);
+
 //        propertiesWidget->path=path;
 
 //        propertiesWidget->showPropertiesWindow();
 
-//}
+}
 
 std::string removeNameFromPath(std::string path) {
     size_t found = path.find_last_of("/\\");
@@ -126,7 +126,13 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
     addPaths( oldPaths,new_paths);
 }
 
+void Controller::identifyDuplicates()
+{
+//    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
 
+//    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
+
+}
 
 
 

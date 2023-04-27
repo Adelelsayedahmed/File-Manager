@@ -33,7 +33,7 @@ private:
     statistics *statsObj;
 
 
-    pieChartPageWidget *pieChartWidget;
+    pieChartPageWidget *piechartpagewidget;
 
     QDialog *propertiesWindow;
 
