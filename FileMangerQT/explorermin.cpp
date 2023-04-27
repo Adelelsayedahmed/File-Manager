@@ -55,8 +55,6 @@ QTableView* ExplorerMin::ShowTableView()
     table->horizontalScrollBar();
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    ButtonDelegate *delegate = new ButtonDelegate(table);
-    table->setItemDelegateForColumn(0, delegate);
     return table;
 }
 

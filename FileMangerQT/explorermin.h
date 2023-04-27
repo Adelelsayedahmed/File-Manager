@@ -13,7 +13,6 @@
 #include "Actions.h"
 #include <filecontentview.h>
 #include "ui_filecontentview.h"
-#include "buttondelegate.h"
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
