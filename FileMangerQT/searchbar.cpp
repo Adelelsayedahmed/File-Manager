@@ -35,8 +35,8 @@ void SearchBar::on_findButton_pressed()
     emit SearchWindowCreated(window);
 
     //Set file path to search in and show results
-    window->show();
     window->search(dfilePath, searchBar->text());
+    window->show();
 
 
 }
