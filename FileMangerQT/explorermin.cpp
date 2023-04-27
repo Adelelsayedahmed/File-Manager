@@ -12,20 +12,22 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     QWidget* tableWidget = new QWidget;
     table = new QTableView(tableWidget);
     index = fileSystemModel->setRootPath(rootPath);
+    fileSystemModel->parent(index);
     registerSignals();
     layout->addRow("",ShowTableView());
      QThread* thread = new QThread(this);
      FileOperations * object = new FileOperations();
     object->moveToThread(thread);
     connect(this, &ExplorerMin::copyFile, object, &FileOperations::paste, Qt::QueuedConnection);
+    contentUi = new FileContentView();
 }
 
 
 
 void ExplorerMin::registerSignals()
 {
-    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
-//    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(on_tableView_doubleClicked(QModelIndex)));
+//    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(on_tableView_doubleClicked(QModelIndex)));
 
     QObject::connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(on_tableView_clicked(QModelIndex)));
 
@@ -45,15 +47,16 @@ void ExplorerMin::registerSignals()
 }
 QTableView* ExplorerMin::ShowTableView()
 {
+
     table->setModel(fileSystemModel);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
     table->setColumnWidth(3,250);
     table->horizontalScrollBar();
     table->setMinimumHeight(120);
-    //    table->setMinimumWidth(2000);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    //    table->verticalHeader()->hide();
+    ButtonDelegate *delegate = new ButtonDelegate(table);
+    table->setItemDelegateForColumn(0, delegate);
     return table;
 }
 
@@ -188,18 +191,13 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
     filePath = fileSystemModel->filePath(index);
     qInfo() << filePath;
-    qInfo() << "tableView double clicked";
-    // Open the file and read its contents
     contentUi->file = new QFile (filePath);
     if (!contentUi->file->open(QIODevice::ReadWrite))
+    {
+        table->setRootIndex( index);
         return;
+    }
     QString fileContents = contentUi->file->readAll();
-    qInfo() << "tableView double clicked";
-
-    //        file.close();
-    //| QIODevice::Text
-
-    // Display the contents of the file in a QTextEdit widget
     contentUi->ui->textEdit->clear();
     contentUi->ui->textEdit->setPlainText(fileContents);
     contentUi->show();
