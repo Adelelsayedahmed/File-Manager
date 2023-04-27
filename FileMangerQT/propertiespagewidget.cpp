@@ -6,7 +6,7 @@ PropertiesPageWidget::PropertiesPageWidget(QWidget *parent,statistics* statsObj,
 
     this->parent=parent;
    this->statsObj=statsObj;
-    this->pieChartWidget=pieChartWidget;
+   // this->piechartpagewidget=pieChartWidget;
 
    propertiesWindow = new QDialog(this);
 
@@ -79,15 +79,22 @@ void PropertiesPageWidget::showStatistics()
 {
 
     std::unordered_map<std::string, int> sizesMap=statsObj->directoryFilesSizes(path);
-
+    piechartpagewidget= new pieChartPageWidget(this);
     PieChartWidget::chartProperties sizesChartprop("Sizes of files","Arial",true,"KB",false,true,true);
-    new PieChartWidget(pieChartWidget->returnTabs(0),sizesMap,sizesChartprop);
+    new PieChartWidget(piechartpagewidget->returnTabs(0),sizesMap,sizesChartprop);
 
     std::unordered_map<std::string, int> typesMap=statsObj->directoryFilesTypes(path);
 
     PieChartWidget::chartProperties typesprop("Types of files","Arial",true," items",false,true,true);
-    new PieChartWidget(pieChartWidget->returnTabs(1),typesMap,typesprop);
+    new PieChartWidget(piechartpagewidget->returnTabs(1),typesMap,typesprop);
 
-    pieChartWidget->show();
+
+
+        QDialog* dialog = new QDialog(this);
+        dialog->setWindowTitle("Statistics");
+        dialog->setMinimumSize(900, 900);
+        dialog->setLayout(new QGridLayout(dialog));
+            dialog->layout()->addWidget(piechartpagewidget);
+        dialog->show();
 
 }

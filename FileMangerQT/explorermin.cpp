@@ -69,7 +69,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     //    QAction *decompressAction = menu.addAction(tr("Decompress"));
     //    QAction *renameAction = menu.addAction(tr("Rename"));
     //    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
-    //    QAction *PropertiesAction= menu.addAction(tr("properties"));
+        QAction *PropertiesAction= menu.addAction(tr("properties"));
 
     //    if ( isMultipleSelected() )
     //    {
@@ -91,7 +91,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     //    connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
     //    connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
-    //    connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
+        connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
 
     menu.exec(event->globalPos());
 }
@@ -184,6 +184,7 @@ void ExplorerMin::onBatchRenameViewSlot()
     //    emit batchRenameViewSignal(oldPaths,newBaseName);
     //    /*emit with old paths*/
 }
+
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
     filePath = fileSystemModel->filePath(index);

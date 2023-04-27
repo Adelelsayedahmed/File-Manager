@@ -3,9 +3,11 @@
 #include <QObject>
 #include "view.h"
 //#include <PiechartWidget.h>
-#include "statistics.h"
+//#include "statistics.h"
 //#include "propertiespagewidget.h"
 //#include "piechartpagewidget.h"
+//#include "identifyduplicates.h"
+//#include "identifyduplicatespagewidget.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -42,7 +44,9 @@ public slots:
     void del(fs::path filePath);
     void cutFile(const boost::filesystem::path& path);
 
-//    void propertiesOfFile(const fs::path &path);
+    void propertiesOfFile(const fs::path &path);
+    void identifyDuplicates();
+
 
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);

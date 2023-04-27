@@ -8,6 +8,10 @@ IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent,Ident
     initializeThePage();
 
     setPageConnections();
+
+    showThePage();
+
+
 }
 
 void IdentifyDuplicatesPageWidget::initializeThePage()
@@ -36,6 +40,13 @@ void IdentifyDuplicatesPageWidget::initializeThePage()
 
     initializeTables();
 
+}
+void IdentifyDuplicatesPageWidget::showThePage()
+{
+    dialog=new QDialog(this);
+    dialog->setMinimumSize(750,650);
+    dialog->setLayout(gridLayout);
+    dialog->show();
 }
 void IdentifyDuplicatesPageWidget::initializeTables()
 {
@@ -78,6 +89,7 @@ void IdentifyDuplicatesPageWidget::setPageConnections()
 {
     connect(addButton, SIGNAL(clicked()), this, SLOT(showAddPopupWindow()));
     connect(identifyDuplicatesButton, SIGNAL(clicked()), this, SLOT(duplicatesSlot()));
+    connect(this, &IdentifyDuplicatesPageWidget::removedItem, this, &IdentifyDuplicatesPageWidget::duplicatesSlot);
     connect(this, &IdentifyDuplicatesPageWidget::updateDuplicatesTable, this, &IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot);
     connect(pathsTableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &IdentifyDuplicatesPageWidget::rowSelected);
     connect(removeButton, &QPushButton::clicked, this, &IdentifyDuplicatesPageWidget::removeSelectedRow);
@@ -230,6 +242,7 @@ void IdentifyDuplicatesPageWidget::deleteSlot()
             boost::filesystem::remove_all(boost::filesystem::path(filePath.toStdString()));
             duplicatesTableModel->removeRow(selectedDuplicateIndex.row());
             selectedDuplicateIndex = QModelIndex();
+            emit removedItem();
         }
     }
 }
