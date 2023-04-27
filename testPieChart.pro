@@ -12,6 +12,7 @@ CONFIG += boost_1_74
 
 SOURCES += \
     PiechartWidget.cpp \
+    addonsbar.cpp \
     identifyduplicates.cpp \
     identifyduplicatespagewidget.cpp \
     integrate.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     PiechartWidget.h \
+    addonsbar.h \
     identifyduplicates.h \
     identifyduplicatespagewidget.h \
     integrate.h \
@@ -40,5 +42,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
 
 

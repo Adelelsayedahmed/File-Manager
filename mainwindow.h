@@ -8,7 +8,9 @@
 #include "identifyduplicatespagewidget.h"
 #include "propertiespagewidget.h"
 #include "piechartpagewidget.h"
-
+#include "addonsbar.h"
+#include <QToolBar>
+#include <QAction>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -23,5 +25,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QGridLayout *gridLayout;
 };
 #endif // MAINWINDOW_H

@@ -8,14 +8,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
+QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
+    addOnsBar *bar=new addOnsBar;
+QString path=parentPath + "/duplicatesIcon.png";
+    QString name="duplicates";
+QAction* action1=bar->addToTheBar(path,name);
+    bar->connectAction(action1,bar,SLOT(showDuplicatesMessage()));
+QHBoxLayout* layout = new QHBoxLayout(ui->centralwidget);
+layout->addWidget(bar);
+
+
+
+
     /////identify duplicates main//////
     ///
-    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+//    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
 
-    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this,dupsObj);
-    setCentralWidget(pageWidget);
-    show();
-
+//    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(this,dupsObj);
+//    setCentralWidget(pageWidget);
+//    show();
 
     //setCentralWidget(pieChartWidget);
 
