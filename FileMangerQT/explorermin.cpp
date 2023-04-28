@@ -69,7 +69,6 @@ ExplorerMin::~ExplorerMin()
 
 QTableView* ExplorerMin::ShowTableView()
 {
-
     table->setModel(fileSystemModel);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
@@ -77,6 +76,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->horizontalScrollBar();
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    table->verticalHeader()->hide();
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
 }
@@ -238,6 +238,7 @@ void  ExplorerMin::folderClicked(QString returnedFilePath)
     table->setColumnWidth(3,250);
     table->horizontalScrollBar();
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    table->verticalHeader()->hide();
     emit locationChanged(returnedFilePath, fileSystemModel->fileName(index));
 //    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
 //    ui->searchBar->clear();

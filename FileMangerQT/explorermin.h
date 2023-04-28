@@ -1,7 +1,7 @@
 
 #ifndef EXPLORERMIN_H
 #define EXPLORERMIN_H
-
+#include<QHeaderView>
 #include <QObject>
 #include <QTableView>
 #include <QTreeView>
