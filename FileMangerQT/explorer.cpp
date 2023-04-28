@@ -9,6 +9,42 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
     layout->insertRow(0,topBar);
     layout->insertRow(1, search);
     layout->insertRow(2,ShowTreeView(rootPath),table);
+// Create the footer widget
+    QWidget* footerWidget = new QWidget(this);
+
+    // Create labels for number of files and size
+    QLabel* numFilesLabel = new QLabel("Number of files: ", footerWidget);
+    QLabel* numFilesValueLabel = new QLabel("0", footerWidget);
+
+    QLabel* sizeLabel = new QLabel("Size: ", footerWidget);
+    QLabel* sizeValueLabel = new QLabel("0", footerWidget);
+
+    // Set alignment for the labels in footer widget
+    numFilesLabel->setAlignment(Qt::AlignCenter);
+    sizeLabel->setAlignment(Qt::AlignCenter);
+
+    // Create a layout for the labels
+    QHBoxLayout* footerLayout = new QHBoxLayout(footerWidget);
+    footerLayout->addWidget(numFilesLabel);
+    footerLayout->addWidget(numFilesValueLabel);
+    //footerLayout->addStretch(); // Add stretch to make size label right-aligned
+    footerLayout->addWidget(sizeLabel);
+    footerLayout->addWidget(sizeValueLabel);
+
+    // Set a minimum height and border for the footer widget
+    footerWidget->setMinimumHeight(30);
+    // footerWidget->setStyleSheet("border-top: 1px solid black;");
+
+
+//    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+//    mainLayout->addLayout(layout);
+//    mainLayout->addWidget(footerWidget, 0, Qt::AlignBottom);
+
+    // Set the layout of the CustomTwoPathWidget to the main layout
+//    setLayout(mainLayout);
+    layout->addRow(footerWidget);
+    footerWidget->setLayout(layout);
+    layout->setFormAlignment(Qt::AlignBottom);
 
     registerSignals();
 
