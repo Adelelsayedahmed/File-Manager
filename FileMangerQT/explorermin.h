@@ -61,7 +61,7 @@ public slots:
 
     void folderClicked(QString filepath);
     void SearchWindowCreatedSlot(SearchWindow *window);
-
+    void BackButtonClicked();
     void on_identifyDuplicatesIconClicked();
 
 signals:
@@ -78,6 +78,7 @@ signals:
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
     void on_tableView_doubleClicked(QModelIndex index);
+
 };
 
 #endif // EXPLORERMIN_H

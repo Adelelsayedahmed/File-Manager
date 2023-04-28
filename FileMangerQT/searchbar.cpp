@@ -8,7 +8,16 @@ SearchBar::SearchBar(QWidget *parent)
     findButton = new QPushButton(this);
     searchBar = new QLineEdit(this);
     locationBar = new QLineEdit(this);
+    backButton = new QPushButton(this);
 
+    QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
+    parentPath +="/Backincon.png";
+    QPixmap image(parentPath);
+    QIcon icon(image);
+    backButton->setIcon(icon);
+
+
+    layout->addWidget(backButton);
     layout->addWidget(locationBar);
     layout->addWidget(searchBar);
     layout->addWidget(findButton);
@@ -17,6 +26,7 @@ SearchBar::SearchBar(QWidget *parent)
     findButton->setCursor(Qt::PointingHandCursor);
 
     connect(findButton, &QPushButton::pressed, this, &SearchBar::on_findButton_pressed);
+    connect(backButton, &QPushButton::pressed, this, &SearchBar::backButtonPressed);
 
 }
 
@@ -26,6 +36,11 @@ void SearchBar::locationChanged(QString filepath, QString filename)
     searchBar->clear();
     searchBar->setPlaceholderText("Search " + filename);
     locationBar->setPlaceholderText(filepath);
+}
+
+void SearchBar::backButtonPressed()
+{
+    emit backButtonPressedSignal();
 }
 
 
