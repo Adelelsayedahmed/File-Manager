@@ -6,8 +6,9 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 
 {
     tree = new QTreeView(this);
-    layout->insertRow(0, search);
-    layout->insertRow(1,ShowTreeView(rootPath),table);
+    layout->insertRow(0,topBar);
+    layout->insertRow(1, search);
+    layout->insertRow(2,ShowTreeView(rootPath),table);
 
     registerSignals();
 

@@ -43,6 +43,8 @@ set(PROJECT_SOURCES
         searchwindow.ui
         searchbar.h
         searchbar.cpp
+        addonsbar.cpp
+        addonsbar.h
 #        identifyduplicates.cpp
 #        identifyduplicates.h
 #        identifyduplicatespagewidget.cpp

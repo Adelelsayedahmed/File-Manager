@@ -14,6 +14,10 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
     search = new SearchBar(this);
+
+    topBar = new addOnsBar(this);
+    identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+
     registerSignals();
     layout->addRow("",ShowTableView());
      QThread* thread = new QThread(this);
@@ -49,6 +53,8 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
+
+    topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
 
 QTableView* ExplorerMin::ShowTableView()
@@ -232,4 +238,8 @@ void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)
 {
     QObject::connect(window, &SearchWindow::folderClicked, this, &ExplorerMin::folderClicked);
     emit SearchWindowCreated(window);
+}
+void ExplorerMin::on_identifyDuplicatesIconClicked()
+{
+    emit identifyDuplictesIconCLicked();
 }

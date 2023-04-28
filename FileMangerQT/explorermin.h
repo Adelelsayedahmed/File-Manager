@@ -16,6 +16,7 @@
 #include "ui_filecontentview.h"
 #include "searchwindow.h"
 #include "searchbar.h"
+#include "addonsbar.h"
 
 
 class ExplorerMin:public QWidget
@@ -24,6 +25,8 @@ class ExplorerMin:public QWidget
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
 protected:
+    addOnsBar* topBar;
+    QAction* identifyDuplicatesAction;
     SearchBar *search;
     QTableView *table;
     QFormLayout *layout;
@@ -55,6 +58,9 @@ public slots:
 
     void folderClicked(QString filepath);
     void SearchWindowCreatedSlot(SearchWindow *window);
+
+    void on_identifyDuplicatesIconClicked();
+
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
@@ -64,6 +70,7 @@ signals:
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
     void SearchWindowCreated(SearchWindow *window);
     void locationChanged(QString filepath, QString filename);
+    void identifyDuplictesIconCLicked();
 
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
