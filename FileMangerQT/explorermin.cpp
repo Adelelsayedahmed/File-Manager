@@ -13,6 +13,11 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     table = new QTableView(tableWidget);
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
+    search = new SearchBar(this);
+
+    topBar = new addOnsBar(this);
+    identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+
     registerSignals();
     layout->addRow("",ShowTableView());
      QThread* thread = new QThread(this);
@@ -20,6 +25,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     object->moveToThread(thread);
     connect(this, &ExplorerMin::copyFile, object, &FileOperations::paste, Qt::QueuedConnection);
     contentUi = new FileContentView();
+    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
 
 
@@ -44,7 +50,13 @@ void ExplorerMin::registerSignals()
     QObject::connect(shortcutPaste, &QShortcut::activated, this, &ExplorerMin::onPaste);
     QObject::connect(shortcutDel, &QShortcut::activated, this, &ExplorerMin::onDel);
     QObject::connect(shortcutCut, &QShortcut::activated, this, &ExplorerMin::onCut);
+
+    QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
+    QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
+
+    topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
+
 QTableView* ExplorerMin::ShowTableView()
 {
 
@@ -55,6 +67,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->horizontalScrollBar();
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
 }
 
@@ -99,7 +112,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
-    this->index = index;
+    this->index = index; 
+    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
 void ExplorerMin::onCopy()
 {
@@ -112,7 +126,7 @@ void ExplorerMin::onPaste()
 {
 
     std::string dest =  fileSystemModel->filePath(index).toStdString();
-    qInfo()<<sourceFilePathCopy.toStdString();
+    qInfo()<<sourceFilePathCopy;
     emit copyFile(sourceFilePathCopy.toStdString(),dest,action);
         QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
         thread->start();
@@ -136,7 +150,7 @@ void ExplorerMin::onProperties()
 {
     qDebug() << "here in the properties slot of the view class";
     filePath = fileSystemModel->filePath(index);
-    qDebug() << filePath.toStdString();
+    qDebug() << filePath;
     emit propertiesOfFile(filePath.toStdString());
 }
 
@@ -200,4 +214,32 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
     contentUi->ui->textEdit->clear();
     contentUi->ui->textEdit->setPlainText(fileContents);
     contentUi->show();
+}
+
+void  ExplorerMin::folderClicked(QString returnedFilePath)
+{
+    //Get index of clicked folder
+    this->index = fileSystemModel->index(returnedFilePath);
+
+    //Open folder in tableView
+    table->setModel(fileSystemModel);
+    table->setRootIndex(index);
+    table->setColumnWidth(0,250);
+    table->setColumnWidth(3,250);
+    table->horizontalScrollBar();
+    table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    emit locationChanged(returnedFilePath, fileSystemModel->fileName(index));
+//    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
+//    ui->searchBar->clear();
+//    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(index));
+}
+
+void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)
+{
+    QObject::connect(window, &SearchWindow::folderClicked, this, &ExplorerMin::folderClicked);
+    emit SearchWindowCreated(window);
+}
+void ExplorerMin::on_identifyDuplicatesIconClicked()
+{
+    emit identifyDuplictesIconCLicked();
 }

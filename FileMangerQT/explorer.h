@@ -7,8 +7,9 @@
 #include <QFormLayout>
 #include <QFileSystemModel>
 #include <QDesktopServices>
-
 #include <QHeaderView>
+
+
 #include "explorermin.h"
 class Explorer: public ExplorerMin
 {

@@ -8,6 +8,8 @@
 //#include "piechartpagewidget.h"
 //#include "identifyduplicates.h"
 //#include "identifyduplicatespagewidget.h"
+#include "searchwindow.h"
+
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -36,6 +38,7 @@ private:
     fs::path m_cutPath;
     fs::path m_tempCutPath;
     FileOperations *fileOperations;
+    SearchWindow *dWindow;
     void pasteFromCut(fs::path destination_path);
     void mRegisterSignals();
 
@@ -53,7 +56,9 @@ public slots:
     void undoRename();
 
 //    void renameFile(const boost::filesystem::path &path , const std::string newFileName);
+    void SearchWindowCreated(SearchWindow *window);
     void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
+
 
 };
 
