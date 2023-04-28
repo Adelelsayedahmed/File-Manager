@@ -53,7 +53,7 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
-
+    QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
     topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
 
@@ -69,7 +69,6 @@ ExplorerMin::~ExplorerMin()
 
 QTableView* ExplorerMin::ShowTableView()
 {
-
     table->setModel(fileSystemModel);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
@@ -77,6 +76,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->horizontalScrollBar();
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    table->verticalHeader()->hide();
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
 }
@@ -226,6 +226,31 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
     contentUi->show();
 }
 
+void ExplorerMin::BackButtonClicked()
+{
+    QString path =fileSystemModel->filePath(index);
+    if(path != "/" || path !="")
+    {
+        QStringList list1 = path.split('/');
+        path="/";
+        for(int i = 0 ; i < list1.length()-2;i++)
+            path+=list1[i]+"/";
+        path+=list1[list1.length()-2];
+        this->index = fileSystemModel->index(path);
+
+        //Open folder in tableView
+        table->setModel(fileSystemModel);
+        table->setRootIndex(index);
+        table->setColumnWidth(0,250);
+        table->setColumnWidth(3,250);
+        table->horizontalScrollBar();
+        table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        table->verticalHeader()->hide();
+        emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+    }
+
+}
+
 void  ExplorerMin::folderClicked(QString returnedFilePath)
 {
     //Get index of clicked folder
@@ -238,6 +263,8 @@ void  ExplorerMin::folderClicked(QString returnedFilePath)
     table->setColumnWidth(3,250);
     table->horizontalScrollBar();
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    table->verticalHeader()->hide();
+
     emit locationChanged(returnedFilePath, fileSystemModel->fileName(index));
 //    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
 //    ui->searchBar->clear();
