@@ -57,6 +57,16 @@ void ExplorerMin::registerSignals()
     topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
 
+ExplorerMin::~ExplorerMin()
+{
+    delete layout;
+    delete fileSystemModel;
+    delete contentUi;
+    delete search;
+    delete identifyDuplicatesAction;
+    delete topBar;
+}
+
 QTableView* ExplorerMin::ShowTableView()
 {
 

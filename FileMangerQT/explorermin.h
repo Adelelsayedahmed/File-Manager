@@ -24,11 +24,12 @@ class ExplorerMin:public QWidget
     Q_OBJECT
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
+    QTableView *table;
+
 protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
     SearchBar *search;
-    QTableView *table;
 protected:
 
     QFormLayout *layout;
@@ -41,7 +42,7 @@ protected:
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
 
-
+    ~ExplorerMin();
 
     QTableView* ShowTableView();
 public slots:

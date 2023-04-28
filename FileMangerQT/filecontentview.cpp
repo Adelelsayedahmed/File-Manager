@@ -13,6 +13,7 @@ FileContentView::FileContentView(QWidget *parent) :
 FileContentView::~FileContentView()
 {
     delete ui;
+    delete file;
 }
 
 void FileContentView::on_saveAction_triggered()

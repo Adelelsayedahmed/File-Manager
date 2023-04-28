@@ -27,6 +27,11 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
 
 }
+
+Controller::~Controller()
+{
+
+}
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
  *

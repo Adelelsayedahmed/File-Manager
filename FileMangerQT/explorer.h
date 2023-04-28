@@ -24,5 +24,6 @@ private:
     QTreeView *tree;
     void registerSignals();
     void expandPath(const QString &path);
+    ~Explorer();
 };
 #endif // EXPLORER_H

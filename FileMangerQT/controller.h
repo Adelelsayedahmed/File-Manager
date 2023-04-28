@@ -31,7 +31,7 @@ public:
     Controller();
     Controller(View* view);
     void addPaths(std::vector<std::string>oldPaths,std::vector<std::string> newPaths);
-
+     ~Controller();
 private:
     std::stack<std::vector<std::string>> paths;
     View *dView;
@@ -41,6 +41,7 @@ private:
     SearchWindow *dWindow;
     void pasteFromCut(fs::path destination_path);
     void mRegisterSignals();
+
 
 public slots:
     void paste(fs::path source_path, fs::path destination_path, CopyCutAction action);

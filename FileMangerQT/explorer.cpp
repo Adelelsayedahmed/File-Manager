@@ -21,6 +21,11 @@ void Explorer::registerSignals()
 
 }
 
+Explorer::~Explorer()
+{
+    delete tree;
+}
+
 
 QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 {
