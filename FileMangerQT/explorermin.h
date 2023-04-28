@@ -18,8 +18,9 @@ class ExplorerMin:public QWidget
     Q_OBJECT
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
-protected:
     QTableView *table;
+protected:
+
     QFormLayout *layout;
     QFileSystemModel* fileSystemModel;
     QModelIndex index;

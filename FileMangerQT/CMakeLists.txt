@@ -36,6 +36,8 @@ set(PROJECT_SOURCES
         fileoperations.cpp
         fileoperations.h
         Actions.h
+        twopane.cpp
+        twopane.h
 #        identifyduplicates.cpp
 #        identifyduplicates.h
 #        identifyduplicatespagewidget.cpp

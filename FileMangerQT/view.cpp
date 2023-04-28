@@ -25,22 +25,17 @@ View::View(QWidget *parent)
     fileSystemModel = new QFileSystemModel(this);
     mRegisterSignals();
     //TreeView();
-    contentUi = new FileContentView(this);
-
-//    QThread* thread = new QThread(this);
-//    Controller* object = new Controller();
-//    object->moveToThread(thread);
-//    connect(this, &View::copyFile, object, &Controller::paste, Qt::QueuedConnection);
-
-    explorer = new Explorer("/home/ziad",this);
+    explorer = new Explorer("",this);
+//    TwoPane *twoPane = new TwoPane();
     ui->formLayout->addWidget(explorer);
-       this->setCentralWidget(explorer);
+    this->setCentralWidget(explorer);
 }
 
 
 View::~View()
 {
     delete ui;
+    delete fileSystemModel;
 }
 
 

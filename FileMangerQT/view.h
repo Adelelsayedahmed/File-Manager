@@ -11,7 +11,7 @@
 #include <boost/filesystem.hpp>
 #include <explorer.h>
 #include "explorermin.h"
-
+#include "twopane.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
