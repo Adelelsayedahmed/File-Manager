@@ -30,7 +30,9 @@ void Controller::mRegisterSignals()
 
 Controller::~Controller()
 {
-
+    delete dView;
+    delete fileOperations;
+    delete dWindow;
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
