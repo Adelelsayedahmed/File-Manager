@@ -10,6 +10,9 @@ public:
 private:
     ExplorerMin *leftTable = nullptr;
     ExplorerMin *rightTable = nullptr;
+private slots:
+    void onDragEnter(QDragEnterEvent*);
+    void onDrop(QDropEvent*);
 };
 
 #endif // TWOPANE_H

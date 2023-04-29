@@ -17,14 +17,18 @@
 #include "searchwindow.h"
 #include "searchbar.h"
 #include "addonsbar.h"
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
-
+#include <QAbstractItemView>
+#include "customtable.h"
+#include "myfilesystemmodel.h"
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
-    QTableView *table;
+    CustomTable *table;
 
 protected:
     addOnsBar* topBar;
@@ -33,7 +37,7 @@ protected:
 protected:
 
     QFormLayout *layout;
-    QFileSystemModel* fileSystemModel;
+    MyFileSystemModel* fileSystemModel;
     QModelIndex index;
     CopyCutAction action;
     QString filePath;
@@ -41,7 +45,7 @@ protected:
     FileContentView *contentUi;
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
-
+protected:
     ~ExplorerMin();
 
     QTableView* ShowTableView();
