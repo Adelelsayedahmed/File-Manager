@@ -99,6 +99,6 @@ void Explorer::ShowTableView(QModelIndex index1)
 void Explorer::on_treeView_clicked(const QModelIndex &index1)
 {
     this->index = index;
-//    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
+    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
 }
 
