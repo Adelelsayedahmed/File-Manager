@@ -8,7 +8,27 @@
 #include <QFileSystemModel>
 #include <QDesktopServices>
 #include <QHeaderView>
+#include <QSortFilterProxyModel>
 
+class DirectoryOnlyFilterProxyModel : public QSortFilterProxyModel
+{
+public:
+    DirectoryOnlyFilterProxyModel(QObject *parent = nullptr)
+        : QSortFilterProxyModel(parent)
+    {
+    }
+
+protected:
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override
+    {
+        QFileSystemModel *source_model = dynamic_cast<QFileSystemModel *>(sourceModel());
+        QModelIndex source_index = source_model->index(source_row, 0, source_parent);
+        if (source_model->isDir(source_index)) {
+            return true;
+        }
+        return false;
+    }
+};
 
 #include "explorermin.h"
 class Explorer: public ExplorerMin
@@ -18,8 +38,12 @@ public:
     Explorer(QString rootPath = QString(), QWidget *parent = nullptr);
     QTreeView* ShowTreeView(const QString &rootPath);
 
+
+
+    DirectoryOnlyFilterProxyModel *proxy_model;
 protected slots:
     void on_treeView_clicked(const QModelIndex &index);
+    void  ShowTableView(QModelIndex index1);
 private:
     QTreeView *tree;
     void registerSignals();

@@ -2,13 +2,18 @@
 #include "explorer.h"
 #include <QObject>
 #include <QLabel>
+
+
 Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,parent)
 
 {
+    proxy_model = new DirectoryOnlyFilterProxyModel(this);
+    proxy_model->setSourceModel(fileSystemModel);
     tree = new QTreeView(this);
     layout->insertRow(0,topBar);
     layout->insertRow(1, search);
     layout->insertRow(2,ShowTreeView(rootPath),table);
+
 // Create the footer widget
     QWidget* footerWidget = new QWidget(this);
 
@@ -51,8 +56,8 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 }
 void Explorer::registerSignals()
 {
-    QObject::connect(tree,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
-    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),this,SLOT(ShowTableView(QModelIndex)));
+//    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
     QObject::connect(tree, SIGNAL(clicked(QModelIndex)), this, SLOT(on_treeView_clicked(QModelIndex)));
 
 }
@@ -65,8 +70,8 @@ Explorer::~Explorer()
 
 QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 {
-    tree->setModel(fileSystemModel);
-    tree->setRootIndex(fileSystemModel->setRootPath(QString()));
+    tree->setModel(proxy_model);
+tree->setRootIndex(proxy_model->mapFromSource(fileSystemModel->index("/")));
     tree->horizontalScrollBar();
     tree->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     //hide the columns we don't want
@@ -76,10 +81,24 @@ QTreeView* Explorer::ShowTreeView(const QString &rootPath)
     tree->setMinimumHeight(120);
     return tree;
 }
+void Explorer::ShowTableView(QModelIndex index1)
+{
+    table->setModel(fileSystemModel);
+//    table->setRootIndex(index);
+    table->setColumnWidth(0,250);
+    table->setColumnWidth(3,250);
+    table->horizontalScrollBar();
+    table->setMinimumHeight(120);
+    table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    table->verticalHeader()->hide();
+    QString path = fileSystemModel->filePath(proxy_model->mapToSource(index1));
+    table->setRootIndex(fileSystemModel->index(path));
+//    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+}
 
-void Explorer::on_treeView_clicked(const QModelIndex &index)
+void Explorer::on_treeView_clicked(const QModelIndex &index1)
 {
     this->index = index;
-    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+//    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
 }
 
