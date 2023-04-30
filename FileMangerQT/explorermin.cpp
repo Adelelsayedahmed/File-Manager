@@ -89,8 +89,10 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
-    //    QAction *compressAction = menu.addAction(tr("Compress"));
-    //    QAction *decompressAction = menu.addAction(tr("Decompress"));
+    QMenu *subMenu = new QMenu("Compression", this);
+    QAction *compressAction = subMenu->addAction(tr("Compress"));
+    QAction *decompressAction = subMenu->addAction(tr("Decompress"));
+    menu.addMenu(subMenu);
     //    QAction *renameAction = menu.addAction(tr("Rename"));
     //    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
         QAction *PropertiesAction= menu.addAction(tr("properties"));
