@@ -90,23 +90,30 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
     QMenu *subMenu = new QMenu("Compression", this);
+
     QAction *compressAction = subMenu->addAction(tr("Compress"));
     QAction *decompressAction = subMenu->addAction(tr("Decompress"));
     menu.addMenu(subMenu);
-    //    QAction *renameAction = menu.addAction(tr("Rename"));
-    //    QAction *batchRenameAction = menu.addAction(tr("Batch renaming"));
-        QAction *PropertiesAction= menu.addAction(tr("properties"));
 
-    //    if ( isMultipleSelected() )
-    //    {
-    //        batchRenameAction->setEnabled(true);
-    //        renameAction->setEnabled(false);
-    //    }
-    //    else
-    //    {
-    //        batchRenameAction->setEnabled(false);
-    //        renameAction->setEnabled(true);
-    //    }
+    QMenu* renamingSubMenu = new QMenu("Renaming",this);
+
+    QAction *renameAction = renamingSubMenu->addAction(tr("Rename"));
+    QAction *batchRenameAction = renamingSubMenu->addAction(tr("Batch renaming"));
+
+    menu.addMenu((renamingSubMenu));
+
+    QAction *PropertiesAction= menu.addAction(tr("properties"));
+
+        if ( isMultipleSelected() )
+        {
+            batchRenameAction->setEnabled(true);
+            renameAction->setEnabled(false);
+        }
+        else
+        {
+            batchRenameAction->setEnabled(false);
+            renameAction->setEnabled(true);
+        }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);
     connect(pasteAction, &QAction::triggered, this, &ExplorerMin::onPaste);
     connect(delAction, &QAction::triggered, this, &ExplorerMin::onDel);
@@ -114,8 +121,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
     //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
-    //    connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
-    //    connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
+        connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
+        connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
 
@@ -196,20 +203,20 @@ void ExplorerMin::onDecompressHere()
 void ExplorerMin::onBatchRenameViewSlot()
 {
 
-    //    std::vector< std::string> oldPaths ;
-    //    std::string newBaseName = "newfile_";
+        std::vector< std::string> oldPaths ;
+        std::string newBaseName = "newfile_";
 
-    ////    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
-    ////    QModelIndexList indexes = selectionModel->selection().indexes();
+        QItemSelectionModel *selectionModel = table->selectionModel();
+        QModelIndexList indexes = selectionModel->selection().indexes();
 
-    ////    foreach (QModelIndex index, indexes)
-    ////    {
-    ////        qInfo() << "In veiew " << index ;
-    ////        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
-    ////    }
+        foreach (QModelIndex index, indexes)
+        {
+            qInfo() << "In veiew " << index ;
+            oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+        }
 
-    //    emit batchRenameViewSignal(oldPaths,newBaseName);
-    //    /*emit with old paths*/
+        emit batchRenameViewSignal(oldPaths,newBaseName);
+        /*emit with old paths*/
 }
 
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
@@ -281,4 +288,16 @@ void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)
 void ExplorerMin::on_identifyDuplicatesIconClicked()
 {
     emit identifyDuplictesIconCLicked();
+}
+
+bool ExplorerMin::isMultipleSelected(){
+
+    QItemSelectionModel *selectionModel = this->table->selectionModel();
+    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
+    if (selectedIndexes.length() == 1) {
+        return false ;
+    } else if (selectedIndexes.length() > 1) {
+        return true ;
+    }
+
 }

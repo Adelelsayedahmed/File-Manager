@@ -28,7 +28,6 @@ private:
     QModelIndex index;
 
     CopyCutAction action;
-    bool isMultipleSelected();
 public:
     View(QWidget *parent = nullptr);
     void TreeView();

@@ -46,13 +46,4 @@ View::~View()
 
 
 
-//bool View::isMultipleSelected(){
-////    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
-////    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
-////    if (selectedIndexes.length() == 1) {
-////        return false ;
-////    } else if (selectedIndexes.length() > 1) {
-////        return true ;
-////    }
 
-//}

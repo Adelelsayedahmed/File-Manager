@@ -22,6 +22,8 @@
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
+private :
+    bool isMultipleSelected();
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
     QTableView *table;
