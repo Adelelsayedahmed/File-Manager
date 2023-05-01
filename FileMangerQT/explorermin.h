@@ -24,6 +24,7 @@ class ExplorerMin:public QWidget
     Q_OBJECT
 private :
     bool isMultipleSelected();
+    std::vector<std::string> getSelectedPaths();
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
     QTableView *table;
@@ -53,18 +54,25 @@ public slots:
     void onPaste();
     void onDel();
     void onCut();
+
     void onProperties();
+
     void onRenameFilesViewSlot();
+    void onBatchRenameViewSlot();
+
     void onCompress();
     void onDeCompress();
     void onCompressHere();
     void onDecompressHere();
-    void onBatchRenameViewSlot();
+
 
     void folderClicked(QString filepath);
     void SearchWindowCreatedSlot(SearchWindow *window);
     void BackButtonClicked();
     void on_identifyDuplicatesIconClicked();
+
+    void onBatchCompressViewSlot();
+    void onBatchDecompressViewSlot ();
 
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
@@ -76,6 +84,10 @@ signals:
     void SearchWindowCreated(SearchWindow *window);
     void locationChanged(QString filepath, QString filename);
     void identifyDuplictesIconCLicked();
+
+    void batchCompressViewSignal(std::vector< std::string>&Paths);
+    void batchDecompressViewSignal(std::vector< std::string>&Paths);
+
 
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);

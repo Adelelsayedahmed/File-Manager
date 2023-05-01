@@ -26,6 +26,10 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
     QObject::connect(dView->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
 
+    QObject::connect(dView->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
+    QObject::connect(dView->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
+
+
 }
 
 Controller::~Controller()
@@ -150,5 +154,15 @@ void Controller::SearchForFileByName(std::string starting_point_drictory_path , 
            SearchForFileByName(file.path() , file_name , file_paths);
         }
     }
+}
+
+void Controller::batchCompressControllerSlot(std::vector<std::string> &Paths)
+{
+    fileOperations->batchCompression(Paths);
+}
+
+void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
+{
+    fileOperations->batchDecompression(Paths);
 }
 

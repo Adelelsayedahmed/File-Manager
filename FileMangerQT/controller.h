@@ -54,11 +54,15 @@ public slots:
 
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string& newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
+
     void undoRename();
 
 //    void renameFile(const boost::filesystem::path &path , const std::string newFileName);
     void SearchWindowCreated(SearchWindow *window);
     void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
+
+    void batchCompressControllerSlot( std::vector< std::string>&Paths);
+    void batchDecompressControllerSlot( std::vector< std::string>&Paths);
 
 
 };

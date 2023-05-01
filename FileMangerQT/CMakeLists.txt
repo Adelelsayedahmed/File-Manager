@@ -47,6 +47,8 @@ set(PROJECT_SOURCES
         searchbar.cpp
         addonsbar.cpp
         addonsbar.h
+        compression.h
+        compression.cpp
 #        identifyduplicates.cpp
 #        identifyduplicates.h
 #        identifyduplicatespagewidget.cpp

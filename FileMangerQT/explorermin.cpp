@@ -93,12 +93,16 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
     QAction *compressAction = subMenu->addAction(tr("Compress"));
     QAction *decompressAction = subMenu->addAction(tr("Decompress"));
+
+    QAction *batchCompressionAction = subMenu->addAction(tr("Batch Compression"));
+    QAction *batchDecompressionAction = subMenu->addAction(tr("Batch Decompression"));
+
     menu.addMenu(subMenu);
 
     QMenu* renamingSubMenu = new QMenu("Renaming",this);
 
     QAction *renameAction = renamingSubMenu->addAction(tr("Rename"));
-    QAction *batchRenameAction = renamingSubMenu->addAction(tr("Batch renaming"));
+    QAction *batchRenameAction = renamingSubMenu->addAction(tr("Batch rename"));
 
     menu.addMenu((renamingSubMenu));
 
@@ -108,11 +112,24 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
         {
             batchRenameAction->setEnabled(true);
             renameAction->setEnabled(false);
+
+            batchCompressionAction->setEnabled(true);
+            compressAction->setEnabled(false);
+
+            batchDecompressionAction->setEnabled(true);
+            decompressAction->setEnabled(false);
         }
         else
         {
             batchRenameAction->setEnabled(false);
             renameAction->setEnabled(true);
+
+            batchCompressionAction->setEnabled(false);
+            compressAction->setEnabled(true);
+
+            batchDecompressionAction->setEnabled(false);
+            decompressAction->setEnabled(true);
+
         }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);
     connect(pasteAction, &QAction::triggered, this, &ExplorerMin::onPaste);
@@ -121,12 +138,15 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
     //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
+        connect(batchCompressionAction,&QAction::triggered, this, &ExplorerMin::onBatchCompressViewSlot );
+        connect(batchDecompressionAction,&QAction::triggered, this, &ExplorerMin::onBatchDecompressViewSlot );
+
+
         connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
         connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
-
-    menu.exec(event->globalPos());
+        menu.exec(event->globalPos());
 }
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
@@ -203,18 +223,8 @@ void ExplorerMin::onDecompressHere()
 void ExplorerMin::onBatchRenameViewSlot()
 {
 
-        std::vector< std::string> oldPaths ;
+        std::vector< std::string> oldPaths = getSelectedPaths();
         std::string newBaseName = "newfile_";
-
-        QItemSelectionModel *selectionModel = table->selectionModel();
-        QModelIndexList indexes = selectionModel->selection().indexes();
-
-        foreach (QModelIndex index, indexes)
-        {
-            qInfo() << "In veiew " << index ;
-            oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
-        }
-
         emit batchRenameViewSignal(oldPaths,newBaseName);
         /*emit with old paths*/
 }
@@ -290,6 +300,19 @@ void ExplorerMin::on_identifyDuplicatesIconClicked()
     emit identifyDuplictesIconCLicked();
 }
 
+void ExplorerMin::onBatchCompressViewSlot()
+{
+    std::vector< std::string> Paths  = getSelectedPaths();
+    emit batchCompressViewSignal(Paths);
+}
+
+void ExplorerMin::onBatchDecompressViewSlot()
+{
+    std::vector< std::string> Paths  = getSelectedPaths();
+    emit batchDecompressViewSignal(Paths);
+}
+
+
 bool ExplorerMin::isMultipleSelected(){
 
     QItemSelectionModel *selectionModel = this->table->selectionModel();
@@ -299,5 +322,21 @@ bool ExplorerMin::isMultipleSelected(){
     } else if (selectedIndexes.length() > 1) {
         return true ;
     }
+
+}
+
+
+std::vector<std::string> ExplorerMin::getSelectedPaths() {
+    std::vector< std::string> oldPaths ;
+    QItemSelectionModel *selectionModel = table->selectionModel();
+    QModelIndexList indexes = selectionModel->selection().indexes();
+
+    foreach (QModelIndex index, indexes)
+    {
+        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+    }
+
+    return oldPaths ;
+
 
 }

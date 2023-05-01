@@ -2,8 +2,14 @@
 
 FileOperations::FileOperations()
 {
-
+    compressionOperationsObj = new compression ();
 }
+
+FileOperations::~FileOperations()
+{
+    delete compressionOperationsObj ;
+}
+
 void FileOperations::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
     if (!fs::exists(source_path)) {
@@ -126,6 +132,17 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
     FileOperations::addPaths( oldPaths,new_paths);
 
 }
+
+void FileOperations::batchCompression(std::vector<std::string> &Paths)
+{
+    compressionOperationsObj->batchCompress(Paths);
+}
+
+void FileOperations::batchDecompression(std::vector<std::string> &Paths)
+{
+     compressionOperationsObj->batchDecompress(Paths);
+}
+
 
 
 std::string FileOperations:: removeNameFromPath(std::string path) {
