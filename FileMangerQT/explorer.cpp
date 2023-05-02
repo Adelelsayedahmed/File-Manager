@@ -68,7 +68,11 @@ void Explorer:: footer_update(const QModelIndex &index1)
 //    qInfo()<<"a";
 //     table->setModel(fileSystemModel);
     // ppath is "" we need too eeedit path here
-    qInfo()<<fileSystemModel->filePath(index1).toStdString();
+
+    qInfo()<<"in table view selected "<<fileSystemModel->filePath(index1).toStdString();
+
+   // qInfo()<<"in table view selected size:  ";
+
     std::thread t(&Explorer::footer_size, this, fileSystemModel->filePath(index1).toStdString());
     t.detach();
     std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(index1).toStdString());
@@ -103,12 +107,15 @@ void Explorer::ShowTableView(QModelIndex index1)
 }
 void Explorer::footer_size(std::string s)
 {
-    qInfo()<<s;
-  sizeValueLabel->setText(QString::number(statistics::convertToKB( statistics::directory_size(fileSystemModel->filePath(proxy_model->mapToSource(this->index)).toStdString()))).append(" kb")) ;
+    sizeValueLabel->setText("0");
+    qInfo()<<"in footer size function"<<s;
+    boost::filesystem::path filePath = boost::filesystem::path(s);
+    sizeValueLabel->setText(QString::number(statistics::convertToKB( statistics::directory_size(filePath))).append(" kb")) ;
 }
 void Explorer::footer_item(std::string s)
 {
-    boost::filesystem::path filePath = fileSystemModel->filePath(proxy_model->mapToSource(this->index)).toStdString();
+    numFilesValueLabel->setText("0");
+    boost::filesystem::path filePath = boost::filesystem::path(s);
       numFilesValueLabel->setText(QString::number(statistics::numberOfItems(filePath)));
 }
 void Explorer::on_treeView_clicked(const QModelIndex &index1)

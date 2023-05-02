@@ -59,8 +59,8 @@ set(PROJECT_SOURCES
 #        PiechartWidget.h
 #        propertiespagewidget.cpp
 #        propertiespagewidget.h
-#        statistics.cpp
-#        statistics.h
+        statistics.cpp
+        statistics.h
 
 
 

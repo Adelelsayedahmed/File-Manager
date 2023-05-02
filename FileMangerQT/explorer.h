@@ -10,6 +10,7 @@
 #include <QHeaderView>
 #include <QSortFilterProxyModel>
 #include<thread>
+#include "statistics.h"
 class DirectoryOnlyFilterProxyModel : public QSortFilterProxyModel
 {
 public:
