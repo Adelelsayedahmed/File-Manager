@@ -91,9 +91,11 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     QAction *delAction = menu.addAction(tr("Delete"));
     QMenu *subMenu = new QMenu("Compression", this);
 
-    QAction *compressAction = subMenu->addAction(tr("Compress"));
-    QAction *decompressAction = subMenu->addAction(tr("Decompress"));
+    compressAction= subMenu->addAction(tr("Compress"));
+    //connect(compressAction, &QAction::triggered, this, &ExplorerMin::checkSelectedFileForCompression);
 
+    decompressAction = subMenu->addAction(tr("Decompress"));
+    //connect(decompressAction, &QAction::triggered, this, &ExplorerMin::checkSelectedFileForrdeCompression);
     QAction *batchCompressionAction = subMenu->addAction(tr("Batch Compression"));
     QAction *batchDecompressionAction = subMenu->addAction(tr("Batch Decompression"));
 
@@ -146,13 +148,44 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
         connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
+       checkSelectedFileForCompression();
+
         menu.exec(event->globalPos());
+}
+void ExplorerMin::checkSelectedFileForCompression()
+{
+
+    // Get the path of the selected file
+    QString filePath = fileSystemModel->filePath(index);
+    qInfo()<<"AA";
+    qInfo()<<filePath;
+    // Enable the compress action if the file is a .txt file, otherwise disable it
+    if (QFileInfo(filePath).suffix() == "txt")
+    {qInfo()<<"in compress";
+        compressAction->setEnabled(true);
+     decompressAction->setEnabled(false);
+    }
+
+    else if ((QFileInfo(filePath).suffix() == "gz"))
+
+    {
+        qInfo()<<"in deecompress";
+        compressAction->setEnabled(false);
+     decompressAction->setEnabled(true);
+    }
+
+    else {
+        compressAction->setEnabled(false);
+             decompressAction->setEnabled(false);
+    }
 }
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
-    this->index = index; 
+    this->index = index;
+
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+    ///////////////////////
 }
 void ExplorerMin::onCopy()
 {
@@ -243,6 +276,7 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
     contentUi->ui->textEdit->clear();
     contentUi->ui->textEdit->setPlainText(fileContents);
     contentUi->show();
+
 }
 
 void ExplorerMin::BackButtonClicked()

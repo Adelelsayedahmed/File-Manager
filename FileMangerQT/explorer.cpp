@@ -18,10 +18,10 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 
     // Create labels for number of files and size
     QLabel* numFilesLabel = new QLabel("Number of files: ", footerWidget);
-    QLabel* numFilesValueLabel = new QLabel("0", footerWidget);
+     numFilesValueLabel = new QLabel("0", footerWidget);
 
     QLabel* sizeLabel = new QLabel("Size: ", footerWidget);
-    QLabel* sizeValueLabel = new QLabel("0", footerWidget);
+     sizeValueLabel = new QLabel("0", footerWidget);
 
     // Set alignment for the labels in footer widget
     numFilesLabel->setAlignment(Qt::AlignLeft);
@@ -52,6 +52,7 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 void Explorer::registerSignals()
 {
     QObject::connect(tree,SIGNAL(clicked(QModelIndex)),this,SLOT(ShowTableView(QModelIndex)));
+       QObject::connect(table,SIGNAL(clicked(QModelIndex)),this,SLOT(footer_update(QModelIndex)));
 //    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
     QObject::connect(tree, SIGNAL(clicked(QModelIndex)), this, SLOT(on_treeView_clicked(QModelIndex)));
 
@@ -62,7 +63,17 @@ Explorer::~Explorer()
     delete tree;
 }
 
-
+void Explorer:: footer_update(const QModelIndex &index1)
+{
+//    qInfo()<<"a";
+//     table->setModel(fileSystemModel);
+    // ppath is "" we need too eeedit path here
+    qInfo()<<fileSystemModel->filePath(index1).toStdString();
+    std::thread t(&Explorer::footer_size, this, fileSystemModel->filePath(index1).toStdString());
+    t.detach();
+    std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(index1).toStdString());
+    t2.detach();
+}
 QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 {
     tree->setModel(proxy_model);
@@ -90,10 +101,24 @@ void Explorer::ShowTableView(QModelIndex index1)
     table->setRootIndex(fileSystemModel->index(path));
 //    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
-
+void Explorer::footer_size(std::string s)
+{
+    qInfo()<<s;
+  sizeValueLabel->setText(QString::number(statistics::convertToKB( statistics::directory_size(fileSystemModel->filePath(proxy_model->mapToSource(this->index)).toStdString()))).append(" kb")) ;
+}
+void Explorer::footer_item(std::string s)
+{
+    boost::filesystem::path filePath = fileSystemModel->filePath(proxy_model->mapToSource(this->index)).toStdString();
+      numFilesValueLabel->setText(QString::number(statistics::numberOfItems(filePath)));
+}
 void Explorer::on_treeView_clicked(const QModelIndex &index1)
 {
-    this->index = index;
+    this->index = index1;
+    std::thread t(&Explorer::footer_size, this, fileSystemModel->filePath(proxy_model->mapToSource(index1)).toStdString());
+    t.detach();
+    std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(proxy_model->mapToSource(index1)).toStdString());
+    t2.detach();
     emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
+
 }
 

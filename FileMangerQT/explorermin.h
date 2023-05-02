@@ -17,7 +17,8 @@
 #include "searchwindow.h"
 #include "searchbar.h"
 #include "addonsbar.h"
-
+#include"statistics.h"
+#include<QString>
 
 class ExplorerMin:public QWidget
 {
@@ -28,6 +29,8 @@ private :
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
     QTableView *table;
+    QAction *compressAction ;
+    QAction *decompressAction;
 
 protected:
     addOnsBar* topBar;
@@ -92,6 +95,8 @@ signals:
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
     void on_tableView_doubleClicked(QModelIndex index);
+    void checkSelectedFileForCompression();
+
 
 };
 

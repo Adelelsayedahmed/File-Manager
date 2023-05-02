@@ -9,7 +9,7 @@
 #include <QDesktopServices>
 #include <QHeaderView>
 #include <QSortFilterProxyModel>
-
+#include<thread>
 class DirectoryOnlyFilterProxyModel : public QSortFilterProxyModel
 {
 public:
@@ -37,6 +37,10 @@ class Explorer: public ExplorerMin
 public:
     Explorer(QString rootPath = QString(), QWidget *parent = nullptr);
     QTreeView* ShowTreeView(const QString &rootPath);
+    QLabel* numFilesValueLabel;
+    QLabel* sizeValueLabel ;
+    void footer_size(std::string s);
+    void footer_item(std::string s);
 
 
 
@@ -44,6 +48,7 @@ public:
 protected slots:
     void on_treeView_clicked(const QModelIndex &index);
     void  ShowTableView(QModelIndex index1);
+    void footer_update(const QModelIndex &index);
 private:
     QTreeView *tree;
     void registerSignals();
