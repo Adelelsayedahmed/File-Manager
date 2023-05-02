@@ -122,8 +122,7 @@ void Controller::undoRename()
 }
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
-    std::thread t(&FileOperations::batchRenameFile, fileOperations, oldPaths, newBaseName);
-     t.detach();
+   fileOperations->batchRenameFile(oldPaths, newBaseName);
 
 }
 

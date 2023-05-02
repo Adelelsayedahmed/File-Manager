@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <iostream>
 #include "compression.h"
+#include <filesystem>
 namespace fs = boost::filesystem;
 
 class FileOperations: public QObject
@@ -22,6 +23,8 @@ public:
     void batchRenameFile( std::vector< std::string>& oldPaths,const std::string &newBaseName);
     void batchCompression(std::vector< std::string>& Paths);
     void batchDecompression(std::vector< std::string>& Paths);
+    void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
+
 private:
     compression* compressionOperationsObj ;
     fs::path m_cutPath;

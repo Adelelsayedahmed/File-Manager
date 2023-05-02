@@ -41,7 +41,7 @@ private:
     SearchWindow *dWindow;
     void pasteFromCut(fs::path destination_path);
     void mRegisterSignals();
-    void run_thread_func(void (*void_func)());
+
 
 
 public slots:
