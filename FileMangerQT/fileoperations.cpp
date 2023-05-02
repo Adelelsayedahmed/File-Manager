@@ -2,7 +2,7 @@
 
 FileOperations::FileOperations()
 {
-    compressionOperationsObj = new compression ();
+  //  compressionOperationsObj = new compression ();
 }
 
 FileOperations::~FileOperations()
@@ -12,6 +12,7 @@ FileOperations::~FileOperations()
 
 void FileOperations::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
+
     if (!fs::exists(source_path)) {
         qInfo() << "Source file does not exist!\n" ;
         return ;
@@ -115,6 +116,40 @@ void FileOperations::renameFile(const boost::filesystem::path &path ,const std::
     }
 
 }
+void FileOperations:: SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths)
+{
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+
+//      if(file.is_regular_file())
+        {
+            std::string searchbyname = file.path();
+            if(searchbyname.find(file_name)!= std::string::npos)
+                file_paths.push_back(searchbyname);
+        }
+    }
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+
+        if(file.is_directory())
+        {
+           SearchForFileByName(file.path() , file_name , file_paths);
+        }
+    }    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+
+        //      if(file.is_regular_file())
+                {
+                    std::string searchbyname = file.path();
+                    if(searchbyname.find(file_name)!= std::string::npos)
+                        file_paths.push_back(searchbyname);
+                }
+            }
+            for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+
+                if(file.is_directory())
+                {
+                   SearchForFileByName(file.path() , file_name , file_paths);
+                }
+            }
+}
 
 void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
@@ -135,12 +170,12 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
 
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
 {
-    compressionOperationsObj->batchCompress(Paths);
+   // compressionOperationsObj->batchCompress(Paths);
 }
 
 void FileOperations::batchDecompression(std::vector<std::string> &Paths)
 {
-     compressionOperationsObj->batchDecompress(Paths);
+    // compressionOperationsObj->batchDecompress(Paths);
 }
 
 

@@ -21,7 +21,7 @@
 #include <stack>
 #include <vector>
 #include "fileoperations.h"
-
+#include<thread>
 
 namespace fs = boost::filesystem;
 class Controller : public QObject
@@ -41,6 +41,7 @@ private:
     SearchWindow *dWindow;
     void pasteFromCut(fs::path destination_path);
     void mRegisterSignals();
+    void run_thread_func(void (*void_func)());
 
 
 public slots:

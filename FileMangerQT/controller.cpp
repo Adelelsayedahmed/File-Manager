@@ -17,7 +17,7 @@ Controller::Controller(View *view)
 
 void Controller::mRegisterSignals()
 {
-//    QObject::connect(dView->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
+    QObject::connect(dView->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
     QObject::connect(dView->explorer, &ExplorerMin::delFile, this, &Controller::del);
     QObject::connect(dView->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
     QObject::connect(dView->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
@@ -31,6 +31,7 @@ void Controller::mRegisterSignals()
 
 
 }
+
 
 Controller::~Controller()
 {
@@ -53,18 +54,22 @@ Controller::~Controller()
 
 void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
-    fileOperations->paste(source_path, destination_path, action);
+    std::thread t(&FileOperations::paste, fileOperations, source_path, destination_path, action);
+    t.detach();
+
 }
 
 
 void Controller::del(fs::path filePath)
 {
-    fileOperations->del(filePath);
+        std::thread t(&FileOperations::del, fileOperations, filePath);
+        t.detach();
 }
 
 void Controller::cutFile(const fs::path &path)
 {
-   fileOperations->cutFile(path);
+        std::thread t(&FileOperations::cutFile, fileOperations, path);
+        t.join();
 }
 
 void Controller::propertiesOfFile(const fs::path &path)
@@ -93,7 +98,8 @@ std::string removeNameFromPath(std::string path) {
 void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,const std::string& newFileName )
 {
 
-    fileOperations->renameFile(path,newFileName);
+        std::thread t(&FileOperations::renameFile, fileOperations, path, newFileName);
+        t.detach();
 }
 
 
@@ -116,7 +122,9 @@ void Controller::undoRename()
 }
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
-    fileOperations->batchRenameFile(oldPaths,newBaseName);
+    std::thread t(&FileOperations::batchRenameFile, fileOperations, oldPaths, newBaseName);
+     t.detach();
+
 }
 
 void Controller::identifyDuplicates()
@@ -136,33 +144,22 @@ void Controller::SearchWindowCreated(SearchWindow *search)
 }
 
 
-void Controller::SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths)
+void Controller::SearchForFileByName(std::string starting_point_directory_path, std::string file_name, std::vector<std::string>& file_paths)
 {
-    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
-
-//      if(file.is_regular_file())
-        {
-            std::string searchbyname = file.path();
-            if(searchbyname.find(file_name)!= std::string::npos)
-                file_paths.push_back(searchbyname);
-        }
-    }
-    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
-
-        if(file.is_directory())
-        {
-           SearchForFileByName(file.path() , file_name , file_paths);
-        }
-    }
+    std::thread t(&FileOperations::SearchForFileByName, fileOperations, starting_point_directory_path, file_name, std::ref(file_paths));
+    t.detach();
 }
+
 
 void Controller::batchCompressControllerSlot(std::vector<std::string> &Paths)
 {
-    fileOperations->batchCompression(Paths);
+        std::thread t(&FileOperations::batchCompression, fileOperations, std::ref(Paths));
+        t.detach();
 }
 
 void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
 {
-    fileOperations->batchDecompression(Paths);
+        std::thread t(&FileOperations::batchDecompression, fileOperations, std::ref(Paths));
+        t.detach();
 }
 
