@@ -21,6 +21,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets )
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets )
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS filesystem REQUIRED)
+
 set(PROJECT_SOURCES
         main.cpp
         view.cpp
@@ -49,10 +50,10 @@ set(PROJECT_SOURCES
         addonsbar.h
         compression.h
         compression.cpp
-#        identifyduplicates.cpp
-#        identifyduplicates.h
-#        identifyduplicatespagewidget.cpp
-#        identifyduplicatespagewidget.h
+        identifyduplicates.cpp
+        identifyduplicates.h
+        identifyduplicatespagewidget.cpp
+        identifyduplicatespagewidget.h
 #        piechartpagewidget.cpp
 #        piechartpagewidget.h
 #        PiechartWidget.cpp
@@ -91,7 +92,8 @@ endif()
 
 
 target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem)
-#target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets boost_filesystem)
+
+#target_link_libraries(FileManger PRIVATE Qt6::Widgets Qt6::Charts Boost::filesystem)
 
 set_target_properties(FileManger PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

@@ -73,16 +73,16 @@ void Controller::cutFile(const fs::path &path)
 }
 
 void Controller::propertiesOfFile(const fs::path &path)
-{
-//        statistics *statObj = new statistics;
+{/*
+        statistics *statObj = new statistics;
 
-//        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->explorer);
+        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->explorer);
 
-//        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->explorer, statObj, pieChartWidget);
+        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->explorer, statObj, pieChartWidget);
 
-//        propertiesWidget->path=path;
+        propertiesWidget->path=path;
 
-//        propertiesWidget->showPropertiesWindow();
+        propertiesWidget->showPropertiesWindow();*/
 
 }
 
@@ -128,9 +128,9 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
 
 void Controller::identifyDuplicates()
 {
-//    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
 
-//    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
+    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
 
 }
 

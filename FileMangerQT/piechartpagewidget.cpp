@@ -9,10 +9,10 @@ pieChartPageWidget::pieChartPageWidget(QWidget *parent)
     tabWidget->setMinimumSize(800, 800);
 
      sizesTab = new QWidget();
-    tabWidget->addTab(sizesTab, tr("sizes"));
+    tabWidget->addTab(sizesTab, tr("sizes of files/directories"));
 
     typesTab = new QWidget();
-    tabWidget->addTab(typesTab, tr("types"));
+    tabWidget->addTab(typesTab, tr("types of files/directories"));
 }
 
 QWidget* pieChartPageWidget::returnTabs(int index)

@@ -65,12 +65,19 @@ QChart* PieChartWidget::initializeTheChart(QPieSeries* series,QString chartTitle
     // Make the chart dynamically animated.
     chart->setAnimationOptions(QChart::AllAnimations);
 
-    if(series->count()>10){
-          chart->legend()->setVisible(false);
-    }else{
 
-          chart->legend()->setVisible(true);
-    }
+    // Set the position of the legend to the right side of the chart
+    chart->legend()->setAlignment(Qt::AlignRight);
+    chart->legend()->setContentsMargins(0, 0, 20, 0);
+    chart->legend()->setMarkerShape(QLegend::MarkerShapeCircle);
+
+
+//    if(series->count()>10){
+//          chart->legend()->setVisible(false);
+//    }else{
+
+//          chart->legend()->setVisible(true);
+//    }
 
     return chart;
 }

@@ -3,11 +3,11 @@
 #include <QObject>
 #include "view.h"
 //#include <PiechartWidget.h>
-//#include "statistics.h"
+#include "statistics.h"
 //#include "propertiespagewidget.h"
 //#include "piechartpagewidget.h"
-//#include "identifyduplicates.h"
-//#include "identifyduplicatespagewidget.h"
+#include "identifyduplicates.h"
+#include "identifyduplicatespagewidget.h"
 #include "searchwindow.h"
 
 

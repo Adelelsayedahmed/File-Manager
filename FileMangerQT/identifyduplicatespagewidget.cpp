@@ -149,27 +149,31 @@ void IdentifyDuplicatesPageWidget::setTheTable(std::vector<std::vector<std::stri
 
 void IdentifyDuplicatesPageWidget::fillTheModel(QStandardItemModel *model,std::vector<std::vector<std::string>> duplicates)
 {
-    model->removeRows(0,model->rowCount());
+    model->removeRows(0, model->rowCount());
+    std::vector<QColor> colors = {QColor("#1f77b4"), QColor("#ff7f0e"), QColor("#2ca02c"), QColor("#d62728"), QColor("#9467bd"), QColor("#8c564b"), QColor("#e377c2"), QColor("#7f7f7f"), QColor("#bcbd22"), QColor("#17becf")};
+
+    // Map to keep track of the color assigned to each group of duplicates
+    std::unordered_map<std::string, QColor> colorMap;
+
     for (int i = 0; i < duplicates.size(); ++i) {
+     std::string groupId = duplicates[i][0]; // The first element of the group is used as the group ID
 
-        QStandardItem *separator = new QStandardItem();
-        separator->setRowCount(1);
-        separator->setColumnCount(model->columnCount());
-        separator->setBackground(QBrush(QColor(50,50,50))); // Set background color to darker gray
-        separator->setForeground(QBrush(QColor(Qt::white))); // Set text color to white
-        separator->setData("Duplicates", Qt::DisplayRole); // Set the text "Duplicates" in the middle
-        separator->setTextAlignment(Qt::AlignCenter); // Center the text horizontally
-        model->setItem(model->rowCount(), 0, separator);
+     // Check if the group already has a color assigned
+     QColor groupColor;
+     if (colorMap.count(groupId) == 0) {
+         // Assign the next available color from the color palette
+         groupColor = colors[i % colors.size()];
+         colorMap[groupId] = groupColor;
+     } else {
+         groupColor = colorMap[groupId];
+     }
 
-        for (int j = 0; j < duplicates[i].size(); ++j) {
-            QString itemData = QString::fromStdString(duplicates[i][j]) ;
-            QStandardItem *item = new QStandardItem(itemData);
-            model->appendRow(item);
-        }
-        QStandardItem *separator2 = new QStandardItem("");
-        separator2->setRowCount(1);
-        separator2->setColumnCount(model->columnCount());
-        model->setItem(model->rowCount(), 0, separator2);
+     for (int j = 0; j < duplicates[i].size(); ++j) {
+         QString itemData = QString::fromStdString(duplicates[i][j]);
+         QStandardItem *item = new QStandardItem(itemData);
+         item->setBackground(QBrush(groupColor)); // Set the background color to the color assigned to the group
+         model->appendRow(item);
+     }
     }
 }
 
