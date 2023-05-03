@@ -72,6 +72,9 @@ ExplorerMin::~ExplorerMin()
 QTableView* ExplorerMin::ShowTableView()
 {
     table->setModel(fileSystemModel);
+    QItemSelectionModel* selectionModel = new QItemSelectionModel(fileSystemModel);
+//    table->setSelectionModel(selectionModel);
+//    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
     table->setColumnWidth(3,250);

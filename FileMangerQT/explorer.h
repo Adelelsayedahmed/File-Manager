@@ -17,13 +17,13 @@ class Explorer: public ExplorerMin
 public:
     Explorer(QString rootPath = QString(), QWidget *parent = nullptr);
     QTreeView* ShowTreeView(const QString &rootPath);
-
+    ~Explorer();
 protected slots:
     void on_treeView_clicked(const QModelIndex &index);
 private:
     QTreeView *tree;
     void registerSignals();
     void expandPath(const QString &path);
-    ~Explorer();
+
 };
 #endif // EXPLORER_H

@@ -22,11 +22,10 @@ View::View(QWidget *parent)
     , ui(new Ui::View)
 {
     ui->setupUi(this);
-    fileSystemModel = new QFileSystemModel(this);
     mRegisterSignals();
     //TreeView();
-//    explorer = new Explorer("",this);
-    TwoPane *twoPane = new TwoPane();
+    explorer = new Explorer();
+    twoPane = new TwoPane();
     ui->formLayout->addWidget(twoPane);
 //    this->setCentralWidget(twoPane);
 }
@@ -35,24 +34,6 @@ View::View(QWidget *parent)
 View::~View()
 {
     delete ui;
-    delete fileSystemModel;
+    delete explorer;
+    delete twoPane;
 }
-
-
-
-
-
-
-
-
-
-//bool View::isMultipleSelected(){
-////    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
-////    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
-////    if (selectedIndexes.length() == 1) {
-////        return false ;
-////    } else if (selectedIndexes.length() > 1) {
-////        return true ;
-////    }
-
-//}

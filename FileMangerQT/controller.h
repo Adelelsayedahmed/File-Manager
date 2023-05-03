@@ -21,7 +21,7 @@
 #include <stack>
 #include <vector>
 #include "fileoperations.h"
-
+#include "customtable.h"
 
 namespace fs = boost::filesystem;
 class Controller : public QObject

@@ -25,6 +25,8 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
     QObject::connect(dView->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
     QObject::connect(dView->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+    QObject::connect(dView->twoPane->leftTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
+    QObject::connect(dView->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
 
 }
 

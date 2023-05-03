@@ -29,7 +29,7 @@ class ExplorerMin:public QWidget
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
     CustomTable *table;
-
+    ~ExplorerMin();
 protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
@@ -45,8 +45,7 @@ protected:
     FileContentView *contentUi;
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
-protected:
-    ~ExplorerMin();
+
 
     QTableView* ShowTableView();
 public slots:

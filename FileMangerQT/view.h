@@ -22,19 +22,14 @@ class View : public QMainWindow
     Q_OBJECT
 private:
      Ui::View *ui;
-    QFileSystemModel* fileSystemModel;
     void mRegisterSignals();
-    QVector<QModelIndex> indexVector;
-    QModelIndex index;
-
-    CopyCutAction action;
     bool isMultipleSelected();
 public:
     View(QWidget *parent = nullptr);
     void TreeView();
     ~View();
-    FileContentView *contentUi;
     Explorer *explorer;
+    TwoPane *twoPane;
 private slots:
 
 //signals:

@@ -2,25 +2,27 @@
 
 TwoPane::TwoPane(QWidget *parent):QWidget(parent)
 {
-    leftTable = new ExplorerMin();
-    rightTable = new ExplorerMin();
+    leftTable = std::unique_ptr<ExplorerMin>(new ExplorerMin);
+    rightTable = std::unique_ptr<ExplorerMin>(new ExplorerMin);
     QHBoxLayout *hLayout = new QHBoxLayout(this);
-    hLayout->addWidget(leftTable);
-    hLayout->addWidget(rightTable);
-    leftTable->table->setAcceptDrops(true);
-    leftTable->table->setDragEnabled(true);
-    leftTable->table->setDragDropMode(QAbstractItemView::DragDrop);
-    leftTable->table->setDropIndicatorShown(true);
-    leftTable->table->setDefaultDropAction(Qt::CopyAction);
-    // Connect signals to slots
+    hLayout->addWidget(leftTable.get());
+    hLayout->addWidget(rightTable.get());
+    setupDragAndDrop(leftTable->table);
+    setupDragAndDrop(rightTable->table);
+}
 
-    rightTable->table->setAcceptDrops(true);
-    rightTable->table->setDragEnabled(true);
-    rightTable->table->setDragDropMode(QAbstractItemView::DragDrop);
+TwoPane::~TwoPane()
+{
 
-    rightTable->table->setDropIndicatorShown(true);
-    rightTable->table->setDefaultDropAction(Qt::CopyAction);
-
+}
+void TwoPane::setupDragAndDrop(QTableView *tableView)
+{
+    tableView->setAcceptDrops(true);
+    tableView->setDragEnabled(true);
+    tableView->setDragDropMode(QAbstractItemView::DragDrop);
+    tableView->setDropIndicatorShown(true);
+    tableView->setDefaultDropAction(Qt::MoveAction);
+//    tableView->setDragDropOverwriteMode(false);
 }
 
 void TwoPane::onDragEnter(QDragEnterEvent *)
@@ -28,7 +30,9 @@ void TwoPane::onDragEnter(QDragEnterEvent *)
     qInfo() << "drage";
 }
 
-void TwoPane::onDrop(QDropEvent *)
+void TwoPane::dropEvent(QDropEvent *event)
 {
     qInfo() << "drop";
+
 }
+
