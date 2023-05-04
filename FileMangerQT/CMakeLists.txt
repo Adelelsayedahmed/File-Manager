@@ -62,13 +62,8 @@ set(PROJECT_SOURCES
 #        propertiespagewidget.h
         statistics.cpp
         statistics.h
-<<<<<<< Updated upstream
         stackedviewwidget.cpp
         stackedviewwidget.h
-=======
-        stackedviewwidget.h
-        stackedviewwidget.cpp
->>>>>>> Stashed changes
 
 
 

@@ -74,7 +74,7 @@ public slots:
     void folderClicked(QString filepath);
     void SearchWindowCreatedSlot(SearchWindow *window);
     void BackButtonClicked();
-    void on_identifyDuplicatesIconClicked();
+  //  void on_identifyDuplicatesIconClicked();
 
     void onBatchCompressViewSlot();
     void onBatchDecompressViewSlot ();
@@ -89,7 +89,6 @@ signals:
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
     void SearchWindowCreated(SearchWindow *window);
     void locationChanged(QString filepath, QString filename);
-    void identifyDuplictesIconCLicked();
     void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
