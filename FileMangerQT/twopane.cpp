@@ -2,8 +2,8 @@
 
 TwoPane::TwoPane(QWidget *parent):QWidget(parent)
 {
-    leftTable = std::unique_ptr<ExplorerMin>(new ExplorerMin);
-    rightTable = std::unique_ptr<ExplorerMin>(new ExplorerMin);
+    leftTable = std::unique_ptr<ExplorerMin>(new ExplorerMin("/home/ziad"));
+    rightTable = std::unique_ptr<ExplorerMin>(new ExplorerMin("/home/ziad"));
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     hLayout->addWidget(leftTable.get());
     hLayout->addWidget(rightTable.get());

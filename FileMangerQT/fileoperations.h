@@ -19,5 +19,6 @@ public:
 private:
     fs::path m_cutPath;
     void pasteFromCut(fs::path destination_path);
+    void copy_directory(const fs::path &source_path, const fs::path &destination_path);
 };
 #endif // FILEOPERATIONS_H

@@ -20,7 +20,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets )
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets )
 find_package(Boost REQUIRED)
-find_package(Boost COMPONENTS filesystem REQUIRED)
+find_package(Boost COMPONENTS filesystem progress REQUIRED)
 set(PROJECT_SOURCES
         main.cpp
         view.cpp
@@ -92,7 +92,7 @@ else()
 endif()
 
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem Boost::progress)
 #target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets boost_filesystem)
 
 set_target_properties(FileManger PROPERTIES
