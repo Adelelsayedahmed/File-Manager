@@ -62,6 +62,8 @@ set(PROJECT_SOURCES
 #        propertiespagewidget.h
         statistics.cpp
         statistics.h
+        stackedviewwidget.cpp
+        stackedviewwidget.h
 
 
 
