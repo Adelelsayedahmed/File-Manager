@@ -109,14 +109,29 @@ void Explorer::footer_size(std::string s)
 {
     sizeValueLabel->setText("0");
     qInfo()<<"in footer size function"<<s;
-    boost::filesystem::path filePath = boost::filesystem::path(s);
-    sizeValueLabel->setText(QString::number(statistics::convertToKB( statistics::directory_size(filePath))).append(" kb")) ;
+    int size=0;
+    if(statistics::isFile(s))
+    {
+        size=statistics::getFile_size(s);
+    }
+    else
+    {
+
+        size=statistics::directory_size(s);
+    }
+    sizeValueLabel->setText(QString::number(size).append(" KB")) ;
 }
 void Explorer::footer_item(std::string s)
 {
     numFilesValueLabel->setText("0");
-    boost::filesystem::path filePath = boost::filesystem::path(s);
-      numFilesValueLabel->setText(QString::number(statistics::numberOfItems(filePath)));
+    if(statistics::isFile(s))
+    {
+        numFilesValueLabel->setText("1");
+    }
+    else
+    {
+        numFilesValueLabel->setText(QString::number(statistics::numberOfItems(s)));
+    }
 }
 void Explorer::on_treeView_clicked(const QModelIndex &index1)
 {
