@@ -1,19 +1,22 @@
 #include "identifyduplicatespagewidget.h"
 
-IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent,IdentifyDuplicates* duplicatesObj)
+IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent)
     : QWidget{parent}
 {
-    this->duplicatesObj=duplicatesObj;
 
     initializeThePage();
 
     setPageConnections();
 
-    showThePage();
+    //showThePage();
 
 
 }
+void IdentifyDuplicatesPageWidget::setDuplicatesObject(IdentifyDuplicates* duplicatesObj)
+{
+    this->duplicatesObj=duplicatesObj;
 
+}
 void IdentifyDuplicatesPageWidget::initializeThePage()
 {
 

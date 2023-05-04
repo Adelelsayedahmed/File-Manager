@@ -9,9 +9,9 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
     proxy_model = new DirectoryOnlyFilterProxyModel(this);
     proxy_model->setSourceModel(fileSystemModel);
     tree = new QTreeView(this);
-    layout->insertRow(0,topBar);
-    layout->insertRow(1, search);
-    layout->insertRow(2,ShowTreeView(rootPath),table);
+   // layout->insertRow(0,topBar);
+    layout->insertRow(0, search);
+    layout->insertRow(1,ShowTreeView(rootPath),table);
 
     // Create the footer widget
     QWidget* footerWidget = new QWidget(this);
@@ -108,20 +108,22 @@ void Explorer::ShowTableView(QModelIndex index1)
 }
 void Explorer::footer_size(std::string s)
 {
-    sizeValueLabel->setText("0");
+    sizeValueLabel->setText("...");
 
     //qInfo()<<"in footer size function"<<s;
-    int size=0;
+    unsigned int size=0;
+    QString appendingString;
     if(statistics::isFile(s))
     {
-        size=statistics::getFile_size(s);
+        size=statistics::convertToKB(statistics::getFile_size(s));
+        appendingString=" KB";
     }
     else
     {
-
-        size=statistics::directory_size(s);
+        size=statistics::convertToMB(statistics::directory_size(s));
+        appendingString=" MB";
     }
-    sizeValueLabel->setText(QString::number(size).append(" KB")) ;
+    sizeValueLabel->setText(QString::number(size).append(appendingString)) ;
 
 }
 void Explorer::footer_item(std::string s)

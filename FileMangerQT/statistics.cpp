@@ -105,6 +105,7 @@ uintmax_t statistics::directory_size(std::string givenPath)
 
      // Handle the exception caused by permission denied error
      qDebug() << "Error: " << ex.what() << '\n';
+     return 0;
      }
 
      return size;
@@ -141,11 +142,16 @@ int statistics::numberOfItems(std::string& givenPath)
 
      // Handle the exception caused by permission denied error
      qDebug() << "Error: " << ex.what() << '\n';
+     return 0;
 }
      return numberOfItems;
 }
 
-int statistics::convertToKB(uintmax_t bytes)
+unsigned int statistics::convertToKB(uintmax_t bytes)
 {     
      return bytes/1000;
+}
+unsigned int statistics::convertToMB(uintmax_t bytes)
+{
+     return bytes/1000000;
 }

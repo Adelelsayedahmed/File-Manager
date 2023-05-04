@@ -20,14 +20,18 @@ public:
     QAction* identifyDuplicatesAction;
 
 
+
 public slots:
+    void identifyDuplicatesActionSlot();
+
 //    void showDuplicatesMessage();
 
 private:
+    void setConnections();
     QToolBar *toolbar;
     QHBoxLayout *layout;
 signals:
-
+    void identifyDuplictesIconCLicked();
 };
 
 #endif // ADDONSBAR_H

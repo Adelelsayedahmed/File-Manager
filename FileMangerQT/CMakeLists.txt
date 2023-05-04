@@ -54,6 +54,14 @@ set(PROJECT_SOURCES
         identifyduplicates.h
         identifyduplicatespagewidget.cpp
         identifyduplicatespagewidget.h
+        customtable.cpp
+        customtable.h
+        myfilesystemmodel.cpp
+        myfilesystemmodel.h
+#        identifyduplicates.cpp
+#        identifyduplicates.h
+#        identifyduplicatespagewidget.cpp
+#        identifyduplicatespagewidget.h
 #        piechartpagewidget.cpp
 #        piechartpagewidget.h
 #        PiechartWidget.cpp
@@ -64,7 +72,8 @@ set(PROJECT_SOURCES
         statistics.h
         stackedviewwidget.cpp
         stackedviewwidget.h
-        undo.cpp
+        rename_widget.h
+        rename_widget.cpp        undo.cpp
         undo.h
         undocopy.cpp
         undocopy.h

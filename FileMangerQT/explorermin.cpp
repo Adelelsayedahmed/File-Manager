@@ -7,18 +7,20 @@
 QString ExplorerMin::filepath;
 ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 {
+    rename_widg_obj  = new rename_widget();
+    batch_rename_widg_obj = new rename_widget() ;
     setFocusPolicy(Qt::StrongFocus);
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);
-    fileSystemModel = new QFileSystemModel(this);
+    fileSystemModel = new MyFileSystemModel(this);
     QWidget* tableWidget = new QWidget;
-    table = new QTableView(tableWidget);
+    table = new CustomTable(tableWidget);
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
     search = new SearchBar(this);
 
-    topBar = new addOnsBar(this);
-    identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+  //  topBar = new addOnsBar(this);
+   // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
 
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -57,8 +59,14 @@ void ExplorerMin::registerSignals()
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
     QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
-    topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+  //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+
+    QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
+    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
+
 }
+
+
 
 ExplorerMin::~ExplorerMin()
 {
@@ -68,11 +76,16 @@ ExplorerMin::~ExplorerMin()
     delete search;
     delete identifyDuplicatesAction;
     delete topBar;
+    delete rename_widg_obj ;
+    delete batch_rename_widg_obj ;
 }
 
 QTableView* ExplorerMin::ShowTableView()
 {
     table->setModel(fileSystemModel);
+    QItemSelectionModel* selectionModel = new QItemSelectionModel(fileSystemModel);
+//    table->setSelectionModel(selectionModel);
+//    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
     table->setColumnWidth(3,250);
@@ -242,9 +255,17 @@ void ExplorerMin::onProperties()
 
 void ExplorerMin::onRenameFilesViewSlot()
 {
-    filePath = fileSystemModel->filePath(index);
-    emit renameFileViewSignal(filePath.toStdString() , "New_name");
+    rename_widg_obj->show();
 }
+
+void ExplorerMin:: emitingRenameSlot(QString newFileName){
+    filePath = fileSystemModel->filePath(index);
+    rename_widg_obj->hide() ;
+    emit renameFileViewSignal(filePath.toStdString() , newFileName.toStdString());
+
+}
+
+
 void ExplorerMin::onCompress()
 {
     qInfo() << "line 122";
@@ -269,13 +290,17 @@ void ExplorerMin::onDecompressHere()
 }
 void ExplorerMin::onBatchRenameViewSlot()
 {
+    batch_rename_widg_obj->show();
 
-        std::vector< std::string> oldPaths = getSelectedPaths();
-        std::string newBaseName = "newfile_";
-        emit batchRenameViewSignal(oldPaths,newBaseName);
-        /*emit with old paths*/
 }
+void ExplorerMin::emitingBatchRenameSlot(QString newFileName)
+{
+    std::vector< std::string> oldPaths = getSelectedPaths();
+    std::string newBaseName = newFileName.toStdString();
+    batch_rename_widg_obj ->hide();
+    emit batchRenameViewSignal(oldPaths,newBaseName);
 
+}
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
     filePath = fileSystemModel->filePath(index);
@@ -342,10 +367,10 @@ void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)
     QObject::connect(window, &SearchWindow::folderClicked, this, &ExplorerMin::folderClicked);
     emit SearchWindowCreated(window);
 }
-void ExplorerMin::on_identifyDuplicatesIconClicked()
-{
-    emit identifyDuplictesIconCLicked();
-}
+//void ExplorerMin::on_identifyDuplicatesIconClicked()
+//{
+//    emit identifyDuplictesIconCLicked();
+//}
 
 void ExplorerMin::onBatchCompressViewSlot()
 {

@@ -10,7 +10,6 @@
 #include "identifyduplicatespagewidget.h"
 #include "searchwindow.h"
 
-
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <filesystem>
@@ -23,6 +22,8 @@
 #include "fileoperations.h"
 #include<thread>
 #include "undocontroller.h"
+#include "customtable.h"
+
 namespace fs = boost::filesystem;
 class Controller : public QObject
 {

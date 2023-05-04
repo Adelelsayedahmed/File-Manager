@@ -7,9 +7,15 @@ class TwoPane:public QWidget
      Q_OBJECT
 public:
     TwoPane(QWidget *parent = nullptr);
+    ~TwoPane();
+public:
+    std::unique_ptr<ExplorerMin> leftTable;
+    std::unique_ptr<ExplorerMin> rightTable;
+private slots:
+    void onDragEnter(QDragEnterEvent*);
+    void dropEvent(QDropEvent* event) ;
 private:
-    ExplorerMin *leftTable = nullptr;
-    ExplorerMin *rightTable = nullptr;
+    void setupDragAndDrop(QTableView *tableView);
 };
 
 #endif // TWOPANE_H
