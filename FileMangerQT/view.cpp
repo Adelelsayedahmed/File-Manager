@@ -23,7 +23,6 @@ View::View(QWidget *parent)
 {
 ui->setupUi(this);
 
-fileSystemModel = new QFileSystemModel(this);
 mRegisterSignals();
 
 topBar = new addOnsBar(this);
@@ -42,8 +41,6 @@ this->setCentralWidget(centralWidget);
 View::~View()
 {
     delete ui;
-    delete explorer;
-    delete twoPane;
 }
 
 
