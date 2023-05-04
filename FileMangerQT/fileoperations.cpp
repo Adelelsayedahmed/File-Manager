@@ -17,7 +17,6 @@ void FileOperations::copy_directory(const fs::path& source_path, const fs::path&
     {
         const fs::path& source_sub_path = entry.path();
         const fs::path& destination_sub_path = destination_path / source_sub_path.filename();
-        boost::progress_display progress(total_size);
         /*
          * this condition is made in case we are trying to copy a folder
          * inside another folder where they both have the same name so
