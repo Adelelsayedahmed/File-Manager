@@ -154,13 +154,13 @@ void Controller::SearchForFileByName(std::string starting_point_directory_path, 
 
 void Controller::batchCompressControllerSlot(std::vector<std::string> &Paths)
 {
-        std::thread t(&FileOperations::batchCompression, fileOperations, std::ref(Paths));
-        t.detach();
+    fileOperations->batchCompression(Paths);
+
+
 }
 
 void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
 {
-        std::thread t(&FileOperations::batchDecompression, fileOperations, std::ref(Paths));
-        t.detach();
+    fileOperations->batchDecompression(Paths);
 }
 

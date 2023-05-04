@@ -7,7 +7,7 @@ rename_widget::rename_widget()
 {
     file_name_edit = new QLineEdit(this);
     file_name_edit->setPlaceholderText("Enter file name");
-    okButton = new QPushButton("OK",this);
+    okButton = new QPushButton("Rename",this);
     warningLabel = new QLabel("",this);
 
     connect(okButton, &QPushButton::clicked, this, &rename_widget::onOkClicked);

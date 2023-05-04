@@ -369,6 +369,7 @@ void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)
 
 void ExplorerMin::onBatchCompressViewSlot()
 {
+    std::cout<<"onBatchCompressViewSlot"<<std::endl ;
     std::vector< std::string> Paths  = getSelectedPaths();
     emit batchCompressViewSignal(Paths);
 }
