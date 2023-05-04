@@ -59,7 +59,7 @@ public slots:
     void onPaste();
     void onDel();
     void onCut();
-
+    void onUndo();
     void onProperties();
 
     void onRenameFilesViewSlot();
@@ -84,6 +84,7 @@ signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
+    void undoAction();
     void propertiesOfFile(std::string filePath);
     void renameFileViewSignal(std::string filePath , const std::string newFileName);
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);

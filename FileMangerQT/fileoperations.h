@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <iostream>
 #include "compression.h"
+#include "undo.h"
+#include "undocopy.h"
 #include <filesystem>
 namespace fs = boost::filesystem;
 

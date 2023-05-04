@@ -20,6 +20,9 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::delFile, this, &Controller::del);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
+
+     QObject::connect(dView->stackedview->explorer, &ExplorerMin::undoAction, this, &Controller::undoAction);
+
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
@@ -132,6 +135,11 @@ void Controller::identifyDuplicates()
 
   //  IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
 
+}
+
+void Controller::undoAction()
+{
+     undoController.undo();
 }
 
 

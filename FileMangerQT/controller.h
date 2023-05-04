@@ -22,7 +22,7 @@
 #include <vector>
 #include "fileoperations.h"
 #include<thread>
-
+#include "undocontroller.h"
 namespace fs = boost::filesystem;
 class Controller : public QObject
 {
@@ -41,7 +41,7 @@ private:
     SearchWindow *dWindow;
     void pasteFromCut(fs::path destination_path);
     void mRegisterSignals();
-
+    UndoController undoController;
 
 
 public slots:
@@ -52,7 +52,7 @@ public slots:
     void propertiesOfFile(const fs::path &path);
     void identifyDuplicates();
 
-
+    void undoAction();
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string& newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
 

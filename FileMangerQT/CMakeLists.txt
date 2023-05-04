@@ -66,8 +66,12 @@ set(PROJECT_SOURCES
         stackedviewwidget.h
         undo.cpp
         undo.h
-
-
+        undocopy.cpp
+        undocopy.h
+        undocontroller.cpp
+        undocontroller.h
+        myqueue.cpp
+        myqueue.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
