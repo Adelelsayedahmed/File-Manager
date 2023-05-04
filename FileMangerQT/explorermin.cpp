@@ -74,6 +74,7 @@ ExplorerMin::~ExplorerMin()
 
 QTableView* ExplorerMin::ShowTableView()
 {
+
     table->setModel(fileSystemModel);
     QItemSelectionModel* selectionModel = new QItemSelectionModel(fileSystemModel);
 //    table->setSelectionModel(selectionModel);
@@ -85,6 +86,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
@@ -210,12 +212,13 @@ void ExplorerMin::onCopy()
 
 void ExplorerMin::onPaste()
 {
-
+    if (!fileSystemModel->isDir(index))
+    {
+             index = index.parent();
+    }
     std::string dest =  fileSystemModel->filePath(index).toStdString();
     qInfo()<<sourceFilePathCopy;
     emit copyFile(sourceFilePathCopy.toStdString(),dest,action);
-        QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
-        thread->start();
     qInfo()<< "pasting";
 }
 

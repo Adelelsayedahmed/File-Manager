@@ -56,9 +56,8 @@ Controller::~Controller()
 
 void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
-//    std::thread t(&FileOperations::paste, fileOperations, source_path, destination_path, action);
-//    t.detach();
-    fileOperations->paste(source_path,destination_path,action);
+    std::thread t(&FileOperations::paste, fileOperations, source_path, destination_path, action);
+    t.detach();
 }
 
 
