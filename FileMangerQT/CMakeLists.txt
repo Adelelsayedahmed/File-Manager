@@ -72,7 +72,8 @@ set(PROJECT_SOURCES
         statistics.h
         stackedviewwidget.cpp
         stackedviewwidget.h
-
+        rename_widget.h
+        rename_widget.cpp
 
 
 )
