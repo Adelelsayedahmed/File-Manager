@@ -37,8 +37,9 @@ public:
     static uintmax_t getFile_size(std::string& givenPath);
 
     // function to convert from bytes to kilo bytes
-    static int convertToKB(uintmax_t bytes);
+    static unsigned int convertToKB(uintmax_t bytes);
 
+    static unsigned int convertToMB(uintmax_t bytes);
 };
 
 #endif // STATISTICS_H
