@@ -39,7 +39,7 @@ void PropertiesPageWidget::showPropertiesWindow()
     {
         iconLabel->setPixmap(QPixmap( parentPath + "/directoryIcon.png"));
         name=QString::fromStdString(path.filename().string());
-        size=QString::fromStdString(std::to_string(statistics::directory_size(path)/1000)+" KB");
+        size=QString::fromStdString(std::to_string(statistics::directory_size(path.string())/1000)+" KB");
         extension="directory";
 
         statisticsButton = new QPushButton("Charts representation", propertiesWindow);

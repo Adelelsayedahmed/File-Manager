@@ -56,9 +56,9 @@ Controller::~Controller()
 
 void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
-    std::thread t(&FileOperations::paste, fileOperations, source_path, destination_path, action);
-    t.detach();
-
+//    std::thread t(&FileOperations::paste, fileOperations, source_path, destination_path, action);
+//    t.detach();
+    fileOperations->paste(source_path,destination_path,action);
 }
 
 
@@ -75,16 +75,16 @@ void Controller::cutFile(const fs::path &path)
 }
 
 void Controller::propertiesOfFile(const fs::path &path)
-{/*
+{
         statistics *statObj = new statistics;
 
-        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->explorer);
+        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->stackedview->explorer);
 
-        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->explorer, statObj, pieChartWidget);
+        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->stackedview->explorer, statObj, pieChartWidget);
 
         propertiesWidget->path=path;
 
-        propertiesWidget->showPropertiesWindow();*/
+        propertiesWidget->showPropertiesWindow();
 
 }
 
