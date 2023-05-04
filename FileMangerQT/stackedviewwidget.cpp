@@ -39,23 +39,33 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
 void stackedviewwidget::nextPane()
 {
     int index = stackedWidget->currentIndex();
+        emit indexAboutToChange(0);//hard coded
+
         index++;
         if (index >= stackedWidget->count())
             index = 0;
+
+        //       emit currentIndexChanged(0);// hard coded
         stackedWidget->setCurrentIndex(index);
 }
 
 void stackedviewwidget::previousPane()
 {
     int index = stackedWidget->currentIndex();
-       index--;
+        emit indexAboutToChange(0);//hard coded
+        index--;
        if (index < 0)
            index = stackedWidget->count() - 1;
+
+
+//       emit currentIndexChanged(0);// hard coded
        stackedWidget->setCurrentIndex(index);
 }
 void stackedviewwidget::switchToIndex(int index)
 {
        if (index >= 0 && index < stackedWidget->count()) {
+           emit indexAboutToChange(0);//hard coded
+           emit currentIndexChanged(0);// hard coded
            stackedWidget->setCurrentIndex(index);
        }
 }

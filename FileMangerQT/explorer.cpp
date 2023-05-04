@@ -120,8 +120,17 @@ void Explorer::footer_size(std::string s)
     }
     else
     {
-        size=statistics::convertToMB(statistics::directory_size(s));
-        appendingString=" MB";
+        size=statistics::directory_size(s);
+        if(size>statistics::GIGA){
+            size=statistics::convertToGB(size);
+            appendingString=" GB";
+        }
+        else
+        {
+            size=statistics::convertToMB(size);
+            appendingString=" MB";
+        }
+
     }
     sizeValueLabel->setText(QString::number(size).append(appendingString)) ;
 

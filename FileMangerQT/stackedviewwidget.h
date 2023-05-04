@@ -27,7 +27,9 @@ private slots:
     void nextPane();
     void previousPane();
 
-private:
+signals:
+    void currentIndexChanged(int index);
+    void indexAboutToChange(int index);
 
 };
 

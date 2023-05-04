@@ -31,7 +31,7 @@ public:
     static int numberOfItems(std::string& givenPath);
 
     // static function to detemine the selected path is file or not
-    static bool isFile(std::string& givenPath);
+    static bool isFile(std::string givenPath);
 
     //static function to determine the size of a selected path
     static uintmax_t getFile_size(std::string& givenPath);
@@ -39,7 +39,13 @@ public:
     // function to convert from bytes to kilo bytes
     static unsigned int convertToKB(uintmax_t bytes);
 
+    // function to convert from bytes to Mega bytes
     static unsigned int convertToMB(uintmax_t bytes);
+
+    // function to convert from bytes to giga bytes
+    static unsigned int convertToGB(uintmax_t bytes);
+
+    const static unsigned int GIGA=1000000000;
 };
 
 #endif // STATISTICS_H

@@ -65,6 +65,9 @@ public slots:
     void batchCompressControllerSlot( std::vector< std::string>&Paths);
     void batchDecompressControllerSlot( std::vector< std::string>&Paths);
 
+    void StackedWidgetSwitchedDisable(int index);
+    void StackedWidgetSwitchedEnable(int index);
+
 
 };
 

@@ -25,6 +25,9 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
     QObject::connect(dView->topBar, &addOnsBar::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+    QObject::connect(dView->stackedview, &stackedviewwidget::currentIndexChanged, this, &Controller::StackedWidgetSwitchedDisable);
+    QObject::connect(dView->stackedview, &stackedviewwidget::indexAboutToChange, this, &Controller::StackedWidgetSwitchedEnable);
+
 
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
@@ -164,3 +167,11 @@ void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
         t.detach();
 }
 
+void Controller::StackedWidgetSwitchedDisable(int index)
+{
+        dView->topBar->disableAction(index);
+}
+void Controller::StackedWidgetSwitchedEnable(int index)
+{
+        dView->topBar->enableAction(index);
+}

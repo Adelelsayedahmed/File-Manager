@@ -111,9 +111,8 @@ uintmax_t statistics::directory_size(std::string givenPath)
      return size;
 }
 
- bool statistics::isFile(std::string& givenPath)
+ bool statistics::isFile(std::string givenPath)
 {
-
      if(is_regular_file(path(givenPath)))
      {
      return true;
@@ -154,4 +153,8 @@ unsigned int statistics::convertToKB(uintmax_t bytes)
 unsigned int statistics::convertToMB(uintmax_t bytes)
 {
      return bytes/1000000;
+}
+unsigned int statistics::convertToGB(uintmax_t bytes)
+{
+     return bytes/1000000000;
 }
