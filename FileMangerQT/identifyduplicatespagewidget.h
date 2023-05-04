@@ -65,6 +65,8 @@ private:
 
     QModelIndex selectedDuplicateIndex;
 
+    std::string toBeRemovedPath;
+
     void initializeThePage();
 
     void initializeTables();
@@ -72,6 +74,9 @@ private:
     void setPageConnections();
 
     void showThePage();
+
+    void duplicatesDeletion();
+
 
 public slots:
     void showAddPopupWindow();
