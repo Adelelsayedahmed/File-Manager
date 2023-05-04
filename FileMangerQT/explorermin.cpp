@@ -94,6 +94,13 @@ QTableView* ExplorerMin::ShowTableView()
 
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
+    //disable right click in case it is pressed on empty area.
+    QModelIndex ind = table->indexAt(event->pos());
+    if(!ind.isValid())
+    {
+        event->ignore();
+        return;
+    }
     qInfo() << "right click pressed";
     QMenu menu(this);
     QAction *cutAction = menu.addAction(tr("Cut"));
