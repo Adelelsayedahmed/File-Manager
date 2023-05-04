@@ -17,17 +17,17 @@ Controller::Controller(View *view)
 
 void Controller::mRegisterSignals()
 {
-    QObject::connect(dView->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
-    QObject::connect(dView->explorer, &ExplorerMin::delFile, this, &Controller::del);
-    QObject::connect(dView->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
-    QObject::connect(dView->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
-    QObject::connect(dView->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
-    QObject::connect(dView->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
-    QObject::connect(dView->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
-    QObject::connect(dView->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::delFile, this, &Controller::del);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
 
-    QObject::connect(dView->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
-    QObject::connect(dView->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
 
 
 }
@@ -128,9 +128,9 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
 
 void Controller::identifyDuplicates()
 {
-    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+   // IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
 
-    IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
+  //  IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
 
 }
 
