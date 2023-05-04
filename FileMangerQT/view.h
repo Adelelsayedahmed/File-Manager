@@ -12,6 +12,7 @@
 #include <explorer.h>
 #include "explorermin.h"
 #include "twopane.h"
+#include "stackedviewwidget.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
@@ -33,7 +34,8 @@ public:
     void TreeView();
     ~View();
     FileContentView *contentUi;
-    Explorer *explorer;
+//  Explorer *explorer;
+    stackedviewwidget * stackedview;
 private slots:
 
 //signals:

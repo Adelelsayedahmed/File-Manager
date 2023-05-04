@@ -31,6 +31,7 @@ private slots:
 signals:
     void SearchWindowCreated(SearchWindow *search);
     void backButtonPressedSignal();
+
 };
 
 

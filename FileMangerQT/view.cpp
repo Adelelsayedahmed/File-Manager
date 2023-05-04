@@ -25,10 +25,15 @@ View::View(QWidget *parent)
     fileSystemModel = new QFileSystemModel(this);
     mRegisterSignals();
     //TreeView();
-    explorer = new Explorer("",this);
-//    TwoPane *twoPane = new TwoPane();
-    ui->formLayout->addWidget(explorer);
-    this->setCentralWidget(explorer);
+
+
+
+    stackedview = new stackedviewwidget(this);
+
+  // explorer = new Explorer("",this);
+  // TwoPane *twoPane = new TwoPane();
+    ui->formLayout->addWidget(stackedview);
+    this->setCentralWidget(stackedview);
 }
 
 

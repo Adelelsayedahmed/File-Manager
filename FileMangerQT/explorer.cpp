@@ -55,6 +55,7 @@ void Explorer::registerSignals()
        QObject::connect(table,SIGNAL(clicked(QModelIndex)),this,SLOT(footer_update(QModelIndex)));
 //    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
     QObject::connect(tree, SIGNAL(clicked(QModelIndex)), this, SLOT(on_treeView_clicked(QModelIndex)));
+    QObject::connect(this,&ExplorerMin::backButtonPressedSignalFromTree,this,&ExplorerMin::BackButtonClickedFromTree);
 
 }
 
@@ -69,7 +70,7 @@ void Explorer:: footer_update(const QModelIndex &index1)
 //     table->setModel(fileSystemModel);
     // ppath is "" we need too eeedit path here
 
-    qInfo()<<"in table view selected "<<fileSystemModel->filePath(index1).toStdString();
+//    qInfo()<<"in table view selected "<<fileSystemModel->filePath(index1).toStdString();
 
    // qInfo()<<"in table view selected size:  ";
 
@@ -108,6 +109,7 @@ void Explorer::ShowTableView(QModelIndex index1)
 void Explorer::footer_size(std::string s)
 {
     sizeValueLabel->setText("0");
+
     qInfo()<<"in footer size function"<<s;
     int size=0;
     if(statistics::isFile(s))
@@ -120,6 +122,7 @@ void Explorer::footer_size(std::string s)
         size=statistics::directory_size(s);
     }
     sizeValueLabel->setText(QString::number(size).append(" KB")) ;
+
 }
 void Explorer::footer_item(std::string s)
 {
@@ -140,6 +143,8 @@ void Explorer::on_treeView_clicked(const QModelIndex &index1)
     t.detach();
     std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(proxy_model->mapToSource(index1)).toStdString());
     t2.detach();
+    ExplorerMin::filepath = fileSystemModel->filePath(proxy_model->mapToSource(index1));
+    emit backButtonPressedSignalFromTree();
     emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
 
 }
