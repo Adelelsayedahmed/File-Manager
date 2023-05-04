@@ -73,10 +73,15 @@ set(PROJECT_SOURCES
         stackedviewwidget.cpp
         stackedviewwidget.h
         rename_widget.h
-        rename_widget.cpp        undo.cpp
+        rename_widget.cpp
+        undo.cpp
         undo.h
         undocopy.cpp
         undocopy.h
+        undobatchrenaming.cpp
+        undobatchrenaming.h
+        undorename.cpp
+        undorename.h
         undocontroller.cpp
         undocontroller.h
         myqueue.cpp

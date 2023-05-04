@@ -10,6 +10,8 @@
 #include "compression.h"
 #include "undo.h"
 #include "undocopy.h"
+#include"undobatchrenaming.h"
+#include "undocontroller.h"
 #include <filesystem>
 namespace fs = boost::filesystem;
 
@@ -31,8 +33,8 @@ private:
     compression* compressionOperationsObj ;
     fs::path m_cutPath;
     void pasteFromCut(fs::path destination_path);
-    void addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths);
     std::string removeNameFromPath(std::string path);
     void copy_directory(const fs::path &source_path, const fs::path &destination_path);
+    UndoController undoController;
 };
 #endif // FILEOPERATIONS_H

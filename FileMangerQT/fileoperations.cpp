@@ -76,6 +76,7 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
             }
             paths.push_back(destination_path);
             undo= new UndoCopy(paths);
+            undoController.addActions(undo);
             return ;
         }
         catch (const std::exception& ex) {
@@ -198,17 +199,17 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
     unsigned int counter = 1 ;
 
     /*to be used by wafyola*/
-    std::vector< std::string> new_paths ;
+    std::vector< std::string> new_names ;
     std::string tempName ;
     for ( auto & path : oldPaths)
     {
         tempName = newBaseName ;
         FileOperations::renameFile(path,tempName.append(std::to_string(counter)));
-
+        new_names.push_back(tempName.append(std::to_string(counter)));
         counter++;
     }
-    FileOperations::addPaths( oldPaths,new_paths);
-
+    Undo *undo=new UndoBatchRenaming(oldPaths,new_names);
+    undoController.addActions(undo);
 }
 
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
@@ -229,9 +230,4 @@ std::string FileOperations:: removeNameFromPath(std::string path) {
         return path.substr(0, found+1);
     }
     return path;
-}
-void FileOperations::addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths)
-{
-//    paths.push(oldPaths);
-//    paths.push(newPaths);
 }

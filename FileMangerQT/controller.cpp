@@ -103,8 +103,12 @@ std::string removeNameFromPath(std::string path) {
 void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,const std::string& newFileName )
 {
 
-        std::thread t(&FileOperations::renameFile, fileOperations, path, newFileName);
-        t.detach();
+    std::thread t(&FileOperations::renameFile, fileOperations, path, newFileName);
+    t.detach();
+
+    Undo* undo =new UndoRename(path.string(),newFileName);
+    undoController.addActions(undo);
+
 }
 
 

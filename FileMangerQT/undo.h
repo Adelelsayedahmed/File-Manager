@@ -73,11 +73,18 @@ public:
            qInfo() << "Error deleting";
        }
     }
+static std::string removeNameFromPath(std::string path) {
+    size_t found = path.find_last_of("/\\");
+    if (found != std::string::npos) {
+        return path.substr(0, found+1);
+    }
+    return path;
+ }
     void undoCut();
     void undoCopy();
     void undoBatchRename();
     void undoDeleteItems();
-    std::string removeNameFromPath(std::string path);
+   // std::string removeNameFromPath(std::string path);
 public slots :
    // void undo();
     //void addActions(CopyCutAction action);

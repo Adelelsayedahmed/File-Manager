@@ -22,6 +22,8 @@
 #include "fileoperations.h"
 #include<thread>
 #include "undocontroller.h"
+#include "undo.h"
+#include "undorename.h"
 #include "customtable.h"
 
 namespace fs = boost::filesystem;
