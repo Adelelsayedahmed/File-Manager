@@ -64,7 +64,8 @@ set(PROJECT_SOURCES
         statistics.h
         stackedviewwidget.cpp
         stackedviewwidget.h
-
+        undo.cpp
+        undo.h
 
 
 )
