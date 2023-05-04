@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include "fileoperations.h"
 #include <QThread>
+
+QString ExplorerMin::filepath;
 ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
@@ -25,6 +27,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     object->moveToThread(thread);
     connect(this, &ExplorerMin::copyFile, object, &FileOperations::paste, Qt::QueuedConnection);
     contentUi = new FileContentView();
+    backFilepath = fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
 
@@ -77,6 +80,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
+    backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
 }
@@ -180,10 +184,15 @@ void ExplorerMin::checkSelectedFileForCompression()
     }
 }
 
+void ExplorerMin::BackButtonClickedFromTree()
+{
+    backFilepath = ExplorerMin::filepath;
+}
+
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     this->index = index;
-
+    backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     ///////////////////////
 }
@@ -281,25 +290,24 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 
 void ExplorerMin::BackButtonClicked()
 {
-    QString path =fileSystemModel->filePath(index);
-    if(path != "/" || path !="")
+    QString path = this->backFilepath;
+    qInfo() << path;
+    if (path == "/") folderClicked("");
+    else if(path !="")
     {
         QStringList list1 = path.split('/');
+        qInfo() << list1;
         path="/";
-        for(int i = 0 ; i < list1.length()-2;i++)
-            path+=list1[i]+"/";
-        path+=list1[list1.length()-2];
-        this->index = fileSystemModel->index(path);
+        if(list1.length() > 1)
+        {
+            for(int i = 1 ; i < list1.length()-2;i++)
+            {
 
-        //Open folder in tableView
-        table->setModel(fileSystemModel);
-        table->setRootIndex(index);
-        table->setColumnWidth(0,250);
-        table->setColumnWidth(3,250);
-        table->horizontalScrollBar();
-        table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        table->verticalHeader()->hide();
-        emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+                path+=list1[i] + "/";
+            }
+            path+=list1[list1.length()-2];
+        }
+        folderClicked(path);
     }
 
 }
@@ -307,6 +315,7 @@ void ExplorerMin::BackButtonClicked()
 void  ExplorerMin::folderClicked(QString returnedFilePath)
 {
     //Get index of clicked folder
+    this->backFilepath = returnedFilePath;
     this->index = fileSystemModel->index(returnedFilePath);
 
     //Open folder in tableView
@@ -317,7 +326,6 @@ void  ExplorerMin::folderClicked(QString returnedFilePath)
     table->horizontalScrollBar();
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
-
     emit locationChanged(returnedFilePath, fileSystemModel->fileName(index));
 //    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
 //    ui->searchBar->clear();

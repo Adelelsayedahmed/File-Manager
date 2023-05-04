@@ -31,7 +31,8 @@ public:
     QTableView *table;
     QAction *compressAction ;
     QAction *decompressAction;
-
+    QString backFilepath;
+    static QString filepath;
 protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
@@ -44,6 +45,7 @@ protected:
     CopyCutAction action;
     QString filePath;
     QString sourceFilePathCopy;
+
     FileContentView *contentUi;
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
@@ -76,6 +78,7 @@ public slots:
 
     void onBatchCompressViewSlot();
     void onBatchDecompressViewSlot ();
+    void BackButtonClickedFromTree();
 
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
@@ -87,7 +90,7 @@ signals:
     void SearchWindowCreated(SearchWindow *window);
     void locationChanged(QString filepath, QString filename);
     void identifyDuplictesIconCLicked();
-
+    void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
 
