@@ -9,14 +9,22 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);
     fileSystemModel = new QFileSystemModel(this);
+
     QWidget* tableWidget = new QWidget;
     table = new QTableView(tableWidget);
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
-    search = new SearchBar(this);
 
+    search = new SearchBar(this);
+    backButton = new BackButton(this);
     topBar = new addOnsBar(this);
+
     identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+
+    locationLayout = new QHBoxLayout(this);
+    locationLayout->setContentsMargins(0,0,0,0);
+    locationLayout->addWidget(backButton);
+    locationLayout->addWidget(search);
 
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -53,7 +61,7 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
-    QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
+    QObject::connect(backButton, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
     topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
 
@@ -63,6 +71,7 @@ ExplorerMin::~ExplorerMin()
     delete fileSystemModel;
     delete contentUi;
     delete search;
+    delete backButton;
     delete identifyDuplicatesAction;
     delete topBar;
 }
@@ -185,7 +194,7 @@ void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
     this->index = index;
 
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
-    ///////////////////////
+
 }
 void ExplorerMin::onCopy()
 {

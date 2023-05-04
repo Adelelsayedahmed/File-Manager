@@ -12,7 +12,7 @@ addOnsBar::addOnsBar(QWidget *parent)
                     "}";
     toolbar->setStyleSheet(style);
     QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
-    qDebug() <<parentPath;
+//    qDebug() <<parentPath;
     QString path=parentPath + "/duplicatesIcon.png";
     QString name="duplicates";
     QPixmap image(path);

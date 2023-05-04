@@ -43,8 +43,6 @@ public:
     void footer_size(std::string s);
     void footer_item(std::string s);
 
-
-
     DirectoryOnlyFilterProxyModel *proxy_model;
 protected slots:
     void on_treeView_clicked(const QModelIndex &index);

@@ -1,7 +1,6 @@
-
 #ifndef EXPLORERMIN_H
 #define EXPLORERMIN_H
-#include<QHeaderView>
+#include <QHeaderView>
 #include <QObject>
 #include <QTableView>
 #include <QTreeView>
@@ -17,8 +16,9 @@
 #include "searchwindow.h"
 #include "searchbar.h"
 #include "addonsbar.h"
-#include"statistics.h"
-#include<QString>
+#include "statistics.h"
+#include "backbutton.h"
+#include <QString>
 
 class ExplorerMin:public QWidget
 {
@@ -30,14 +30,16 @@ public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
     QTableView *table;
     QAction *compressAction ;
-    QAction *decompressAction;
+    QAction *decompressAction; 
 
 protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
     SearchBar *search;
-protected:
+    BackButton *backButton;
 
+protected:
+    QHBoxLayout *locationLayout;
     QFormLayout *layout;
     QFileSystemModel* fileSystemModel;
     QModelIndex index;
