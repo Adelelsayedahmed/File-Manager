@@ -24,12 +24,12 @@ class View : public QMainWindow
     Q_OBJECT
 private:
      Ui::View *ui;
-    QFileSystemModel* fileSystemModel;
     void mRegisterSignals();
     QVector<QModelIndex> indexVector;
     QModelIndex index;
 
     CopyCutAction action;
+    bool isMultipleSelected();
 public:
     addOnsBar* topBar;
     View(QWidget *parent = nullptr);

@@ -42,7 +42,8 @@ this->setCentralWidget(centralWidget);
 View::~View()
 {
     delete ui;
-    delete fileSystemModel;
+    delete explorer;
+    delete twoPane;
 }
 
 

@@ -54,6 +54,14 @@ set(PROJECT_SOURCES
         identifyduplicates.h
         identifyduplicatespagewidget.cpp
         identifyduplicatespagewidget.h
+        customtable.cpp
+        customtable.h
+        myfilesystemmodel.cpp
+        myfilesystemmodel.h
+#        identifyduplicates.cpp
+#        identifyduplicates.h
+#        identifyduplicatespagewidget.cpp
+#        identifyduplicatespagewidget.h
 #        piechartpagewidget.cpp
 #        piechartpagewidget.h
 #        PiechartWidget.cpp

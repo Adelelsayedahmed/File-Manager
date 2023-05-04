@@ -10,6 +10,39 @@ FileOperations::~FileOperations()
     delete compressionOperationsObj ;
 }
 
+void FileOperations::copy_directory(const fs::path& source_path, const fs::path& destination_path)
+{
+    // Create destination directory if it does not already exist
+    if (!fs::exists(destination_path))
+    {
+        fs::create_directories(destination_path);
+    }
+
+    // Copy all files in the source directory to the destination directory
+    for (const auto& entry : fs::directory_iterator(source_path))
+    {
+        const fs::path& source_sub_path = entry.path();
+        const fs::path& destination_sub_path = destination_path / source_sub_path.filename();
+        /*
+         * this condition is made in case we are trying to copy a folder
+         * inside another folder where they both have the same name so
+         * we have to prevent the infinite loop
+         */
+        if(source_sub_path == destination_path)
+            continue;
+        if (fs::is_directory(source_sub_path))
+        {
+                // Recursively copy subdirectory
+                copy_directory(source_sub_path, destination_sub_path);
+        }
+        else
+        {
+            // Copy file to destination directory
+            fs::copy_file(source_sub_path, destination_sub_path);
+
+        }
+    }
+}
 void FileOperations::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
 
@@ -27,7 +60,13 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
             }
             if (fs::is_directory(source_path))
             {
-                fs::copy(source_path, destination_path, fs::copy_options::recursive);
+                qInfo()<<"destination is:";
+                qInfo()<< destination_path.c_str();
+                if (!fs::exists(destination_path))
+                {
+                    copy_directory(source_path,destination_path);
+                }
+
             }
             else
             {

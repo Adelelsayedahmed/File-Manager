@@ -10,9 +10,9 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     setFocusPolicy(Qt::StrongFocus);
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);
-    fileSystemModel = new QFileSystemModel(this);
+    fileSystemModel = new MyFileSystemModel(this);
     QWidget* tableWidget = new QWidget;
-    table = new QTableView(tableWidget);
+    table = new CustomTable(tableWidget);
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
     search = new SearchBar(this);
@@ -60,6 +60,8 @@ void ExplorerMin::registerSignals()
   //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
 
+
+
 ExplorerMin::~ExplorerMin()
 {
     delete layout;
@@ -73,6 +75,9 @@ ExplorerMin::~ExplorerMin()
 QTableView* ExplorerMin::ShowTableView()
 {
     table->setModel(fileSystemModel);
+    QItemSelectionModel* selectionModel = new QItemSelectionModel(fileSystemModel);
+//    table->setSelectionModel(selectionModel);
+//    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
     table->setColumnWidth(3,250);

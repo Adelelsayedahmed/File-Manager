@@ -20,6 +20,12 @@
 #include"statistics.h"
 #include<QString>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+
+#include <QAbstractItemView>
+#include "customtable.h"
+#include "myfilesystemmodel.h"
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
@@ -28,11 +34,12 @@ private :
     std::vector<std::string> getSelectedPaths();
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
-    QTableView *table;
     QAction *compressAction ;
     QAction *decompressAction;
     QString backFilepath;
     static QString filepath;
+    CustomTable *table;
+    ~ExplorerMin();
 protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
@@ -40,7 +47,7 @@ protected:
 protected:
 
     QFormLayout *layout;
-    QFileSystemModel* fileSystemModel;
+    MyFileSystemModel* fileSystemModel;
     QModelIndex index;
     CopyCutAction action;
     QString filePath;
@@ -50,7 +57,6 @@ protected:
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
 
-    ~ExplorerMin();
 
     QTableView* ShowTableView();
 public slots:
