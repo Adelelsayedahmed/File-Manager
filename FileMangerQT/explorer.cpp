@@ -9,9 +9,9 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
     proxy_model = new DirectoryOnlyFilterProxyModel(this);
     proxy_model->setSourceModel(fileSystemModel);
     tree = new QTreeView(this);
-    layout->insertRow(0,topBar);
-    layout->insertRow(1, search);
-    layout->insertRow(2,ShowTreeView(rootPath),table);
+   // layout->insertRow(0,topBar);
+    layout->insertRow(0, search);
+    layout->insertRow(1,ShowTreeView(rootPath),table);
 
     // Create the footer widget
     QWidget* footerWidget = new QWidget(this);

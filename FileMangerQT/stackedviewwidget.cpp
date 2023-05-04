@@ -14,6 +14,11 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
         twoPane = new TwoPane(this);
         stackedWidget->addWidget(twoPane);
 
+        // Create the identify duplicates widget and add it to the stacked widget
+        duplicatesPage=new IdentifyDuplicatesPageWidget(this);
+        stackedWidget->addWidget(duplicatesPage);
+
+
         // Create the next and previous buttons
         nextButton = new QPushButton("Next", this);
         previousButton = new QPushButton("Previous", this);
@@ -47,4 +52,10 @@ void stackedviewwidget::previousPane()
        if (index < 0)
            index = stackedWidget->count() - 1;
        stackedWidget->setCurrentIndex(index);
+}
+void stackedviewwidget::switchToIndex(int index)
+{
+       if (index >= 0 && index < stackedWidget->count()) {
+           stackedWidget->setCurrentIndex(index);
+       }
 }

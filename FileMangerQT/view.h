@@ -13,6 +13,7 @@
 #include "explorermin.h"
 #include "twopane.h"
 #include "stackedviewwidget.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
@@ -30,6 +31,7 @@ private:
 
     CopyCutAction action;
 public:
+    addOnsBar* topBar;
     View(QWidget *parent = nullptr);
     void TreeView();
     ~View();

@@ -20,9 +20,12 @@ class IdentifyDuplicatesPageWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit IdentifyDuplicatesPageWidget(QWidget *parent = nullptr,IdentifyDuplicates* duplicatesObj=nullptr);
+    explicit IdentifyDuplicatesPageWidget(QWidget *parent = nullptr);
 
     void setTheTable(std::vector<std::vector<std::string>> duplicates);
+
+    void setDuplicatesObject(IdentifyDuplicates* duplicatesObj);
+
 
 private:
     IdentifyDuplicates* duplicatesObj;

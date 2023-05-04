@@ -24,7 +24,7 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
-    QObject::connect(dView->stackedview->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+    QObject::connect(dView->topBar, &addOnsBar::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
 
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
@@ -128,9 +128,9 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
 
 void Controller::identifyDuplicates()
 {
-   // IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
-
-  //  IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
+    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+   dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
+   dView->stackedview->switchToIndex(2);
 
 }
 

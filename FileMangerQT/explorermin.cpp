@@ -17,8 +17,8 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     fileSystemModel->parent(index);
     search = new SearchBar(this);
 
-    topBar = new addOnsBar(this);
-    identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+  //  topBar = new addOnsBar(this);
+   // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
 
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -57,7 +57,7 @@ void ExplorerMin::registerSignals()
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
     QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
-    topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+  //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 }
 
 ExplorerMin::~ExplorerMin()
@@ -337,10 +337,10 @@ void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)
     QObject::connect(window, &SearchWindow::folderClicked, this, &ExplorerMin::folderClicked);
     emit SearchWindowCreated(window);
 }
-void ExplorerMin::on_identifyDuplicatesIconClicked()
-{
-    emit identifyDuplictesIconCLicked();
-}
+//void ExplorerMin::on_identifyDuplicatesIconClicked()
+//{
+//    emit identifyDuplictesIconCLicked();
+//}
 
 void ExplorerMin::onBatchCompressViewSlot()
 {
