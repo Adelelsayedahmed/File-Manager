@@ -42,6 +42,7 @@ public:
     QLabel* sizeValueLabel ;
     void footer_size(std::string s);
     void footer_item(std::string s);
+
     DirectoryOnlyFilterProxyModel *proxy_model;
 
     ~Explorer();

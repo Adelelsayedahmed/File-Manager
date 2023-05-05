@@ -9,9 +9,13 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
     proxy_model = new DirectoryOnlyFilterProxyModel(this);
     proxy_model->setSourceModel(fileSystemModel);
     tree = new QTreeView(this);
+
+    layout->setContentsMargins(0,0,0,0);
+
    // layout->insertRow(0,topBar);
-    layout->insertRow(0, search);
-    layout->insertRow(1,ShowTreeView(rootPath),table);
+    layout->insertRow(0, location);
+//    layout->insertRow(0,ShowTreeView(rootPath),table);
+
 
     // Create the footer widget
     QWidget* footerWidget = new QWidget(this);
@@ -79,6 +83,7 @@ void Explorer:: footer_update(const QModelIndex &index1)
     std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(index1).toStdString());
     t2.detach();
 }
+
 QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 {
     tree->setModel(proxy_model);
@@ -92,6 +97,7 @@ tree->setRootIndex(proxy_model->mapFromSource(fileSystemModel->index("/")));
     tree->setMinimumHeight(120);
     return tree;
 }
+
 void Explorer::ShowTableView(QModelIndex index1)
 {
     table->setModel(fileSystemModel);
@@ -106,6 +112,7 @@ void Explorer::ShowTableView(QModelIndex index1)
     table->setRootIndex(fileSystemModel->index(path));
 //    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
+
 void Explorer::footer_size(std::string s)
 {
     sizeValueLabel->setText("...");
@@ -142,6 +149,7 @@ void Explorer::footer_size(std::string s)
     sizeValueLabel->setText(QString::number(size).append(appendingString)) ;
 
 }
+
 void Explorer::footer_item(std::string s)
 {
     numFilesValueLabel->setText("0");
@@ -154,6 +162,7 @@ void Explorer::footer_item(std::string s)
         numFilesValueLabel->setText(QString::number(statistics::numberOfItems(s)));
     }
 }
+
 void Explorer::on_treeView_clicked(const QModelIndex &index1)
 {
     this->index = index1;
@@ -161,9 +170,11 @@ void Explorer::on_treeView_clicked(const QModelIndex &index1)
     t.detach();
     std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(proxy_model->mapToSource(index1)).toStdString());
     t2.detach();
+
     ExplorerMin::filepath = fileSystemModel->filePath(proxy_model->mapToSource(index1));
     emit backButtonPressedSignalFromTree();
-    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
+    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->fileName(proxy_model->mapToSource(index1)));
+
 
 }
 

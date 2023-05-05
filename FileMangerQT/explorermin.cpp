@@ -13,14 +13,23 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);
     fileSystemModel = new MyFileSystemModel(this);
+
     QWidget* tableWidget = new QWidget;
     table = new CustomTable(tableWidget);
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
-    search = new SearchBar(this);
 
+
+    search = new SearchBar(this);
+//    backButton = new BackButton(this);
+    topBar = new addOnsBar(this);
+
+    identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+
+    location = new LocationBar(fileSystemModel, rootPath, this);
   //  topBar = new addOnsBar(this);
    // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+
 
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -58,7 +67,12 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
-    QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
+
+    QObject::connect(backButton, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
+    topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+
+    QObject::connect(search->back, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
+
   //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
 
     QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
@@ -74,6 +88,7 @@ ExplorerMin::~ExplorerMin()
     delete fileSystemModel;
     delete contentUi;
     delete search;
+    delete backButton;
     delete identifyDuplicatesAction;
     delete topBar;
     delete rename_widg_obj ;
@@ -197,17 +212,19 @@ void ExplorerMin::checkSelectedFileForCompression()
     }
 }
 
+
 void ExplorerMin::BackButtonClickedFromTree()
 {
     backFilepath = ExplorerMin::filepath;
 }
+
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     this->index = index;
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
-    ///////////////////////
+
 }
 void ExplorerMin::onCopy()
 {

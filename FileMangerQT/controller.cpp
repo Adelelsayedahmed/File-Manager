@@ -154,7 +154,7 @@ void Controller::twoPaneSlot()
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
     dWindow = search;
-    QObject::connect(dWindow, &SearchWindow::searchForFileByName, this, &Controller::SearchForFileByName);
+    QObject::connect(dWindow, &SearchWindow::searchForFileByName, fileOperations, &FileOperations::SearchForFileByName);
 
 }
 
@@ -163,6 +163,7 @@ void Controller::SearchForFileByName(std::string starting_point_directory_path, 
 {
     std::thread t(&FileOperations::SearchForFileByName, fileOperations, starting_point_directory_path, file_name, std::ref(file_paths));
     t.detach();
+
 }
 
 

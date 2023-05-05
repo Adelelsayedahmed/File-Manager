@@ -15,7 +15,8 @@ Qt::DropActions MyFileSystemModel::supportedDropActions() const
 
 bool MyFileSystemModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
-    qInfo()<<"file system";
+//    qInfo()<<"file system";
+
     if (action == Qt::CopyAction && data->hasUrls()) {
         QList<QUrl> urls = data->urls();
         foreach (QUrl url, urls) {

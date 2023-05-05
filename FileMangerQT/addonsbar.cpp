@@ -16,6 +16,16 @@ addOnsBar::addOnsBar(QWidget *parent)
                     "}";
 
     toolbar->setStyleSheet(style);
+
+    QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
+//    qDebug() <<parentPath;
+    QString path=parentPath + "/duplicatesIcon.png";
+    QString name="duplicates";
+    QPixmap image(path);
+    QIcon icon(image);
+    identifyDuplicatesAction = new QAction(icon, "duplicates", this);
+    toolbar->addAction(identifyDuplicatesAction);
+
     toolbar->setIconSize(QSize(42, 42));
 
     createActions();
