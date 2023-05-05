@@ -33,6 +33,7 @@ public:
     void batchDecompression(std::vector< std::string>& Paths);
     void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
     std::map<int, std::string> SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr);
+    void setUndoController(UndoController * undoController);
 
 private:
     compression* compressionOperationsObj ;
@@ -41,7 +42,7 @@ private:
     void pasteFromCut(fs::path destination_path);
     std::string removeNameFromPath(std::string path);
     void copy_directory(const fs::path &source_path, const fs::path &destination_path);
-    UndoController undoController;
+    UndoController * undoController;
     bool Delete=0;
 };
 #endif // FILEOPERATIONS_H

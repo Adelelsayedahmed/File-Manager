@@ -44,7 +44,7 @@ private:
     SearchWindow *dWindow;
     void pasteFromCut(fs::path destination_path);
     void mRegisterSignals();
-    UndoController undoController;
+    UndoController* undoController;
 
 
 public slots:
@@ -61,8 +61,6 @@ public slots:
 
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string& newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
-
-    void undoRename();
 
 //    void renameFile(const boost::filesystem::path &path , const std::string newFileName);
     void SearchWindowCreated(SearchWindow *window);

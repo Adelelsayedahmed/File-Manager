@@ -77,7 +77,7 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
             }
             paths.push_back(destination_path);
             undo= new UndoCopy(paths);
-            undoController.addActions(undo);
+            undoController->addActions(undo);
             return ;
         }
         catch (const std::exception& ex) {
@@ -92,14 +92,12 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
         pasteFromCut(temp_path);
         if(Delete==true){
             Undo* undo =new undoDelete(temp_source,temp_path);
-            undoController.addActions(undo);
+            undoController->addActions(undo);
         }
         else{
             Undo* undo =new UndoCut(temp_source,temp_path);
-            undoController.addActions(undo);
+            undoController->addActions(undo);
         }
-
-
     }
 }
 void FileOperations::pasteFromCut(fs::path destination_path)
@@ -231,8 +229,9 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
         new_names.push_back(tempName.append(std::to_string(counter)));
         counter++;
     }
-    Undo *undo=new UndoBatchRenaming(oldPaths,new_names);
-    undoController.addActions(undo);
+    qInfo()  <<"Creating batch rename\n ";
+    Undo *undo  = new UndoBatchRenaming(oldPaths,new_names);
+    undoController->addActions(undo);
 }
 
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
@@ -249,6 +248,11 @@ std::map<int, std::string> FileOperations::SearchContentInFiles(const std::vecto
 {
      std::map<int, std::string> resultMap = contFileSearchObj->searchInMultiplefiles(filePaths,searchStr);
      return resultMap ;
+}
+
+void FileOperations::setUndoController(UndoController *undoController)
+{
+    this->undoController=undoController;
 }
 
 

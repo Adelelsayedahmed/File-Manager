@@ -11,6 +11,8 @@ Controller::Controller(View *view)
     dView = view;
     mRegisterSignals();
     fileOperations = new FileOperations();
+    undoController = new UndoController();
+    fileOperations->setUndoController(undoController);
 }
 
 
@@ -48,6 +50,7 @@ Controller::~Controller()
     delete dView;
     delete fileOperations;
     delete dWindow;
+    delete undoController;
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
@@ -112,7 +115,7 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
     t.detach();
 
     Undo* undo =new UndoRename(path.string(),newFileName);
-    undoController.addActions(undo);
+    undoController->addActions(undo);
 
 }
 
@@ -122,17 +125,6 @@ void Controller::addPaths(std::vector<std::string> oldPaths, std::vector<std::st
 {
     paths.push(oldPaths);
     paths.push(newPaths);
-}
-
-void Controller::undoRename()
-{
-   std::vector<std::string> oldPaths=paths.top();
-   paths.pop();
-   std::vector<std::string> newPaths=paths.top();
-   paths.pop();
-   for(int i=0;i<oldPaths.size();i++){
-        fs::rename(oldPaths[i],newPaths[i]);
-    }
 }
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
@@ -150,7 +142,7 @@ void Controller::identifyDuplicates()
 
 void Controller::undoAction()
 {
-     undoController.undo();
+    undoController->undo();
 }
 
 

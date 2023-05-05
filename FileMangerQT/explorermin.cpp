@@ -230,8 +230,8 @@ void ExplorerMin::onPaste()
     std::string dest =  fileSystemModel->filePath(index).toStdString();
     qInfo()<<sourceFilePathCopy;
     emit copyFile(sourceFilePathCopy.toStdString(),dest,action);
-        QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
-        thread->start();
+     //   QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
+        //thread->start();
     qInfo()<< "pasting";
 }
 
