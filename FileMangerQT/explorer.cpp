@@ -115,14 +115,30 @@ void Explorer::footer_size(std::string s)
     QString appendingString;
     if(statistics::isFile(s))
     {
-        size=statistics::convertToKB(statistics::getFile_size(s));
-        appendingString=" KB";
+        size=statistics::getFile_size(s);
+
     }
     else
     {
-        size=statistics::convertToMB(statistics::directory_size(s));
-        appendingString=" MB";
+        size=statistics::directory_size(s);
     }
+
+        if(size>=statistics::GIGA){
+            size=statistics::convertToGB(size);
+            appendingString=" GB";
+        }
+        else if(size>=statistics::MEGA)
+        {
+            size=statistics::convertToMB(size);
+            appendingString=" MB";
+        }else if(size>=statistics::kILO){
+            size=statistics::convertToKB(size);
+           appendingString=" KB";
+        }else{
+           appendingString=" bytes";
+        }
+
+
     sizeValueLabel->setText(QString::number(size).append(appendingString)) ;
 
 }

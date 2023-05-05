@@ -103,6 +103,7 @@ signals:
     void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
+        void context_menu(QModelIndex index);
 
 
 protected slots:

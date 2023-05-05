@@ -19,19 +19,32 @@ public:
 
     QAction* identifyDuplicatesAction;
 
+    QVector<QAction*> actions;
 
+    void disableAction(int index);
+
+    void enableAction(int index);
 
 public slots:
     void identifyDuplicatesActionSlot();
 
+    void explorerActionSlot();
+
+    void twoPaneActionSlot();
+
 //    void showDuplicatesMessage();
 
 private:
+    void createActions();
     void setConnections();
     QToolBar *toolbar;
     QHBoxLayout *layout;
 signals:
     void identifyDuplictesIconCLicked();
+
+    void explorerClicked();
+
+    void twoPaneClicked();
 };
 
 #endif // ADDONSBAR_H

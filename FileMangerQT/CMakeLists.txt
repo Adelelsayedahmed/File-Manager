@@ -90,6 +90,11 @@ set(PROJECT_SOURCES
         undocontroller.h
         myqueue.cpp
         myqueue.h
+        searchfilewidget.h
+        searchfilewidget.cpp
+        contentfilessearch.h
+        contentfilessearch.cpp
+
 
 )
 
@@ -117,7 +122,7 @@ else()
 endif()
 
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem boost_iostreams)
 
 #target_link_libraries(FileManger PRIVATE Qt6::Widgets Qt6::Charts Boost::filesystem)
 

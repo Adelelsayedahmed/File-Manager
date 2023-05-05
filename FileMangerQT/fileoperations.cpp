@@ -2,12 +2,13 @@
 
 FileOperations::FileOperations()
 {
-  //  compressionOperationsObj = new compression ();
+   compressionOperationsObj = new compression ();
 }
 
 FileOperations::~FileOperations()
 {
     delete compressionOperationsObj ;
+   delete contFileSearchObj ;
 }
 
 void FileOperations::copy_directory(const fs::path& source_path, const fs::path& destination_path)
@@ -215,6 +216,8 @@ void FileOperations::renameFile(const boost::filesystem::path &path ,const std::
     }
 
 }
+
+
 void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
 
@@ -234,14 +237,19 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
 
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
 {
-   // compressionOperationsObj->batchCompress(Paths);
+    compressionOperationsObj->batchCompress(Paths);
 }
 
 void FileOperations::batchDecompression(std::vector<std::string> &Paths)
 {
-    // compressionOperationsObj->batchDecompress(Paths);
+     compressionOperationsObj->batchDecompress(Paths);
 }
 
+std::map<int, std::string> FileOperations::SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
+{
+     std::map<int, std::string> resultMap = contFileSearchObj->searchInMultiplefiles(filePaths,searchStr);
+     return resultMap ;
+}
 
 
 std::string FileOperations:: removeNameFromPath(std::string path) {

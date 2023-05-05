@@ -14,6 +14,7 @@
 #include <QItemSelection>
 #include <QMessageBox>
 #include <QMenu>
+#include "filecontentview.h"
 #include "identifyduplicates.h"
 
 class IdentifyDuplicatesPageWidget : public QWidget
@@ -64,7 +65,11 @@ private:
 
     QMenu menu;
 
+    QAction *openAction;
+
     QAction *deleteAction;
+
+    FileContentView *contentUi;
 
     QModelIndex selectedDuplicateIndex;
 
@@ -97,6 +102,9 @@ public slots:
     void showMenu(const QModelIndex &index);
 
     void deleteSlot();
+
+    void openSlot(QString filePath);
+
 signals:
 
     void updateDuplicatesTable();

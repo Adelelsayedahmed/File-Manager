@@ -1,4 +1,5 @@
 #include "identifyduplicatespagewidget.h"
+#include "ui_filecontentview.h"
 
 IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent)
     : QWidget{parent}
@@ -40,6 +41,9 @@ void IdentifyDuplicatesPageWidget::initializeThePage()
     removeButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
 
     gridLayout->addWidget(removeButton,2,0);
+
+    contentUi = new FileContentView();
+
 
     initializeTables();
 
@@ -231,7 +235,16 @@ void IdentifyDuplicatesPageWidget::showMenu(const QModelIndex &index)
         {
         menu.clear();
         selectedDuplicateIndex = index;
+        if(statistics::isFile(value.toStdString())){
+            openAction =menu.addAction("open the selected file");
+            connect(openAction, &QAction::triggered, this, [value, this]{
+                openSlot(value);
+            });
+        }
+
+
         deleteAction = menu.addAction("delete the selected item");
+
         connect(deleteAction, &QAction::triggered, this, &IdentifyDuplicatesPageWidget::deleteSlot);
         menu.exec(duplicatesTableView->viewport()->mapToGlobal(duplicatesTableView->visualRect(index).center()));
         }
@@ -255,7 +268,25 @@ void IdentifyDuplicatesPageWidget::deleteSlot()
         }
     }
 }
-
+void IdentifyDuplicatesPageWidget::openSlot(QString filePath)
+{
+    contentUi->file = new QFile(filePath);
+    if (!contentUi->file->exists()) {
+        return;
+    }
+    if (!contentUi->file->open(QIODevice::ReadWrite))
+    {
+        return;
+    }
+    QString fileContents = contentUi->file->readAll();
+    contentUi->ui->textEdit->clear();
+    if (!contentUi->ui) {
+        return;
+    }
+    contentUi->ui->textEdit->setPlainText(fileContents);
+    contentUi->setWindowTitle(filePath);
+    contentUi->show();
+}
 void IdentifyDuplicatesPageWidget::duplicatesDeletion()
 {
     // Loop over all the vectors in the duplicates vector
