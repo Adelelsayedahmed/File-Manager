@@ -12,6 +12,7 @@
 #include "undocopy.h"
 #include"undobatchrenaming.h"
 #include "undocontroller.h"
+#include "undocut.h"
 #include <filesystem>
 namespace fs = boost::filesystem;
 

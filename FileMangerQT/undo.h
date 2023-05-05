@@ -80,6 +80,33 @@ static std::string removeNameFromPath(std::string path) {
     }
     return path;
  }
+
+static void pasteToUndoCut(fs::path source_path, fs::path destination_path)
+{
+    if (!fs::exists(source_path)) {
+        qInfo() << "Source file does not exist!\n" ;
+        return ;
+    }
+    fs::path temp_path = destination_path / source_path.filename();
+    try {
+        if (fs::exists(destination_path)) {
+            qInfo() << "Destination already exists!\n";
+            return;
+        }
+
+        if (source_path.empty()) {
+            return; // Nothing to paste
+        }
+
+        fs::rename(source_path, destination_path);
+        source_path.clear();
+    }
+    catch (const std::exception& ex) {
+        qInfo() << "Error: " << ex.what() << '\n';
+    }
+}
+
+
     void undoCut();
     void undoCopy();
     void undoBatchRename();

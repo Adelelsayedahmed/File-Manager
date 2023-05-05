@@ -82,10 +82,13 @@ set(PROJECT_SOURCES
         undobatchrenaming.h
         undorename.cpp
         undorename.h
+        undocut.cpp
+        undocut.h
         undocontroller.cpp
         undocontroller.h
         myqueue.cpp
         myqueue.h
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
