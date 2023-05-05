@@ -147,12 +147,12 @@ int statistics::numberOfItems(std::string& givenPath)
 }
 
 unsigned int statistics::convertToKB(uintmax_t bytes)
-{     
-     return bytes/1000;
+{
+     return bytes/1024;
 }
 unsigned int statistics::convertToMB(uintmax_t bytes)
 {
-     return bytes/1000000;
+     return bytes/(1024*1024);
 }
 unsigned int statistics::convertToGB(uintmax_t bytes)
 {

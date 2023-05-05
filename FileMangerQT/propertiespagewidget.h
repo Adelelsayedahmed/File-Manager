@@ -10,6 +10,7 @@
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "statistics.h"
 #include <PiechartWidget.h>
 #include "piechartpagewidget.h"
@@ -41,10 +42,16 @@ private:
 
     QLabel *iconLabel ;
 
-signals:
-
-public slots:
     void showStatistics();
+
+    QString getDirectoryLastModifiedTime(const std::string& dirPath);
+
+signals:
+    void showStatisticsFinished(pieChartPageWidget* piechartpagewidget);
+public slots:
+    void showStatisticsThreaded();
+
+
 };
 
 #endif // PROPERTIESPAGEWIDGET_H

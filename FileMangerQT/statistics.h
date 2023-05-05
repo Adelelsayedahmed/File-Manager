@@ -47,9 +47,9 @@ public:
 
     const static unsigned int GIGA=1000000000;
 
-    const static unsigned int MEGA=1000000;
+    const static unsigned int MEGA=(1024*1024);
 
-    const static unsigned int kILO=1000;
+    const static unsigned int kILO=1024;
 };
 
 #endif // STATISTICS_H
