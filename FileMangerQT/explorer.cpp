@@ -15,7 +15,6 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 
     // Create the footer widget
     QWidget* footerWidget = new QWidget(this);
-
     // Create labels for number of files and size
     QLabel* numFilesLabel = new QLabel("Number of files: ", footerWidget);
      numFilesValueLabel = new QLabel("0", footerWidget);
@@ -31,6 +30,7 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
 
     // Create a layout for the footer widget
     QHBoxLayout* footerLayout = new QHBoxLayout(footerWidget);
+
     footerLayout->addWidget(numFilesLabel);
     footerLayout->addWidget(numFilesValueLabel);
     footerLayout->addWidget(sizeLabel);
@@ -110,7 +110,7 @@ void Explorer::footer_size(std::string s)
 {
     sizeValueLabel->setText("...");
 
-    qInfo()<<"in footer size function"<<s;
+//    qInfo()<<"in footer size function"<<s;
     unsigned int size=0;
     QString appendingString;
     if(statistics::isFile(s))

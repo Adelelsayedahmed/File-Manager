@@ -14,6 +14,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Charts)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Charts)
+#find_package(Boost REQUIRED)
+#find_package(Boost COMPONENTS filesystem REQUIRED)
+
+#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets )
+#find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets )
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS filesystem REQUIRED)
 
@@ -58,6 +63,10 @@ set(PROJECT_SOURCES
         customtable.h
         myfilesystemmodel.cpp
         myfilesystemmodel.h
+        identifyduplicates.cpp
+        identifyduplicates.h
+        identifyduplicatespagewidget.cpp
+        identifyduplicatespagewidget.h
         piechartpagewidget.cpp
         piechartpagewidget.h
         PiechartWidget.cpp
@@ -102,9 +111,9 @@ else()
 endif()
 
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem boost_iostreams)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem boost_iostreams Qt6::Charts)
 
-target_link_libraries(FileManger PRIVATE Qt6::Widgets Qt6::Charts Boost::filesystem)
+# target_link_libraries(FileManger PRIVATE Qt6::Widgets Qt6::Charts Boost::filesystem)
 
 set_target_properties(FileManger PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

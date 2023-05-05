@@ -56,7 +56,8 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
         try {
             destination_path = destination_path / source_path.filename();
             if (fs::exists(destination_path)) {
-                qInfo() << "Destination already exists!\n";
+                qInfo()<< destination_path.c_str();
+                qInfo() << "Destination already exists!!\n";
                 return ;
             }
             if (fs::is_directory(source_path))
@@ -76,8 +77,8 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
             return ;
         }
         catch (const std::exception& ex) {
-            qInfo() << "Error: "  ;
-            std::cout<<destination_path;
+            qInfo() << "Error: " << ex.what();
+            std::cout << "Destination path: " << destination_path << std::endl;
         }
     }
     else if(action == CopyCutAction::Cut)
