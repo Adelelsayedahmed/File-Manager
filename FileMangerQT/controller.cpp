@@ -24,7 +24,11 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
+
+    QObject::connect(dView->topBar, &addOnsBar::explorerClicked, this, &Controller::Controller::explorerSlot);
     QObject::connect(dView->topBar, &addOnsBar::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+    QObject::connect(dView->topBar, &addOnsBar::twoPaneClicked, this, &Controller::Controller::twoPaneSlot);
+
     QObject::connect(dView->stackedview, &stackedviewwidget::currentIndexChanged, this, &Controller::StackedWidgetSwitchedDisable);
     QObject::connect(dView->stackedview, &stackedviewwidget::indexAboutToChange, this, &Controller::StackedWidgetSwitchedEnable);
 
@@ -135,11 +139,18 @@ void Controller::identifyDuplicates()
 {
     IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
    dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
-   dView->stackedview->switchToIndex(2);
+   dView->stackedview->switchToIndex(1);
 
 }
 
-
+void Controller::explorerSlot()
+{
+   dView->stackedview->switchToIndex(0);
+}
+void Controller::twoPaneSlot()
+{
+   dView->stackedview->switchToIndex(2);
+}
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
     dWindow = search;

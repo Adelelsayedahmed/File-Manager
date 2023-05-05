@@ -28,6 +28,10 @@ public:
 public slots:
     void identifyDuplicatesActionSlot();
 
+    void explorerActionSlot();
+
+    void twoPaneActionSlot();
+
 //    void showDuplicatesMessage();
 
 private:
@@ -37,6 +41,10 @@ private:
     QHBoxLayout *layout;
 signals:
     void identifyDuplictesIconCLicked();
+
+    void explorerClicked();
+
+    void twoPaneClicked();
 };
 
 #endif // ADDONSBAR_H

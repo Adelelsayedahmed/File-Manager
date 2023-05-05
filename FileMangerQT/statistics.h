@@ -46,6 +46,10 @@ public:
     static unsigned int convertToGB(uintmax_t bytes);
 
     const static unsigned int GIGA=1000000000;
+
+    const static unsigned int MEGA=1000000;
+
+    const static unsigned int kILO=1000;
 };
 
 #endif // STATISTICS_H

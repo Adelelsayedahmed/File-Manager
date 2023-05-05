@@ -51,7 +51,8 @@ public slots:
 
     void propertiesOfFile(const fs::path &path);
     void identifyDuplicates();
-
+    void twoPaneSlot();
+    void explorerSlot();
 
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string& newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
