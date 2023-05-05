@@ -3,6 +3,7 @@
 
 #include "explorer.h"
 #include "twopane.h"
+#include "identifyduplicatespagewidget.h"
 
 #include <QPushButton>
 #include <QStackedWidget>
@@ -15,14 +16,20 @@ public:
     QStackedWidget *stackedWidget;
     Explorer *explorer;
     TwoPane *twoPane;
+    IdentifyDuplicatesPageWidget *duplicatesPage;
     QPushButton *nextButton;
     QPushButton *previousButton;
+
+public slots:
+    void switchToIndex(int index);
 
 private slots:
     void nextPane();
     void previousPane();
 
-private:
+signals:
+    void currentIndexChanged(int index);
+    void indexAboutToChange(int index);
 
 };
 

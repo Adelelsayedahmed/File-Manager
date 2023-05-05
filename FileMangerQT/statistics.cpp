@@ -20,7 +20,7 @@ std::unordered_map<std::string,int> statistics::directoryFilesSizes(const path& 
         // if item is subdirectory
         else if(is_directory(item))
         {
-        dataMap.insert({item.path().filename().string()+"/",convertToKB(directory_size(item.path()))});
+        dataMap.insert({item.path().filename().string()+"/",convertToKB(directory_size(item.path().string()))});
 
         }
     }
@@ -86,10 +86,12 @@ path statistics::getCurrentPath()
      return current_path();
 }
 
-uintmax_t statistics::directory_size(const path& directory_path)
+uintmax_t statistics::directory_size(std::string givenPath)
 {
      uintmax_t size = 0;
+     path directory_path=path(givenPath);
 
+     try {
     // loop over the files and subdirectories recursively(every subdirectory open and loop on files in it)
      for (auto& item  : recursive_directory_iterator(directory_path))
      {
@@ -99,25 +101,60 @@ uintmax_t statistics::directory_size(const path& directory_path)
         size += file_size(item);
         }
      }
+     } catch (const boost::filesystem::filesystem_error& ex) {
+
+     // Handle the exception caused by permission denied error
+     qDebug() << "Error: " << ex.what() << '\n';
+     return 0;
+     }
 
      return size;
 }
 
-int statistics::numberOfItems(path& path)
+ bool statistics::isFile(std::string givenPath)
+{
+     if(is_regular_file(path(givenPath)))
+     {
+     return true;
+     }else{
+     return false;
+     }
+}
+uintmax_t statistics::getFile_size(std::string& givenPath)
+{
+     path file_path=path(givenPath);
+     return file_size(file_path);
+}
+int statistics::numberOfItems(std::string& givenPath)
 {
      int numberOfItems=0;
 
+     path itemPath=path(givenPath);
      directory_iterator end_itr;
-
+     try{
      // Iterate through directory
-     for (directory_iterator itr(path); itr != end_itr; itr++)
+     for (directory_iterator itr(itemPath); itr != end_itr; itr++)
      {
         numberOfItems++;
      }
+        } catch (const boost::filesystem::filesystem_error& ex) {
+
+     // Handle the exception caused by permission denied error
+     qDebug() << "Error: " << ex.what() << '\n';
+     return 0;
+}
      return numberOfItems;
 }
 
-int statistics::convertToKB(uintmax_t bytes)
+unsigned int statistics::convertToKB(uintmax_t bytes)
 {     
      return bytes/1000;
+}
+unsigned int statistics::convertToMB(uintmax_t bytes)
+{
+     return bytes/1000000;
+}
+unsigned int statistics::convertToGB(uintmax_t bytes)
+{
+     return bytes/1000000000;
 }

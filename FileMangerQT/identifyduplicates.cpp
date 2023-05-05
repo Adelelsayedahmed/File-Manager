@@ -35,7 +35,7 @@ std::vector<std::vector<std::string>> IdentifyDuplicates::checkDuplication(const
             // if item is subdirectory
             else if(is_directory(item))
             {
-                int duplicationHash=statistics::directory_size(item.path());
+                int duplicationHash=statistics::directory_size(item.path().string());
 
                 // if a suspected duplicate is already found
                 if(elementsMap.count(duplicationHash))

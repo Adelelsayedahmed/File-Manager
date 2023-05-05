@@ -1,19 +1,23 @@
 #include "identifyduplicatespagewidget.h"
+#include "ui_filecontentview.h"
 
-IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent,IdentifyDuplicates* duplicatesObj)
+IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent)
     : QWidget{parent}
 {
-    this->duplicatesObj=duplicatesObj;
 
     initializeThePage();
 
     setPageConnections();
 
-    showThePage();
+    //showThePage();
 
 
 }
+void IdentifyDuplicatesPageWidget::setDuplicatesObject(IdentifyDuplicates* duplicatesObj)
+{
+    this->duplicatesObj=duplicatesObj;
 
+}
 void IdentifyDuplicatesPageWidget::initializeThePage()
 {
 
@@ -37,6 +41,9 @@ void IdentifyDuplicatesPageWidget::initializeThePage()
     removeButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
 
     gridLayout->addWidget(removeButton,2,0);
+
+    contentUi = new FileContentView();
+
 
     initializeTables();
 
@@ -89,7 +96,7 @@ void IdentifyDuplicatesPageWidget::setPageConnections()
 {
     connect(addButton, SIGNAL(clicked()), this, SLOT(showAddPopupWindow()));
     connect(identifyDuplicatesButton, SIGNAL(clicked()), this, SLOT(duplicatesSlot()));
-    connect(this, &IdentifyDuplicatesPageWidget::removedItem, this, &IdentifyDuplicatesPageWidget::duplicatesSlot);
+    connect(this, &IdentifyDuplicatesPageWidget::removedItem, this, &IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot);
     connect(this, &IdentifyDuplicatesPageWidget::updateDuplicatesTable, this, &IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot);
     connect(pathsTableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &IdentifyDuplicatesPageWidget::rowSelected);
     connect(removeButton, &QPushButton::clicked, this, &IdentifyDuplicatesPageWidget::removeSelectedRow);
@@ -228,7 +235,16 @@ void IdentifyDuplicatesPageWidget::showMenu(const QModelIndex &index)
         {
         menu.clear();
         selectedDuplicateIndex = index;
+        if(statistics::isFile(value.toStdString())){
+            openAction =menu.addAction("open the selected file");
+            connect(openAction, &QAction::triggered, this, [value, this]{
+                openSlot(value);
+            });
+        }
+
+
         deleteAction = menu.addAction("delete the selected item");
+
         connect(deleteAction, &QAction::triggered, this, &IdentifyDuplicatesPageWidget::deleteSlot);
         menu.exec(duplicatesTableView->viewport()->mapToGlobal(duplicatesTableView->visualRect(index).center()));
         }
@@ -243,10 +259,53 @@ void IdentifyDuplicatesPageWidget::deleteSlot()
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Delete item?", "Do you want to delete the file/directory \"" + filePath + "\"?", QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes) {
+        toBeRemovedPath=filePath.toStdString();
             boost::filesystem::remove_all(boost::filesystem::path(filePath.toStdString()));
             duplicatesTableModel->removeRow(selectedDuplicateIndex.row());
             selectedDuplicateIndex = QModelIndex();
+            duplicatesDeletion();
             emit removedItem();
+        }
+    }
+}
+void IdentifyDuplicatesPageWidget::openSlot(QString filePath)
+{
+    contentUi->file = new QFile(filePath);
+    if (!contentUi->file->exists()) {
+        return;
+    }
+    if (!contentUi->file->open(QIODevice::ReadWrite))
+    {
+        return;
+    }
+    QString fileContents = contentUi->file->readAll();
+    contentUi->ui->textEdit->clear();
+    if (!contentUi->ui) {
+        return;
+    }
+    contentUi->ui->textEdit->setPlainText(fileContents);
+    contentUi->setWindowTitle(filePath);
+    contentUi->show();
+}
+void IdentifyDuplicatesPageWidget::duplicatesDeletion()
+{
+    // Loop over all the vectors in the duplicates vector
+    for (auto& duplicateVec : duplicates) {
+        // Check if the toBeRemovedPath is present in the current vector
+        auto it = std::find(duplicateVec.begin(), duplicateVec.end(), toBeRemovedPath);
+        if (it != duplicateVec.end()) {
+            // If the toBeRemovedPath is found, remove it from the current vector
+            duplicateVec.erase(it);
+
+            // If there is only one element remaining in the current vector,
+            // remove the entire vector from the duplicates vector
+            if (duplicateVec.size() == 1) {
+                auto it2 = std::find(duplicates.begin(), duplicates.end(), duplicateVec);
+                if (it2 != duplicates.end()) {
+                    duplicates.erase(it2);
+                }
+            }
+
         }
     }
 }

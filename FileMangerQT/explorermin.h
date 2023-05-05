@@ -20,42 +20,51 @@
 #include "backbutton.h"
 #include <QString>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+
+#include <QAbstractItemView>
+#include "customtable.h"
+#include "myfilesystemmodel.h"
+#include "rename_widget.h"
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
 private :
+    rename_widget* rename_widg_obj;
+    rename_widget* batch_rename_widg_obj;
     bool isMultipleSelected();
     std::vector<std::string> getSelectedPaths();
 public:
     ExplorerMin(QString rootPath =  QString(),QWidget *parent = nullptr);
-    QTableView *table;
     QAction *compressAction ;
     QAction *decompressAction; 
+    QString backFilepath;
+    static QString filepath;
+    CustomTable *table;
+    ~ExplorerMin();
 
 protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
     SearchBar *search;
-<<<<<<< Updated upstream
-    BackButton *backButton;
-=======
+//    BackButton *backButton;
     LocationBar *location;
-protected:
->>>>>>> Stashed changes
+
 
 protected:
     QHBoxLayout *locationLayout;
     QFormLayout *layout;
-    QFileSystemModel* fileSystemModel;
+    MyFileSystemModel* fileSystemModel;
     QModelIndex index;
     CopyCutAction action;
     QString filePath;
     QString sourceFilePathCopy;
+
     FileContentView *contentUi;
     void onTableViewClicked(QModelIndex index);
     void registerSignals();
 
-    ~ExplorerMin();
 
     QTableView* ShowTableView();
 public slots:
@@ -69,7 +78,8 @@ public slots:
 
     void onRenameFilesViewSlot();
     void onBatchRenameViewSlot();
-
+    void emitingRenameSlot(QString newFileName) ;
+    void emitingBatchRenameSlot(QString newFileName);
     void onCompress();
     void onDeCompress();
     void onCompressHere();
@@ -79,10 +89,11 @@ public slots:
     void folderClicked(QString filepath);
     void SearchWindowCreatedSlot(SearchWindow *window);
     void BackButtonClicked();
-    void on_identifyDuplicatesIconClicked();
+  //  void on_identifyDuplicatesIconClicked();
 
     void onBatchCompressViewSlot();
     void onBatchDecompressViewSlot ();
+    void BackButtonClickedFromTree();
 
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
@@ -93,8 +104,7 @@ signals:
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
     void SearchWindowCreated(SearchWindow *window);
     void locationChanged(QString filepath, QString filename);
-    void identifyDuplictesIconCLicked();
-
+    void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
 

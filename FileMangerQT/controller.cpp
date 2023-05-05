@@ -24,10 +24,19 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::SearchWindowCreated, this, &Controller::SearchWindowCreated);
-    QObject::connect(dView->stackedview->explorer, &ExplorerMin::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+
+    QObject::connect(dView->topBar, &addOnsBar::explorerClicked, this, &Controller::Controller::explorerSlot);
+    QObject::connect(dView->topBar, &addOnsBar::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
+    QObject::connect(dView->topBar, &addOnsBar::twoPaneClicked, this, &Controller::Controller::twoPaneSlot);
+
+    QObject::connect(dView->stackedview, &stackedviewwidget::currentIndexChanged, this, &Controller::StackedWidgetSwitchedDisable);
+    QObject::connect(dView->stackedview, &stackedviewwidget::indexAboutToChange, this, &Controller::StackedWidgetSwitchedEnable);
+
 
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
+    QObject::connect(dView->stackedview->twoPane->leftTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
+    QObject::connect(dView->stackedview->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
 
 
 }
@@ -128,13 +137,20 @@ void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPath
 
 void Controller::identifyDuplicates()
 {
-   // IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
-
-  //  IdentifyDuplicatesPageWidget *pageWidget = new IdentifyDuplicatesPageWidget(dView->explorer,dupsObj);
+    IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
+   dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
+   dView->stackedview->switchToIndex(1);
 
 }
 
-
+void Controller::explorerSlot()
+{
+   dView->stackedview->switchToIndex(0);
+}
+void Controller::twoPaneSlot()
+{
+   dView->stackedview->switchToIndex(2);
+}
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
     dWindow = search;
@@ -153,13 +169,21 @@ void Controller::SearchForFileByName(std::string starting_point_directory_path, 
 
 void Controller::batchCompressControllerSlot(std::vector<std::string> &Paths)
 {
-        std::thread t(&FileOperations::batchCompression, fileOperations, std::ref(Paths));
-        t.detach();
+    fileOperations->batchCompression(Paths);
+
+
 }
 
 void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
 {
-        std::thread t(&FileOperations::batchDecompression, fileOperations, std::ref(Paths));
-        t.detach();
+    fileOperations->batchDecompression(Paths);
 }
 
+void Controller::StackedWidgetSwitchedDisable(int index)
+{
+        dView->topBar->disableAction(index);
+}
+void Controller::StackedWidgetSwitchedEnable(int index)
+{
+        dView->topBar->enableAction(index);
+}

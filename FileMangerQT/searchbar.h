@@ -6,24 +6,18 @@
 #include <QLineEdit>
 #include "searchwindow.h"
 #include <QWidget>
-<<<<<<< Updated upstream
-=======
-#include <boost/filesystem.hpp>
 #include "backbutton.h"
-#include "locationbar.h"
->>>>>>> Stashed changes
+
 
 class SearchBar : public QWidget
 {
     Q_OBJECT
 public:
     explicit SearchBar(QWidget *parent = nullptr);
-<<<<<<< Updated upstream
-=======
+
     BackButton *back;
 //    LocationBar *locationBar;
 
->>>>>>> Stashed changes
 
 protected:
     QHBoxLayout *layout;
@@ -40,10 +34,7 @@ private slots:
 
 signals:
     void SearchWindowCreated(SearchWindow *search);
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 };
 
 

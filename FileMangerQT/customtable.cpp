@@ -49,11 +49,11 @@ void CustomTable::dropEvent(QDropEvent *event)
 
                 for (const QUrl &url : sourceUrls)
                 {
-//                    qInfo()<<"copying";
-//                    qInfo()<<url.toLocalFile().toStdString();
-//                    qInfo()<< "pasting";
-//                    qInfo()<<targetPath;
-//                    qInfo() << fileSystemModel->filePath( targetIndex).toStdString();
+                    qInfo()<<"copying";
+                    qInfo()<<url.toLocalFile().toStdString();
+                    qInfo()<< "pasting";
+                    qInfo()<<targetPath;
+                    qInfo() << fileSystemModel->filePath( targetIndex).toStdString();
                     emit paste(url.toLocalFile().toStdString(), targetPath.toStdString(), CopyCutAction::Copy);
                 }
 

@@ -9,17 +9,13 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
     proxy_model = new DirectoryOnlyFilterProxyModel(this);
     proxy_model->setSourceModel(fileSystemModel);
     tree = new QTreeView(this);
-<<<<<<< Updated upstream
 
     layout->setContentsMargins(0,0,0,0);
-    layout->insertRow(0,topBar);
-    layout->insertRow(1, locationLayout);
-    layout->insertRow(2,ShowTreeView(rootPath),table);
-=======
+
    // layout->insertRow(0,topBar);
     layout->insertRow(0, location);
 //    layout->insertRow(0,ShowTreeView(rootPath),table);
->>>>>>> Stashed changes
+
 
     // Create the footer widget
     QWidget* footerWidget = new QWidget(this);
@@ -63,6 +59,7 @@ void Explorer::registerSignals()
        QObject::connect(table,SIGNAL(clicked(QModelIndex)),this,SLOT(footer_update(QModelIndex)));
 //    QObject::connect(tree,SIGNAL(clicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
     QObject::connect(tree, SIGNAL(clicked(QModelIndex)), this, SLOT(on_treeView_clicked(QModelIndex)));
+    QObject::connect(this,&ExplorerMin::backButtonPressedSignalFromTree,this,&ExplorerMin::BackButtonClickedFromTree);
 
 }
 
@@ -118,37 +115,52 @@ void Explorer::ShowTableView(QModelIndex index1)
 
 void Explorer::footer_size(std::string s)
 {
-<<<<<<< Updated upstream
-    sizeValueLabel->setText("0");
-//    qInfo()<<"in footer size function"<<s;
-    boost::filesystem::path filePath = boost::filesystem::path(s);
-    sizeValueLabel->setText(QString::number(statistics::convertToKB( statistics::directory_size(filePath))).append(" kb")) ;
-=======
     sizeValueLabel->setText("...");
 
-//    qInfo()<<"in footer size function"<<s;
+    qInfo()<<"in footer size function"<<s;
     unsigned int size=0;
     QString appendingString;
     if(statistics::isFile(s))
     {
-        size=statistics::convertToKB(statistics::getFile_size(s));
-        appendingString=" KB";
+        size=statistics::getFile_size(s);
+
     }
     else
     {
-        size=statistics::convertToMB(statistics::directory_size(s));
-        appendingString=" MB";
+        size=statistics::directory_size(s);
     }
+
+        if(size>=statistics::GIGA){
+            size=statistics::convertToGB(size);
+            appendingString=" GB";
+        }
+        else if(size>=statistics::MEGA)
+        {
+            size=statistics::convertToMB(size);
+            appendingString=" MB";
+        }else if(size>=statistics::kILO){
+            size=statistics::convertToKB(size);
+           appendingString=" KB";
+        }else{
+           appendingString=" bytes";
+        }
+
+
     sizeValueLabel->setText(QString::number(size).append(appendingString)) ;
 
->>>>>>> Stashed changes
 }
 
 void Explorer::footer_item(std::string s)
 {
     numFilesValueLabel->setText("0");
-    boost::filesystem::path filePath = boost::filesystem::path(s);
-      numFilesValueLabel->setText(QString::number(statistics::numberOfItems(filePath)));
+    if(statistics::isFile(s))
+    {
+        numFilesValueLabel->setText("1");
+    }
+    else
+    {
+        numFilesValueLabel->setText(QString::number(statistics::numberOfItems(s)));
+    }
 }
 
 void Explorer::on_treeView_clicked(const QModelIndex &index1)
@@ -158,13 +170,11 @@ void Explorer::on_treeView_clicked(const QModelIndex &index1)
     t.detach();
     std::thread t2(&Explorer::footer_item, this, fileSystemModel->filePath(proxy_model->mapToSource(index1)).toStdString());
     t2.detach();
-<<<<<<< Updated upstream
-    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->fileName(proxy_model->mapToSource(index1)));
-=======
+
     ExplorerMin::filepath = fileSystemModel->filePath(proxy_model->mapToSource(index1));
     emit backButtonPressedSignalFromTree();
     emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->fileName(proxy_model->mapToSource(index1)));
 
->>>>>>> Stashed changes
+
 }
 

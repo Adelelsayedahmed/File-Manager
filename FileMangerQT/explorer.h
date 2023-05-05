@@ -44,6 +44,8 @@ public:
     void footer_item(std::string s);
 
     DirectoryOnlyFilterProxyModel *proxy_model;
+
+    ~Explorer();
 protected slots:
     void on_treeView_clicked(const QModelIndex &index);
     void  ShowTableView(QModelIndex index1);
@@ -52,6 +54,6 @@ private:
     QTreeView *tree;
     void registerSignals();
     void expandPath(const QString &path);
-    ~Explorer();
+
 };
 #endif // EXPLORER_H

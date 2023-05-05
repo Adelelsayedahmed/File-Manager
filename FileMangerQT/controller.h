@@ -10,7 +10,6 @@
 #include "identifyduplicatespagewidget.h"
 #include "searchwindow.h"
 
-
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <filesystem>
@@ -22,6 +21,7 @@
 #include <vector>
 #include "fileoperations.h"
 #include<thread>
+#include "customtable.h"
 
 namespace fs = boost::filesystem;
 class Controller : public QObject
@@ -51,7 +51,8 @@ public slots:
 
     void propertiesOfFile(const fs::path &path);
     void identifyDuplicates();
-
+    void twoPaneSlot();
+    void explorerSlot();
 
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string& newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);
@@ -64,6 +65,9 @@ public slots:
 
     void batchCompressControllerSlot( std::vector< std::string>&Paths);
     void batchDecompressControllerSlot( std::vector< std::string>&Paths);
+
+    void StackedWidgetSwitchedDisable(int index);
+    void StackedWidgetSwitchedEnable(int index);
 
 
 };

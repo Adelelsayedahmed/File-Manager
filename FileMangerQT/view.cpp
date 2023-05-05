@@ -21,26 +21,26 @@ View::View(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::View)
 {
-    ui->setupUi(this);
-    fileSystemModel = new QFileSystemModel(this);
-    mRegisterSignals();
-    //TreeView();
+ui->setupUi(this);
 
+mRegisterSignals();
 
+topBar = new addOnsBar(this);
+stackedview = new stackedviewwidget(this);
 
-    stackedview = new stackedviewwidget(this);
+QGridLayout* mainLayout = new QGridLayout(this);
+mainLayout->addWidget(topBar, 0, 0);
+mainLayout->addWidget(stackedview, 1, 0);
 
-  // explorer = new Explorer("",this);
-  // TwoPane *twoPane = new TwoPane();
-    ui->formLayout->addWidget(stackedview);
-    this->setCentralWidget(stackedview);
+QWidget* centralWidget = new QWidget(this);
+centralWidget->setLayout(mainLayout);
+this->setCentralWidget(centralWidget);
 }
 
 
 View::~View()
 {
     delete ui;
-    delete fileSystemModel;
 }
 
 

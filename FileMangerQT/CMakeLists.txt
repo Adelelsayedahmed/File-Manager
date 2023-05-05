@@ -54,6 +54,14 @@ set(PROJECT_SOURCES
         identifyduplicates.h
         identifyduplicatespagewidget.cpp
         identifyduplicatespagewidget.h
+        customtable.cpp
+        customtable.h
+        myfilesystemmodel.cpp
+        myfilesystemmodel.h
+#        identifyduplicates.cpp
+#        identifyduplicates.h
+#        identifyduplicatespagewidget.cpp
+#        identifyduplicatespagewidget.h
 #        piechartpagewidget.cpp
 #        piechartpagewidget.h
 #        PiechartWidget.cpp
@@ -64,20 +72,15 @@ set(PROJECT_SOURCES
         statistics.h
         stackedviewwidget.cpp
         stackedviewwidget.h
-<<<<<<< Updated upstream
-        locationbar.h
-        locationbar.cpp
-        backbutton.h
-        backbutton.cpp
-
-=======
         rename_widget.h
         rename_widget.cpp
         backbutton.h
         backbutton.cpp
         locationbar.h
         locationbar.cpp
->>>>>>> Stashed changes
+
+        files_search.h
+        files_search.cpp
 
 
 )
@@ -106,7 +109,7 @@ else()
 endif()
 
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem boost_iostreams)
 
 #target_link_libraries(FileManger PRIVATE Qt6::Widgets Qt6::Charts Boost::filesystem)
 

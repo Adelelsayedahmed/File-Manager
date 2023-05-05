@@ -14,15 +14,19 @@
 #include <QItemSelection>
 #include <QMessageBox>
 #include <QMenu>
+#include "filecontentview.h"
 #include "identifyduplicates.h"
 
 class IdentifyDuplicatesPageWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit IdentifyDuplicatesPageWidget(QWidget *parent = nullptr,IdentifyDuplicates* duplicatesObj=nullptr);
+    explicit IdentifyDuplicatesPageWidget(QWidget *parent = nullptr);
 
     void setTheTable(std::vector<std::vector<std::string>> duplicates);
+
+    void setDuplicatesObject(IdentifyDuplicates* duplicatesObj);
+
 
 private:
     IdentifyDuplicates* duplicatesObj;
@@ -61,9 +65,15 @@ private:
 
     QMenu menu;
 
+    QAction *openAction;
+
     QAction *deleteAction;
 
+    FileContentView *contentUi;
+
     QModelIndex selectedDuplicateIndex;
+
+    std::string toBeRemovedPath;
 
     void initializeThePage();
 
@@ -72,6 +82,9 @@ private:
     void setPageConnections();
 
     void showThePage();
+
+    void duplicatesDeletion();
+
 
 public slots:
     void showAddPopupWindow();
@@ -89,6 +102,9 @@ public slots:
     void showMenu(const QModelIndex &index);
 
     void deleteSlot();
+
+    void openSlot(QString filePath);
+
 signals:
 
     void updateDuplicatesTable();

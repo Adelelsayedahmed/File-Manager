@@ -13,6 +13,7 @@
 #include "explorermin.h"
 #include "twopane.h"
 #include "stackedviewwidget.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class View; }
 QT_END_NAMESPACE
@@ -23,13 +24,14 @@ class View : public QMainWindow
     Q_OBJECT
 private:
      Ui::View *ui;
-    QFileSystemModel* fileSystemModel;
     void mRegisterSignals();
     QVector<QModelIndex> indexVector;
     QModelIndex index;
 
     CopyCutAction action;
+    bool isMultipleSelected();
 public:
+    addOnsBar* topBar;
     View(QWidget *parent = nullptr);
     void TreeView();
     ~View();
