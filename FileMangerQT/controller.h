@@ -66,14 +66,14 @@ public slots:
     void batchCompressControllerSlot( std::vector< std::string>&Paths);
     void batchDecompressControllerSlot( std::vector< std::string>&Paths);
 
-<<<<<<< Updated upstream
+
     void StackedWidgetSwitchedDisable(int index);
     void StackedWidgetSwitchedEnable(int index);
-=======
+
     void searchInMultiplefiles(const std::vector<std::string>& filePaths, const std::string& searchStr);
 
 
->>>>>>> Stashed changes
+
 
 
 };

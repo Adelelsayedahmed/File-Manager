@@ -175,7 +175,7 @@ void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
     fileOperations->batchDecompression(Paths);
 }
 
-<<<<<<< Updated upstream
+
 void Controller::StackedWidgetSwitchedDisable(int index)
 {
         dView->topBar->disableAction(index);
@@ -184,11 +184,11 @@ void Controller::StackedWidgetSwitchedEnable(int index)
 {
         dView->topBar->enableAction(index);
 }
-=======
+
 void Controller:: searchInMultiplefiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
 {
     auto result = fileOperations->SearchContentInFiles(filePaths,searchStr);
     dView->stackedview->file_search_wedge_obj->recieveSearchContentMapFromCont(result);
 }
 
->>>>>>> Stashed changes
+
