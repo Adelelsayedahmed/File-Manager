@@ -5,8 +5,14 @@ TwoPane::TwoPane(QWidget *parent):QWidget(parent)
     leftTable = std::unique_ptr<ExplorerMin>(new ExplorerMin());
     rightTable = std::unique_ptr<ExplorerMin>(new ExplorerMin());
     QHBoxLayout *hLayout = new QHBoxLayout(this);
+
     hLayout->addWidget(leftTable.get());
+    //this has to be done otherwise the shortcuts will not be invoked.
+    leftTable->setFocus();
+    leftTable->grabKeyboard();
     hLayout->addWidget(rightTable.get());
+    rightTable->setFocus();
+    rightTable->grabKeyboard();
     setupDragAndDrop(leftTable->table);
     setupDragAndDrop(rightTable->table);
 }

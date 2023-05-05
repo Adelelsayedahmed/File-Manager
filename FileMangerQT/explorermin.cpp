@@ -82,6 +82,7 @@ ExplorerMin::~ExplorerMin()
 
 QTableView* ExplorerMin::ShowTableView()
 {
+
     table->setModel(fileSystemModel);
     QItemSelectionModel* selectionModel = new QItemSelectionModel(fileSystemModel);
 //    table->setSelectionModel(selectionModel);
@@ -93,6 +94,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
@@ -100,6 +102,13 @@ QTableView* ExplorerMin::ShowTableView()
 
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
+    //disable right click in case it is pressed on empty area.
+    QModelIndex ind = table->indexAt(event->pos());
+    if(!ind.isValid())
+    {
+        event->ignore();
+        return;
+    }
     qInfo() << "right click pressed";
      qInfo() << fileSystemModel->filePath(table->currentIndex());
      on_tableView_clicked(table->currentIndex());
@@ -225,12 +234,13 @@ void ExplorerMin::onCopy()
 
 void ExplorerMin::onPaste()
 {
-
+    if (!fileSystemModel->isDir(index))
+    {
+             index = index.parent();
+    }
     std::string dest =  fileSystemModel->filePath(index).toStdString();
     qInfo()<<sourceFilePathCopy;
     emit copyFile(sourceFilePathCopy.toStdString(),dest,action);
-        QThread* thread = findChild<QThread*>(); // Get the thread associated with this object
-        thread->start();
     qInfo()<< "pasting";
 }
 
