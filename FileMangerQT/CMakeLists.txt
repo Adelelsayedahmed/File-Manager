@@ -64,11 +64,20 @@ set(PROJECT_SOURCES
         statistics.h
         stackedviewwidget.cpp
         stackedviewwidget.h
+<<<<<<< Updated upstream
         locationbar.h
         locationbar.cpp
         backbutton.h
         backbutton.cpp
 
+=======
+        rename_widget.h
+        rename_widget.cpp
+        backbutton.h
+        backbutton.cpp
+        locationbar.h
+        locationbar.cpp
+>>>>>>> Stashed changes
 
 
 )

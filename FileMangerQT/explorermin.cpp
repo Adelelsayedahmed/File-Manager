@@ -16,6 +16,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     fileSystemModel->parent(index);
 
     search = new SearchBar(this);
+<<<<<<< Updated upstream
     backButton = new BackButton(this);
     topBar = new addOnsBar(this);
 
@@ -25,6 +26,11 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     locationLayout->setContentsMargins(0,0,0,0);
     locationLayout->addWidget(backButton);
     locationLayout->addWidget(search);
+=======
+    location = new LocationBar(fileSystemModel, rootPath, this);
+  //  topBar = new addOnsBar(this);
+   // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+>>>>>>> Stashed changes
 
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -61,8 +67,17 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
+<<<<<<< Updated upstream
     QObject::connect(backButton, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
     topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+=======
+    QObject::connect(search->back, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
+  //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+
+    QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
+    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
+
+>>>>>>> Stashed changes
 }
 
 ExplorerMin::~ExplorerMin()
@@ -189,6 +204,15 @@ void ExplorerMin::checkSelectedFileForCompression()
     }
 }
 
+<<<<<<< Updated upstream
+=======
+void ExplorerMin::BackButtonClickedFromTree()
+{
+    backFilepath = ExplorerMin::filepath;
+}
+
+
+>>>>>>> Stashed changes
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     this->index = index;

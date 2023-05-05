@@ -36,7 +36,12 @@ protected:
     addOnsBar* topBar;
     QAction* identifyDuplicatesAction;
     SearchBar *search;
+<<<<<<< Updated upstream
     BackButton *backButton;
+=======
+    LocationBar *location;
+protected:
+>>>>>>> Stashed changes
 
 protected:
     QHBoxLayout *locationLayout;
