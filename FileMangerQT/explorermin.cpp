@@ -7,8 +7,8 @@
 QString ExplorerMin::filepath;
 ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 {
-    rename_widg_obj  = new rename_widget();
-    batch_rename_widg_obj = new rename_widget() ;
+    rename_widg_obj  = new rename_widget("rename","please enter a valid name","new name");
+    batch_rename_widg_obj = new rename_widget("batch rename","please enter a valid base name","new base name");
     setFocusPolicy(Qt::StrongFocus);
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);

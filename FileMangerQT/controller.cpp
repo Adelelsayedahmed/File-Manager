@@ -28,7 +28,7 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->topBar, &addOnsBar::explorerClicked, this, &Controller::Controller::explorerSlot);
     QObject::connect(dView->topBar, &addOnsBar::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
     QObject::connect(dView->topBar, &addOnsBar::twoPaneClicked, this, &Controller::Controller::twoPaneSlot);
-   // QObject::connect(dView->topBar, &addOnsBar::searchInFileClicked, this, &Controller::Controller::searchInFleByContentSlot);
+    QObject::connect(dView->topBar, &addOnsBar::searchInFileClicked, this, &Controller::Controller::searchByContentSlot);
 
     QObject::connect(dView->stackedview, &stackedviewwidget::currentIndexChanged, this, &Controller::StackedWidgetSwitchedDisable);
     QObject::connect(dView->stackedview, &stackedviewwidget::indexAboutToChange, this, &Controller::StackedWidgetSwitchedEnable);
@@ -152,7 +152,7 @@ void Controller::twoPaneSlot()
 }
 void Controller::searchByContentSlot()
 {
-  // dView->stackedview->switchToIndex(3);
+  dView->stackedview->switchToIndex(3);
 }
 void Controller::SearchWindowCreated(SearchWindow *search)
 {

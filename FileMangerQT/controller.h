@@ -70,7 +70,6 @@ public slots:
 
     void StackedWidgetSwitchedDisable(int index);
     void StackedWidgetSwitchedEnable(int index);
-
     void searchInMultiplefiles(const std::vector<std::string>& filePaths, const std::string& searchStr);
 
 

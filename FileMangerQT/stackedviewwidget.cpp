@@ -20,8 +20,8 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
         stackedWidget->addWidget(twoPane);
 
         // Create the search files content page
-//        file_search_wedge_obj = new searchfilewidget(this);
-//        stackedWidget->addWidget(file_search_wedge_obj);
+        file_search_wedge_obj = new searchfilewidget(this);
+        stackedWidget->addWidget(file_search_wedge_obj);
 
         // Create the next and previous buttons
         nextButton = new QPushButton("Next", this);

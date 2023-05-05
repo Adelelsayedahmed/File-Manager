@@ -13,12 +13,13 @@ class contentFilesSearch
 {
 public:
     contentFilesSearch();
-    std::map<int, std::string> searchInMultiplefiles(const std::vector<std::string>& filePaths, const std::string& searchStr);
-private:
-    void searchContentWorkFunction(const std::vector<std::string>& filePaths ,const std::string& searchStr,
-                                   const unsigned int workCount ,const unsigned int startIdx,std::map<int, std::string> &finalResults);
+    std::multimap<int, std::string> searchInMultiplefiles(const std::vector<std::string>& filePaths, const std::string& searchStr);
 
-    std::map<int, std::string> searchInOneFile(const std::string &filePath , const std::string& searchStr);
+private:
+     void searchContentWorkFunction(const std::vector<std::string>& filePaths ,const std::string& searchStr,
+                                   const unsigned int workCount ,const unsigned int startIdx,std::multimap<int, std::string> &finalResults);
+
+    std::multimap<int, std::string> searchInOneFile(const std::string &filePath , const std::string& searchStr);
     std::mutex m_mutex;
 
 };

@@ -222,9 +222,9 @@ void FileOperations::batchDecompression(std::vector<std::string> &Paths)
      compressionOperationsObj->batchDecompress(Paths);
 }
 
-std::map<int, std::string> FileOperations::SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
+std::multimap<int, std::string> FileOperations::SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
 {
-     std::map<int, std::string> resultMap = contFileSearchObj->searchInMultiplefiles(filePaths,searchStr);
+     std::multimap<int, std::string> resultMap = contFileSearchObj->searchInMultiplefiles(filePaths,searchStr);
      return resultMap ;
 }
 
