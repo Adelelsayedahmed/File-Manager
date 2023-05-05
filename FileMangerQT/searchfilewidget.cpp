@@ -15,7 +15,7 @@ searchfilewidget::searchfilewidget(QWidget *parent)
 }
 
 
-void searchfilewidget::recieveSearchContentMapFromCont(std::multimap<int, std::string>result)
+void searchfilewidget::recieveSearchContentMapFromCont(const std::multimap<int, std::string>&result)
 {
     // Clear the existing rows in the table
     tableResultWidget->setRowCount(0);
@@ -94,6 +94,7 @@ void searchfilewidget::allocateWidget()
     layout = new QVBoxLayout(this);
     searchPopUp = new rename_widget("add","please enter a valid file path","relative file path");
 }
+
 
 
 

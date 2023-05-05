@@ -27,11 +27,13 @@ private :
     private :
         void initiateSearchFilePage();
         void allocateWidget();
+        void fillResultTableModel();
 
 public:
     explicit searchfilewidget(QWidget *parent = nullptr);
     ~searchfilewidget();
-    void recieveSearchContentMapFromCont(std::multimap<int, std::string> result);
+    void recieveSearchContentMapFromCont(const std::multimap<int, std::string>& result);
+
 signals:
 
 };
