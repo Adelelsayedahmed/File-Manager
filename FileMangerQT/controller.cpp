@@ -120,13 +120,6 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
 }
 
 
-/*This function will be deleted from here and will be used in Fileoperations.cpp instead */
-void Controller::addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths)
-{
-    paths.push(oldPaths);
-    paths.push(newPaths);
-}
-
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
    fileOperations->batchRenameFile(oldPaths, newBaseName);
 

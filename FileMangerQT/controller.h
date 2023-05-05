@@ -33,10 +33,8 @@ class Controller : public QObject
 public:
     Controller();
     Controller(View* view);
-    void addPaths(std::vector<std::string>oldPaths,std::vector<std::string> newPaths);
      ~Controller();
 private:
-    std::stack<std::vector<std::string>> paths;
     View *dView;
     fs::path m_cutPath;
     fs::path m_tempCutPath;
