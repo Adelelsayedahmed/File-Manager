@@ -101,6 +101,10 @@ QTableView* ExplorerMin::ShowTableView()
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     qInfo() << "right click pressed";
+     qInfo() << fileSystemModel->filePath(table->currentIndex());
+     on_tableView_clicked(table->currentIndex());
+   // emit locationChanged(fileSystemModel->filePath(table->currentIndex()), fileSystemModel->fileName(table->currentIndex()));
+    qInfo()<< fileSystemModel->filePath(index);
     QMenu menu(this);
     QAction *cutAction = menu.addAction(tr("Cut"));
     QAction *copyAction = menu.addAction(tr("Copy"));
@@ -165,7 +169,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
         connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
-      // checkSelectedFileForCompression();
+      checkSelectedFileForCompression();
 
         menu.exec(event->globalPos());
 }
@@ -191,7 +195,7 @@ void ExplorerMin::checkSelectedFileForCompression()
      decompressAction->setEnabled(true);
     }
 
-    else {
+    else {qInfo()<<"innot ";
         compressAction->setEnabled(false);
              decompressAction->setEnabled(false);
     }
@@ -204,6 +208,7 @@ void ExplorerMin::BackButtonClickedFromTree()
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
+    qInfo()<<index;
     this->index = index;
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
