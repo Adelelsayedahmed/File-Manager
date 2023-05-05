@@ -13,7 +13,7 @@
 #include <filesystem>
 
 namespace fs = boost::filesystem;
-
+#define PATH "/Recycle Bin"
 
 //enum class CopyCutAction{
 //    Copy,
@@ -87,7 +87,7 @@ static void pasteToUndoCut(fs::path source_path, fs::path destination_path)
         qInfo() << "Source file does not exist!\n" ;
         return ;
     }
-    fs::path temp_path = destination_path / source_path.filename();
+     destination_path = destination_path / source_path.filename();
     try {
         if (fs::exists(destination_path)) {
             qInfo() << "Destination already exists!\n";
@@ -103,6 +103,14 @@ static void pasteToUndoCut(fs::path source_path, fs::path destination_path)
     }
     catch (const std::exception& ex) {
         qInfo() << "Error: " << ex.what() << '\n';
+    }
+}
+static void CreateDirectory(const fs::path &myPath){
+    bool success = boost::filesystem::create_directory(myPath);
+    if (success) {
+        std::cout << "Directory created successfully!" << std::endl;
+    } else {
+        std::cout << "Directory creation failed." << std::endl;
     }
 }
 

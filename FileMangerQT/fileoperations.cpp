@@ -89,8 +89,16 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
         fs::path  temp_path = destination_path / m_cutPath.filename();
         fs::path temp_source= m_cutPath;
         pasteFromCut(temp_path);
-        Undo* undo =new UndoCut(temp_source,temp_path);
-        undoController.addActions(undo);
+        if(Delete==true){
+            Undo* undo =new undoDelete(temp_source,temp_path);
+            undoController.addActions(undo);
+        }
+        else{
+            Undo* undo =new UndoCut(temp_source,temp_path);
+            undoController.addActions(undo);
+        }
+
+
     }
 }
 void FileOperations::pasteFromCut(fs::path destination_path)
@@ -139,6 +147,15 @@ void FileOperations::del(fs::path filePath)
     {
         qInfo() << "Error deleting";
     }
+}
+
+void FileOperations::d(boost::filesystem::path p)
+{
+    Delete=true;
+    Undo::CreateDirectory(PATH);
+    cutFile(p);
+    paste(p,PATH,CopyCutAction::Cut);
+    Delete=false;
 }
 void FileOperations::cutFile(const fs::path &path)
 {

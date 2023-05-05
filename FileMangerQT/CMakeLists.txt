@@ -84,6 +84,8 @@ set(PROJECT_SOURCES
         undorename.h
         undocut.cpp
         undocut.h
+        undodelete.cpp
+        undodelete.h
         undocontroller.cpp
         undocontroller.h
         myqueue.cpp
