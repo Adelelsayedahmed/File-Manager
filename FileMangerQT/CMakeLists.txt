@@ -111,7 +111,7 @@ else()
 endif()
 
 
-target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem boost_iostreams)
+target_link_libraries(FileManger PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Boost::filesystem boost_iostreams Qt6::Charts)
 
 # target_link_libraries(FileManger PRIVATE Qt6::Widgets Qt6::Charts Boost::filesystem)
 
