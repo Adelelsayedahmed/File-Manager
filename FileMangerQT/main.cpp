@@ -3,12 +3,15 @@
 #include <QApplication>
 #include <string>
 #include <vector>
-
+#include <QDir>
 #include <QLatin1String>
 int main(int argc, char *argv[])
 {
+    QString filePath = QDir::currentPath();
+
+    qInfo() <<filePath;
     QApplication a(argc, argv);
-    QFile styleSheetFile("/home/ziad/Documents/GitHub/File-Manager/FileMangerQT/QSS-master/MacOS.qss");
+    QFile styleSheetFile("../FileMangerQT/QSS/MacOS.qss");
 
     if (!styleSheetFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         // Handle the error if the file cannot be opened
