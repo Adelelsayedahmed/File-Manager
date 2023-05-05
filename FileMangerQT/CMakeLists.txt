@@ -74,8 +74,10 @@ set(PROJECT_SOURCES
         stackedviewwidget.h
         rename_widget.h
         rename_widget.cpp
-        files_search.h
-        files_search.cpp
+        searchfilewidget.h
+        searchfilewidget.cpp
+        contentfilessearch.h
+        contentfilessearch.cpp
 
 
 )

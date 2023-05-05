@@ -15,6 +15,9 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
         duplicatesPage=new IdentifyDuplicatesPageWidget(this);
         stackedWidget->addWidget(duplicatesPage);
 
+        // Create the search files content page
+        file_search_wedge_obj = new searchfilewidget(this);
+        stackedWidget->addWidget(file_search_wedge_obj);
 
         // Create the two pane widget and add it to the stacked widget
         twoPane = new TwoPane(this);

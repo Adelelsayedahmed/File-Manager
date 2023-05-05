@@ -37,8 +37,6 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
     QObject::connect(dView->stackedview->twoPane->leftTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
     QObject::connect(dView->stackedview->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
-
-
 }
 
 
@@ -170,7 +168,6 @@ void Controller::batchCompressControllerSlot(std::vector<std::string> &Paths)
 {
     fileOperations->batchCompression(Paths);
 
-
 }
 
 void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
@@ -178,6 +175,7 @@ void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
     fileOperations->batchDecompression(Paths);
 }
 
+<<<<<<< Updated upstream
 void Controller::StackedWidgetSwitchedDisable(int index)
 {
         dView->topBar->disableAction(index);
@@ -186,3 +184,11 @@ void Controller::StackedWidgetSwitchedEnable(int index)
 {
         dView->topBar->enableAction(index);
 }
+=======
+void Controller:: searchInMultiplefiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
+{
+    auto result = fileOperations->SearchContentInFiles(filePaths,searchStr);
+    dView->stackedview->file_search_wedge_obj->recieveSearchContentMapFromCont(result);
+}
+
+>>>>>>> Stashed changes

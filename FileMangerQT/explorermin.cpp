@@ -169,7 +169,11 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
         connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
+<<<<<<< Updated upstream
       checkSelectedFileForCompression();
+=======
+        //checkSelectedFileForCompression();
+>>>>>>> Stashed changes
 
         menu.exec(event->globalPos());
 }

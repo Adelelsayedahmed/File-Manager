@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <iostream>
 #include "compression.h"
+#include "contentfilessearch.h"
 #include <filesystem>
 namespace fs = boost::filesystem;
 
@@ -24,9 +25,11 @@ public:
     void batchCompression(std::vector< std::string>& Paths);
     void batchDecompression(std::vector< std::string>& Paths);
     void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
+    std::map<int, std::string> SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr);
 
 private:
     compression* compressionOperationsObj ;
+    contentFilesSearch* contFileSearchObj ;
     fs::path m_cutPath;
     void pasteFromCut(fs::path destination_path);
     void addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths);
