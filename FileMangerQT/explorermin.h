@@ -18,6 +18,7 @@
 #include "addonsbar.h"
 #include "statistics.h"
 #include "backbutton.h"
+#include "locationbar.h"
 #include <QString>
 
 #include <QDragEnterEvent>

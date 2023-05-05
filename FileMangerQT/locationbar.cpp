@@ -1,17 +1,3 @@
-<<<<<<< Updated upstream
-//#include "locationbar.h"
-//#include  <QAbstractItemModel>
-
-//LocationBar::LocationBar(QFileSystemModel model, QWidget *parent)
-//    : QWidget{parent}
-//{   locationBar = new QLineEdit(this);
-//    completer = new QCompleter(this);
-//    completer->setModel(QAbstractItemModel::from model);
-//    completer->setCompletionMode(QCompleter::PopupCompletion);
-
-//}
-
-=======
 #include "locationbar.h"
 
 LocationBar::LocationBar(QFileSystemModel *model, QString path, QWidget *parent)
@@ -26,5 +12,4 @@ LocationBar::LocationBar(QFileSystemModel *model, QString path, QWidget *parent)
     completer->setCompletionMode(QCompleter::PopupCompletion);
 
 }
->>>>>>> Stashed changes
 

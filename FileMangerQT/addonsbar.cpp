@@ -31,7 +31,7 @@ addOnsBar::addOnsBar(QWidget *parent)
     createActions();
 
     for (auto& action : actions) {
-        qDebug() << "here in for loop";
+//        qDebug() << "here in for loop";
         toolbar->addAction(action);
     }
     disableAction(0);
@@ -43,7 +43,7 @@ addOnsBar::addOnsBar(QWidget *parent)
 void addOnsBar::createActions()
 {
     QString parentPath = QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
-    qDebug() << parentPath;
+//    qDebug() << parentPath;
 
     QString path1 = parentPath + "/explorerIcon.png";
     QString name1 = "explorer";

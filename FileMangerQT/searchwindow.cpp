@@ -13,7 +13,6 @@ SearchWindow::SearchWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SearchWindow)
 {
-<<<<<<< Updated upstream
     ui->setupUi(this);  
 
      //Disable edit of results table
@@ -37,31 +36,8 @@ void SearchWindow::search(QString filepath, QString filename)
     //Set fillepath to search in
     dfilePath = filepath;
 
-=======
-    ui->setupUi(this);
-
-    //Disable edit of results table
-     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-
-     QStringList labels;
-
-     //Set table labels and dimensions
-     labels <<"Path"<<"Type";
-     ui->tableWidget->setColumnCount(NO_OF_FIELDS);
-     ui->tableWidget->setColumnWidth(0,650);
-     ui->tableWidget->setColumnWidth(1,150);
-     ui->tableWidget->setHorizontalHeaderLabels(labels);
-}
-
-void SearchWindow::search(QString filepath, QString filename)
-{
-    //Set fillepath to search in
-    dfilePath = filepath;
-
     this->setWindowTitle("Search results for " + filename);
 
->>>>>>> Stashed changes
      //Initialize search parameters
      std::string path = dfilePath.toStdString();
      std::string file_name = filename.toStdString();

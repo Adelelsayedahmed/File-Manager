@@ -117,7 +117,7 @@ void Explorer::footer_size(std::string s)
 {
     sizeValueLabel->setText("...");
 
-    qInfo()<<"in footer size function"<<s;
+//    qInfo()<<"in footer size function"<<s;
     unsigned int size=0;
     QString appendingString;
     if(statistics::isFile(s))

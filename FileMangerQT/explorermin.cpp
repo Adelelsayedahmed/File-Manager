@@ -67,10 +67,6 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
-
-    QObject::connect(backButton, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
-    topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
-
     QObject::connect(search->back, &BackButton::backButtonPressedSignal, this, &ExplorerMin::BackButtonClicked);
 
   //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
@@ -88,7 +84,6 @@ ExplorerMin::~ExplorerMin()
     delete fileSystemModel;
     delete contentUi;
     delete search;
-    delete backButton;
     delete identifyDuplicatesAction;
     delete topBar;
     delete rename_widg_obj ;
