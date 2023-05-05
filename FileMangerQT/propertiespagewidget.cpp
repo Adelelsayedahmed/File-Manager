@@ -54,6 +54,9 @@ void PropertiesPageWidget::showPropertiesWindow()
         layout->addWidget(statisticsButton, 8, 1, 1, 1);
 
     }
+    if(extension==""){
+        extension="file";
+    }
 
     layout->addWidget(iconLabel, 1, 1, 1, 1);
 
