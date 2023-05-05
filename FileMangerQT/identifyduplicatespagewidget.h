@@ -93,6 +93,8 @@ public slots:
 
     void duplicatesSlot();
 
+    void duplicationInThread();
+
     void updateDuplicatesTableSlot();
 
     void rowSelected(const QItemSelection& selected, const QItemSelection& deselected);

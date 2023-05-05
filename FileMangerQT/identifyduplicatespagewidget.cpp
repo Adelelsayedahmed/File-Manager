@@ -1,6 +1,8 @@
 #include "identifyduplicatespagewidget.h"
 #include "ui_filecontentview.h"
 
+#include <thread>
+
 IdentifyDuplicatesPageWidget::IdentifyDuplicatesPageWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -193,10 +195,15 @@ void IdentifyDuplicatesPageWidget::showAddPopupWindow()
 
 void IdentifyDuplicatesPageWidget::duplicatesSlot()
 {
-   duplicates= duplicatesObj->checkDuplication(searchingPaths);
+    std::thread t(&IdentifyDuplicatesPageWidget::duplicationInThread, this);
+    t.detach();
+
+}
+void IdentifyDuplicatesPageWidget::duplicationInThread()
+{
+    duplicates= duplicatesObj->checkDuplication(searchingPaths);
     emit updateDuplicatesTable();
 }
-
 void IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot()
 {
     setTheTable(duplicates);

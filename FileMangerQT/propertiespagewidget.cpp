@@ -1,5 +1,6 @@
 #include "propertiespagewidget.h"
 
+
 PropertiesPageWidget::PropertiesPageWidget(QWidget *parent,statistics* statsObj,pieChartPageWidget *pieChartWidget )
     : QWidget{parent}
 {
@@ -25,7 +26,7 @@ void PropertiesPageWidget::showPropertiesWindow()
     QString name;
     QString size;
     QString extension;
-
+    QString dateModified;
 
     iconLabel = new QLabel(propertiesWindow);
     QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
@@ -33,19 +34,24 @@ void PropertiesPageWidget::showPropertiesWindow()
     {
         iconLabel->setPixmap(QPixmap( parentPath + "/fileIcon.png"));
         name=QString::fromStdString(path.filename().string());
-        size=QString::fromStdString(std::to_string(boost::filesystem::file_size(path)/1000)+" KB");
+        size=QString::fromStdString(std::to_string(boost::filesystem::file_size(path)/1024)+" KB");
         extension=QString::fromStdString(path.extension().string());
+
+        boost::posix_time::ptime modifiedTime = boost::posix_time::from_time_t(last_write_time(path));
+        dateModified = QString::fromStdString(boost::posix_time::to_simple_string(modifiedTime));
+
+
     }else
     {
         iconLabel->setPixmap(QPixmap( parentPath + "/directoryIcon.png"));
         name=QString::fromStdString(path.filename().string());
-        size=QString::fromStdString(std::to_string(statistics::directory_size(path)/1000)+" KB");
+        size=QString::fromStdString(std::to_string(statistics::directory_size(path.string())/1024)+" KB");
         extension="directory";
 
         statisticsButton = new QPushButton("Charts representation", propertiesWindow);
        connect(statisticsButton, &QPushButton::clicked, this, &PropertiesPageWidget::showStatistics);
-
-        layout->addWidget(statisticsButton, 7, 1, 1, 1);
+        dateModified=getDirectoryLastModifiedTime(path.string());
+        layout->addWidget(statisticsButton, 8, 1, 1, 1);
 
     }
 
@@ -55,10 +61,13 @@ void PropertiesPageWidget::showPropertiesWindow()
     QLabel *nameLabel = new QLabel("Name:", propertiesWindow);
     QLabel *sizeLabel = new QLabel("Size:", propertiesWindow);
     QLabel *extensionLabel = new QLabel("Type:", propertiesWindow);
+    QLabel *dateLabel = new QLabel("date modified:", propertiesWindow);
 
    QLabel *nameValueLabel = new QLabel("  "+name, propertiesWindow);
     QLabel *sizeValueLabel = new QLabel("  "+size, propertiesWindow);
     QLabel *extensionValueLabel = new QLabel("  "+extension, propertiesWindow);
+    QLabel *dateValueLabel = new QLabel("  "+dateModified, propertiesWindow);
+
 
     layout->addWidget(nameLabel, 3, 1,1,1);
     layout->addWidget(nameValueLabel, 3, 2,1,1);
@@ -66,14 +75,19 @@ void PropertiesPageWidget::showPropertiesWindow()
     layout->addWidget(sizeValueLabel, 4, 2,1,1);
     layout->addWidget(extensionLabel, 5, 1,1,1);
     layout->addWidget(extensionValueLabel, 5, 2,1,1);
-
+    layout->addWidget(dateLabel, 6, 1,1,1);
+    layout->addWidget(dateValueLabel, 6, 2,1,1);
 
 
 
 
     propertiesWindow->show();
 }
-
+void PropertiesPageWidget::showStatisticsThreaded()
+{
+    std::thread statsThread(&PropertiesPageWidget::showStatistics, this);
+    statsThread.detach();
+}
 
 void PropertiesPageWidget::showStatistics()
 {
@@ -92,9 +106,25 @@ void PropertiesPageWidget::showStatistics()
 
         QDialog* dialog = new QDialog(this);
         dialog->setWindowTitle("Charts");
-        dialog->setMinimumSize(900, 900);
+        dialog->setMinimumSize(840, 800);
         dialog->setLayout(new QGridLayout(dialog));
             dialog->layout()->addWidget(piechartpagewidget);
         dialog->show();
 
+}
+
+QString PropertiesPageWidget::getDirectoryLastModifiedTime(const std::string& dirPath)
+{
+        boost::filesystem::path path(dirPath);
+        boost::system::error_code error;
+        auto lastWriteTime = boost::filesystem::last_write_time(path, error);
+
+        if (error) {
+        return QString(); // error occurred, return empty QString
+        }
+
+        boost::posix_time::ptime lastWritePtime = boost::posix_time::from_time_t(lastWriteTime);
+        lastWritePtime = lastWritePtime + boost::posix_time::time_duration(0,0,0,0); // adjust for local time zone
+        std::string lastWriteStr = boost::posix_time::to_simple_string(lastWritePtime);
+        return QString::fromStdString(lastWriteStr);
 }

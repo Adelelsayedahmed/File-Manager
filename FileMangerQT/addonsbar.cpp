@@ -26,6 +26,7 @@ addOnsBar::addOnsBar(QWidget *parent)
     }
     disableAction(0);
 
+
     setConnections();
     layout->addWidget(toolbar);
 
@@ -52,6 +53,10 @@ void addOnsBar::createActions()
 
     actions.append(addToTheBar(path3,name3));
 
+    QString path4 = parentPath + "/searchInContentIcon.png";
+    QString name4 = "search in files by content";
+
+    actions.append(addToTheBar(path4,name4));
 
 }
 
@@ -71,6 +76,8 @@ void addOnsBar::setConnections()
 
     connect(actions.at(2), &QAction::triggered, this, &addOnsBar::twoPaneActionSlot);
 
+    connect(actions.at(3), &QAction::triggered, this, &addOnsBar::searchInFileActionSlot);
+
 }
 void addOnsBar::explorerActionSlot()
 {
@@ -82,10 +89,14 @@ void addOnsBar::identifyDuplicatesActionSlot()
     emit identifyDuplictesIconCLicked();
 }
 
-
 void addOnsBar::twoPaneActionSlot()
 {
     emit twoPaneClicked();
+}
+
+void addOnsBar::searchInFileActionSlot()
+{
+    emit searchInFileClicked();
 }
 QAction* addOnsBar::addToTheBar(QString &path,QString& actionName)
 {

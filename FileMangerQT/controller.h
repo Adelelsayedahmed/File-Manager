@@ -2,10 +2,10 @@
 #define CONTROLLER_H
 #include <QObject>
 #include "view.h"
-//#include <PiechartWidget.h>
+#include <PiechartWidget.h>
 #include "statistics.h"
-//#include "propertiespagewidget.h"
-//#include "piechartpagewidget.h"
+#include "propertiespagewidget.h"
+#include "piechartpagewidget.h"
 #include "identifyduplicates.h"
 #include "identifyduplicatespagewidget.h"
 #include "searchwindow.h"
@@ -53,6 +53,7 @@ public slots:
     void identifyDuplicates();
     void twoPaneSlot();
     void explorerSlot();
+    void searchByContentSlot();
 
     void renameFileControllerSlot(const boost::filesystem::path &path , const std::string& newFileName);
     void batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string& newBaseName);

@@ -15,14 +15,13 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
         duplicatesPage=new IdentifyDuplicatesPageWidget(this);
         stackedWidget->addWidget(duplicatesPage);
 
-        // Create the search files content page
-        file_search_wedge_obj = new searchfilewidget(this);
-        stackedWidget->addWidget(file_search_wedge_obj);
-
         // Create the two pane widget and add it to the stacked widget
         twoPane = new TwoPane(this);
         stackedWidget->addWidget(twoPane);
 
+        // Create the search files content page
+//        file_search_wedge_obj = new searchfilewidget(this);
+//        stackedWidget->addWidget(file_search_wedge_obj);
 
         // Create the next and previous buttons
         nextButton = new QPushButton("Next", this);
@@ -44,11 +43,11 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
 void stackedviewwidget::nextPane()
 {
     int index = stackedWidget->currentIndex();
-        emit indexAboutToChange(index);//hard coded
-
+        emit indexAboutToChange(index);
         index++;
-        if (index >= stackedWidget->count())
+        if (index >= stackedWidget->count()){
             index = 0;
+        }
 
               emit currentIndexChanged(index);
         stackedWidget->setCurrentIndex(index);
@@ -59,11 +58,11 @@ void stackedviewwidget::previousPane()
     int index = stackedWidget->currentIndex();
         emit indexAboutToChange(index);
         index--;
-       if (index < 0)
+        if (index < 0){
            index = stackedWidget->count() - 1;
+        }
 
-
-       emit currentIndexChanged(index);// hard coded
+       emit currentIndexChanged(index);
        stackedWidget->setCurrentIndex(index);
 }
 void stackedviewwidget::switchToIndex(int index)

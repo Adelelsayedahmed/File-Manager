@@ -28,6 +28,7 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->topBar, &addOnsBar::explorerClicked, this, &Controller::Controller::explorerSlot);
     QObject::connect(dView->topBar, &addOnsBar::identifyDuplictesIconCLicked, this, &Controller::Controller::identifyDuplicates);
     QObject::connect(dView->topBar, &addOnsBar::twoPaneClicked, this, &Controller::Controller::twoPaneSlot);
+   // QObject::connect(dView->topBar, &addOnsBar::searchInFileClicked, this, &Controller::Controller::searchInFleByContentSlot);
 
     QObject::connect(dView->stackedview, &stackedviewwidget::currentIndexChanged, this, &Controller::StackedWidgetSwitchedDisable);
     QObject::connect(dView->stackedview, &stackedviewwidget::indexAboutToChange, this, &Controller::StackedWidgetSwitchedEnable);
@@ -80,16 +81,16 @@ void Controller::cutFile(const fs::path &path)
 }
 
 void Controller::propertiesOfFile(const fs::path &path)
-{/*
+{
         statistics *statObj = new statistics;
 
-        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->explorer);
+        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->stackedview);
 
-        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->explorer, statObj, pieChartWidget);
+        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->stackedview, statObj, pieChartWidget);
 
         propertiesWidget->path=path;
 
-        propertiesWidget->showPropertiesWindow();*/
+        propertiesWidget->showPropertiesWindow();
 
 }
 
@@ -148,6 +149,10 @@ void Controller::explorerSlot()
 void Controller::twoPaneSlot()
 {
    dView->stackedview->switchToIndex(2);
+}
+void Controller::searchByContentSlot()
+{
+  // dView->stackedview->switchToIndex(3);
 }
 void Controller::SearchWindowCreated(SearchWindow *search)
 {

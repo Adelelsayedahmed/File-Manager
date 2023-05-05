@@ -32,6 +32,8 @@ public slots:
 
     void twoPaneActionSlot();
 
+    void searchInFileActionSlot();
+
 //    void showDuplicatesMessage();
 
 private:
@@ -45,6 +47,8 @@ signals:
     void explorerClicked();
 
     void twoPaneClicked();
+
+    void searchInFileClicked();
 };
 
 #endif // ADDONSBAR_H
