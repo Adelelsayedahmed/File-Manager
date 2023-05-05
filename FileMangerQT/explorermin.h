@@ -26,10 +26,13 @@
 #include <QAbstractItemView>
 #include "customtable.h"
 #include "myfilesystemmodel.h"
+#include "rename_widget.h"
 class ExplorerMin:public QWidget
 {
     Q_OBJECT
 private :
+    rename_widget* rename_widg_obj;
+    rename_widget* batch_rename_widg_obj;
     bool isMultipleSelected();
     std::vector<std::string> getSelectedPaths();
 public:
@@ -70,7 +73,8 @@ public slots:
 
     void onRenameFilesViewSlot();
     void onBatchRenameViewSlot();
-
+    void emitingRenameSlot(QString newFileName) ;
+    void emitingBatchRenameSlot(QString newFileName);
     void onCompress();
     void onDeCompress();
     void onCompressHere();

@@ -2,7 +2,7 @@
 
 FileOperations::FileOperations()
 {
-  //  compressionOperationsObj = new compression ();
+   compressionOperationsObj = new compression ();
 }
 
 FileOperations::~FileOperations()
@@ -205,16 +205,18 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
     }
     FileOperations::addPaths( oldPaths,new_paths);
 
+
+
 }
 
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
 {
-   // compressionOperationsObj->batchCompress(Paths);
+    compressionOperationsObj->batchCompress(Paths);
 }
 
 void FileOperations::batchDecompression(std::vector<std::string> &Paths)
 {
-    // compressionOperationsObj->batchDecompress(Paths);
+     compressionOperationsObj->batchDecompress(Paths);
 }
 
 
