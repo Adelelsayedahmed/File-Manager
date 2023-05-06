@@ -399,15 +399,17 @@ void ExplorerMin::onBatchDecompressViewSlot()
 
 
 bool ExplorerMin::isMultipleSelected(){
-
     QItemSelectionModel *selectionModel = this->table->selectionModel();
     QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
-    if (selectedIndexes.length() == 1) {
-        return false ;
-    } else if (selectedIndexes.length() > 1) {
-        return true ;
+    QSet<int> selectedRows;
+    for (const QModelIndex &index : selectedIndexes) {
+        selectedRows.insert(index.row());
     }
-
+    if (selectedRows.size() == 1) {
+        return false;
+    } else if (selectedRows.size() > 1) {
+        return true;
+    }
 }
 
 
