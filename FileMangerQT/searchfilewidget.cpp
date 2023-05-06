@@ -21,6 +21,12 @@ void searchfilewidget::recieveSearchContentMapFromCont(const std::multimap<int, 
     fillResultTableModel(result);
 }
 
+void searchfilewidget::CallSearchContentBE()
+{
+    fillPathVector();
+    emit searchContentPathsSignal(filePaths, searchString);
+}
+
 void searchfilewidget::fillResultTableModel(const std::multimap<int, std::string>&result)
 {
     // Iterate through the map and add each key-value pair to the table
