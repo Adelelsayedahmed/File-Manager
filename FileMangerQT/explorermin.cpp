@@ -45,8 +45,6 @@ void ExplorerMin::registerSignals()
     /*Register shortcusts*/
     QShortcut *shortcutCopy = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C), this);
     shortcutCopy->setContext(Qt::ApplicationShortcut);
-
-
     QShortcut *shortcutPaste = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V), this);
     QShortcut *shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
     QShortcut *shortcutCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), this);
@@ -60,10 +58,9 @@ void ExplorerMin::registerSignals()
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
     QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
   //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
-
+    //QObject::connect(table,SIGNAL(doubleClicked),this,&ExplorerMin::BackButtonClicked);
     QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
     QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
-
 }
 
 
@@ -230,7 +227,7 @@ void ExplorerMin::BackButtonClickedFromTree()
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     qInfo()<<index;
-    this->index = index;
+    //this->index = index;
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     ///////////////////////
@@ -325,6 +322,7 @@ void ExplorerMin::emitingBatchRenameSlot(QString newFileName)
 }
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
+    this->index = index;
     filePath = fileSystemModel->filePath(index);
     qInfo() << filePath;
     contentUi->file = new QFile (filePath);
@@ -337,12 +335,14 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
     contentUi->ui->textEdit->clear();
     contentUi->ui->textEdit->setPlainText(fileContents);
     contentUi->show();
+    backFilepath=fileSystemModel->filePath(index);
+    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 
 }
 
 void ExplorerMin::BackButtonClicked()
 {
-    QString path = this->backFilepath;
+    QString path = fileSystemModel->filePath(index);
     qInfo() << path;
     if (path == "/") folderClicked("");
     else if(path !="")
