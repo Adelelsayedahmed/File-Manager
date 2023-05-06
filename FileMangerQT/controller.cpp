@@ -38,6 +38,9 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
     QObject::connect(dView->stackedview->twoPane->leftTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
     QObject::connect(dView->stackedview->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
+
+    QObject::connect(dView, &View::passingContentSearchFromSvtoController, this, &Controller::searchInMultiplefiles);
+
 }
 
 

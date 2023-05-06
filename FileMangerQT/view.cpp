@@ -15,6 +15,9 @@ void View::mRegisterSignals()
 //    QObject::connect(shortcutCut, &QShortcut::activated, this, &View::onCut);
 
 //    connect(ui->tableView, &QTableView::customContextMenuRequested, this, &View::onCustomContextMenuRequested);
+
+QObject::connect(stackedview, &stackedviewwidget::passingContentSearchToView,this,&View::recieveContentSearchFromSv);
+
 }
 
 View::View(QWidget *parent)
@@ -23,7 +26,6 @@ View::View(QWidget *parent)
 {
 ui->setupUi(this);
 
-mRegisterSignals();
 
 topBar = new addOnsBar(this);
 stackedview = new stackedviewwidget(this);
@@ -35,12 +37,19 @@ mainLayout->addWidget(stackedview, 1, 0);
 QWidget* centralWidget = new QWidget(this);
 centralWidget->setLayout(mainLayout);
 this->setCentralWidget(centralWidget);
+mRegisterSignals();
+
 }
 
 
 View::~View()
 {
-    delete ui;
+delete ui;
+}
+
+void View::recieveContentSearchFromSv(const std::vector<std::string> &filePaths, const std::string &searchString)
+{
+    emit passingContentSearchFromSvtoController(filePaths,searchString);
 }
 
 

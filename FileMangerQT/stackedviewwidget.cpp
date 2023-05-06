@@ -38,6 +38,9 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
         buttonLayout->addWidget(previousButton);
         buttonLayout->addWidget(nextButton);
         layout->addLayout(buttonLayout);
+
+        connect(file_search_wedge_obj,&searchfilewidget::searchContentPathsSignal,this,&stackedviewwidget::recieveFromContentSearchWedgit);
+
 }
 
 void stackedviewwidget::nextPane()
@@ -63,7 +66,12 @@ void stackedviewwidget::previousPane()
         }
 
        emit currentIndexChanged(index);
-       stackedWidget->setCurrentIndex(index);
+        stackedWidget->setCurrentIndex(index);
+}
+
+void stackedviewwidget::recieveFromContentSearchWedgit(const std::vector<std::string> &filePaths, const std::string &searchString)
+{
+    emit passingContentSearchToView(filePaths , searchString);
 }
 void stackedviewwidget::switchToIndex(int index)
 {

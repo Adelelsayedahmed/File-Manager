@@ -11,6 +11,8 @@ searchfilewidget::searchfilewidget(QWidget *parent)
 
     this->allocateWidget();
     this->initiateSearchFilePage();
+    this->mRegisterSignals();
+   // searchString  = "adel" ;
 
 }
 
@@ -23,8 +25,12 @@ void searchfilewidget::recieveSearchContentMapFromCont(const std::multimap<int, 
 
 void searchfilewidget::CallSearchContentBE()
 {
+    // should be called when the search button is pressed
     fillPathVector();
-    emit searchContentPathsSignal(filePaths, searchString);
+    if (isValidEnteredString())
+    {
+        emit searchContentPathsSignal(filePaths, searchString);
+    }
 }
 
 void searchfilewidget::fillResultTableModel(const std::multimap<int, std::string>&result)
@@ -45,7 +51,9 @@ void searchfilewidget::fillResultTableModel(const std::multimap<int, std::string
 void searchfilewidget::fillPathVector()
 {
     filePaths.clear();
-
+    qInfo() <<"iam here *********" ;
+    filePaths.push_back("/home/adel/playing/file1.txt");
+    filePaths.push_back("/home/adel/playing/file2.txt");
     // iterate over the table to get the entered paths in the table
 
 
@@ -59,6 +67,26 @@ void searchfilewidget::clearResultTable()
 void searchfilewidget::clearPathsTable()
 {
       tablePathsWidget->setRowCount(0);
+}
+
+void searchfilewidget::mRegisterSignals()
+{
+      connect(searchButton,&QPushButton::clicked , this , &searchfilewidget::CallSearchContentBE);
+}
+
+bool searchfilewidget::isValidEnteredString()
+{
+      bool returnFlag = true ;
+      QString temp = searchLine->text() ;
+      if ( temp.isEmpty() )
+      {
+        returnFlag =  false ;
+      }
+      else
+      {
+        this->searchString = temp.toStdString();
+      }
+  return returnFlag ;
 }
 
 void searchfilewidget::initiateSearchFilePage()

@@ -27,10 +27,11 @@ public slots:
 private slots:
     void nextPane();
     void previousPane();
-
+    void recieveFromContentSearchWedgit(const std ::vector<std::string> &filePaths ,const std::string &searchString);
 signals:
     void currentIndexChanged(int index);
     void indexAboutToChange(int index);
+    void passingContentSearchToView(const std ::vector<std::string> &filePaths ,const std::string &searchString);
 
 };
 

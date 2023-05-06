@@ -39,9 +39,9 @@ public:
 //  Explorer *explorer;
     stackedviewwidget * stackedview;
 private slots:
-
-//signals:
-
+        void recieveContentSearchFromSv(const std ::vector<std::string> &filePaths ,const std::string &searchString);
+signals:
+      void passingContentSearchFromSvtoController(const std ::vector<std::string> &filePaths ,const std::string &searchString);
 };
 
 #endif // VIEW_H

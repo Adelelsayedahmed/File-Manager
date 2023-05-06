@@ -224,6 +224,9 @@ void ExplorerMin::BackButtonClickedFromTree()
     backFilepath = ExplorerMin::filepath;
 }
 
+
+
+
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     qInfo()<<index;

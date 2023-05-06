@@ -38,6 +38,8 @@ private :
         void fillPathVector();
         void clearResultTable();
         void clearPathsTable();
+        void mRegisterSignals();
+        bool isValidEnteredString();
 
 public:
     explicit searchfilewidget(QWidget *parent = nullptr);

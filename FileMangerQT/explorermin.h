@@ -90,6 +90,7 @@ public slots:
     void onBatchDecompressViewSlot ();
     void BackButtonClickedFromTree();
 
+
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
@@ -102,8 +103,7 @@ signals:
     void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
-        void context_menu(QModelIndex index);
-
+    void context_menu(QModelIndex index);
 
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
