@@ -7,7 +7,10 @@
 #include <map>
 #include <QPushButton>
 #include <QBoxLayout>
+#include <string>
+#include <vector>
 #include "rename_widget.h"
+
 class searchfilewidget : public QWidget
 {
     Q_OBJECT
@@ -24,10 +27,17 @@ private :
         QHBoxLayout * lineButtonHlayout ;
         QHBoxLayout * hLayOut ;
         rename_widget* searchPopUp ;
+
+        std::vector<std::string> filePaths;
+        std::string searchString ;
+
     private :
         void initiateSearchFilePage();
         void allocateWidget();
-        void fillResultTableModel();
+        void fillResultTableModel(const std::multimap<int, std::string>&result);
+        void fillPathVector();
+        void clearResultTable();
+        void clearPathsTable();
 
 public:
     explicit searchfilewidget(QWidget *parent = nullptr);
@@ -35,6 +45,7 @@ public:
     void recieveSearchContentMapFromCont(const std::multimap<int, std::string>& result);
 
 signals:
+    void searchContentPathsSignal(const std ::vector<std::string> &filePaths ,const std::string &searchString);
 
 };
 

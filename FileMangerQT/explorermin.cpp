@@ -111,7 +111,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     }
     qInfo() << "right click pressed";
      qInfo() << fileSystemModel->filePath(table->currentIndex());
-     on_tableView_clicked(table->currentIndex());
+    // on_tableView_clicked(table->currentIndex());
    // emit locationChanged(fileSystemModel->filePath(table->currentIndex()), fileSystemModel->fileName(table->currentIndex()));
     qInfo()<< fileSystemModel->filePath(index);
     QMenu menu(this);
@@ -179,7 +179,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
 
-        checkSelectedFileForCompression();
+       // checkSelectedFileForCompression();
 
 
         menu.exec(event->globalPos());
