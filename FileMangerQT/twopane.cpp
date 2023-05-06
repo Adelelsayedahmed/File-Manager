@@ -9,10 +9,8 @@ TwoPane::TwoPane(QWidget *parent):QWidget(parent)
     hLayout->addWidget(leftTable.get());
     //this has to be done otherwise the shortcuts will not be invoked.
     leftTable->setFocus();
-    leftTable->grabKeyboard();
     hLayout->addWidget(rightTable.get());
     rightTable->setFocus();
-    rightTable->grabKeyboard();
     setupDragAndDrop(leftTable->table);
     setupDragAndDrop(rightTable->table);
 }
