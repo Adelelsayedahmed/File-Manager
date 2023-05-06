@@ -89,12 +89,22 @@ QTableView* ExplorerMin::ShowTableView()
 //    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
-    table->setColumnWidth(3,250);
+    table->setColumnWidth(3,150);
+    table->setMinimumWidth(350);
     table->horizontalScrollBar();
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    //to make the tableView resizable
+    for (int i = 0; i < table->horizontalHeader()->count(); ++i) {
+        if (i == 0) {
+            table->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Stretch);
+        } else {
+            table->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
+        }
+    }
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     return table;
