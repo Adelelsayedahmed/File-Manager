@@ -48,12 +48,12 @@ void ExplorerMin::registerSignals()
     QShortcut *shortcutPaste = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_V), this);
     QShortcut *shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
     QShortcut *shortcutCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), this);
-
+    QShortcut *shortUndo = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z), this);
     QObject::connect(shortcutCopy, &QShortcut::activated, this, &ExplorerMin::onCopy);
     QObject::connect(shortcutPaste, &QShortcut::activated, this, &ExplorerMin::onPaste);
     QObject::connect(shortcutDel, &QShortcut::activated, this, &ExplorerMin::onDel);
     QObject::connect(shortcutCut, &QShortcut::activated, this, &ExplorerMin::onCut);
-
+    QObject::connect(shortUndo , &QShortcut::activated, this, &ExplorerMin::onUndo);
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
     QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
@@ -111,11 +111,11 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     //disable right click in case it is pressed on empty area.
     QModelIndex ind = table->indexAt(event->pos());
-    if(!ind.isValid())
-    {
-        event->ignore();
-        return;
-    }
+//    if(!ind.isValid())
+//    {
+//        event->ignore();
+//        return;
+//    }
     qInfo() << "right click pressed";
      qInfo() << fileSystemModel->filePath(table->currentIndex());
     // on_tableView_clicked(table->currentIndex());
@@ -185,6 +185,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
         connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
         connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
+       //checkSelectedFileForCompression();
 
        // checkSelectedFileForCompression();
 
@@ -265,6 +266,11 @@ void ExplorerMin::onCut()
     action = CopyCutAction::Cut;
     filePath = fileSystemModel->filePath(index);
     emit cutFile(filePath.toStdString());
+}
+
+void ExplorerMin::onUndo()
+{
+    emit undoAction();
 }
 
 void ExplorerMin::onProperties()

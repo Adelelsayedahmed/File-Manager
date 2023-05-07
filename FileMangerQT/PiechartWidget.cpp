@@ -1,7 +1,7 @@
 #include "PiechartWidget.h"
 
 
-PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string, int>& statsMap,PieChartWidget::chartProperties& prop)
+PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string,uintmax_t>& statsMap,PieChartWidget::chartProperties& prop)
     : QWidget{parent}
 {
    // Create the QChartView object and set its parent to this widget
@@ -10,11 +10,12 @@ PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string, i
 
 }
 
-QPieSeries* PieChartWidget::fillPieSeries(std::unordered_map<std::string,int> statsMap)
+QPieSeries* PieChartWidget::fillPieSeries(std::unordered_map<std::string,uintmax_t>& statsMap)
 {
     // Create the QPieSeries object and fill it with data from statsMap
     QPieSeries *series=new QPieSeries();
     for ( auto& pair : statsMap) {
+
          QPieSlice *slice =series->append(QString::fromStdString(pair.first),pair.second);
           slice->setLabelVisible(false);
     }
@@ -27,6 +28,29 @@ void PieChartWidget::setupPieSeriesProperties(QPieSeries* &series,struct chartPr
     // Set up properties of the QPieSeries object based on chartProperties
     if(chartProperties.showValue){
           for (QPieSlice *slice : series->slices()) {
+              QString appendingString="";
+              if(slice->value()>=GIGA){
+                  slice->setValue(convertToGB(slice->value()));
+                  appendingString=" GB";
+              }
+              else if(slice->value()>=MEGA)
+              {
+                  slice->setValue(convertToMB(slice->value()));
+                  appendingString=" MB";
+              }else if(slice->value()>=kILO){
+                  slice->setValue(convertToKB(slice->value()));
+                  appendingString=" KB";
+              }else{
+                  appendingString=" bytes";
+              }
+
+              slice->setLabel(QString("%1: %2%3").arg(slice->label()).arg(slice->value()).arg(appendingString));
+          }
+    }
+    else
+    {
+          for (QPieSlice *slice : series->slices())
+          {
               slice->setLabel(QString("%1: %2%3").arg(slice->label()).arg(slice->value()).arg(chartProperties.addToValue));
           }
     }
@@ -72,17 +96,11 @@ QChart* PieChartWidget::initializeTheChart(QPieSeries* series,QString chartTitle
     chart->legend()->setMarkerShape(QLegend::MarkerShapeCircle);
 
 
-//    if(series->count()>10){
-//          chart->legend()->setVisible(false);
-//    }else{
-
-//          chart->legend()->setVisible(true);
-//    }
 
     return chart;
 }
 
-QChartView* PieChartWidget::createTheChartView(std::unordered_map<std::string, int> statsMap,struct chartProperties& chartProperties)
+QChartView* PieChartWidget::createTheChartView(std::unordered_map<std::string,uintmax_t> statsMap,struct chartProperties& chartProperties)
 {
     // Fill the pie series with the statistics map data.
     QPieSeries* series=fillPieSeries(statsMap);

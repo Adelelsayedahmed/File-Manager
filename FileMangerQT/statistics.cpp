@@ -1,13 +1,14 @@
 #include "statistics.h"
+#include "conversions.h"
 
 statistics::statistics()
 {
 
 }
 
-std::unordered_map<std::string,int> statistics::directoryFilesSizes(const path& directortyPath)
+std::unordered_map<std::string,uintmax_t> statistics::directoryFilesSizes(const path& directortyPath)
 {
-    std::unordered_map<std::string, int> dataMap;
+    std::unordered_map<std::string,uintmax_t> dataMap;
 
     // Iterate through directory and its contents and fill the map.
      for (auto& item : directory_iterator(directortyPath))
@@ -15,12 +16,12 @@ std::unordered_map<std::string,int> statistics::directoryFilesSizes(const path& 
         // if item is a file
         if (is_regular_file(item))
         {
-        dataMap.insert({item.path().filename().string(),convertToKB(file_size(item))});
+        dataMap.insert({item.path().filename().string(),file_size(item)});
         }
         // if item is subdirectory
         else if(is_directory(item))
         {
-        dataMap.insert({item.path().filename().string()+"/",convertToKB(directory_size(item.path().string()))});
+        dataMap.insert({item.path().filename().string()+"/",directory_size(item.path().string())});
 
         }
     }
@@ -28,10 +29,10 @@ std::unordered_map<std::string,int> statistics::directoryFilesSizes(const path& 
 
 }
 
-std::unordered_map<std::string,int> statistics::directoryFilesTypes(const path& directortyPath)
+std::unordered_map<std::string,uintmax_t> statistics::directoryFilesTypes(const path& directortyPath)
 {
 
-     std::unordered_map<std::string, int> dataMap;
+     std::unordered_map<std::string, uintmax_t> dataMap;
 
      // Iterate through directory and its contents
      for (auto& item : directory_iterator(directortyPath))
@@ -86,7 +87,7 @@ path statistics::getCurrentPath()
      return current_path();
 }
 
-uintmax_t statistics::directory_size(std::string givenPath)
+uintmax_t statistics::directory_size(const std::string& givenPath)
 {
      uintmax_t size = 0;
      path directory_path=path(givenPath);
@@ -101,7 +102,7 @@ uintmax_t statistics::directory_size(std::string givenPath)
         size += file_size(item);
         }
      }
-     } catch (const boost::filesystem::filesystem_error& ex) {
+     } catch (const filesystem_error& ex) {
 
      // Handle the exception caused by permission denied error
      qDebug() << "Error: " << ex.what() << '\n';
@@ -111,7 +112,7 @@ uintmax_t statistics::directory_size(std::string givenPath)
      return size;
 }
 
- bool statistics::isFile(std::string givenPath)
+ bool statistics::isFile(std::string& givenPath)
 {
      if(is_regular_file(path(givenPath)))
      {
@@ -137,7 +138,7 @@ int statistics::numberOfItems(std::string& givenPath)
      {
         numberOfItems++;
      }
-        } catch (const boost::filesystem::filesystem_error& ex) {
+        } catch (const filesystem_error& ex) {
 
      // Handle the exception caused by permission denied error
      qDebug() << "Error: " << ex.what() << '\n';
@@ -146,15 +147,15 @@ int statistics::numberOfItems(std::string& givenPath)
      return numberOfItems;
 }
 
-unsigned int statistics::convertToKB(uintmax_t bytes)
-{
-     return bytes/1024;
-}
-unsigned int statistics::convertToMB(uintmax_t bytes)
-{
-     return bytes/(1024*1024);
-}
-unsigned int statistics::convertToGB(uintmax_t bytes)
-{
-     return bytes/1000000000;
-}
+//unsigned int statistics::convertToKB(uintmax_t bytes)
+//{
+//     return bytes/1024;
+//}
+//unsigned int statistics::convertToMB(uintmax_t bytes)
+//{
+//     return bytes/(1024*1024);
+//}
+//unsigned int statistics::convertToGB(uintmax_t bytes)
+//{
+//     return bytes/1000000000;
+//}

@@ -23,21 +23,15 @@ stackedviewwidget::stackedviewwidget(QWidget *parent)
         file_search_wedge_obj = new searchfilewidget(this);
         stackedWidget->addWidget(file_search_wedge_obj);
 
-        // Create the next and previous buttons
-        nextButton = new QPushButton("Next", this);
-        previousButton = new QPushButton("Previous", this);
+
 
         // Connect the next and previous buttons to the slots that change the current index of the stacked widget
-        connect(nextButton, &QPushButton::clicked, this, &stackedviewwidget::nextPane);
-        connect(previousButton, &QPushButton::clicked, this, &stackedviewwidget::previousPane);
+
 
         // Add the stacked widget and buttons to the layout of the stacked view widget
         QVBoxLayout *layout = new QVBoxLayout(this);
         layout->addWidget(stackedWidget);
-        QHBoxLayout *buttonLayout = new QHBoxLayout();
-        buttonLayout->addWidget(previousButton);
-        buttonLayout->addWidget(nextButton);
-        layout->addLayout(buttonLayout);
+
 
         connect(file_search_wedge_obj,&searchfilewidget::searchContentPathsSignal,this,&stackedviewwidget::recieveFromContentSearchWedgit);
 

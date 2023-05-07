@@ -11,6 +11,8 @@ Controller::Controller(View *view)
     dView = view;
     mRegisterSignals();
     fileOperations = new FileOperations();
+    undoController = new UndoController();
+    fileOperations->setUndoController(undoController);
 }
 
 
@@ -20,6 +22,9 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::delFile, this, &Controller::del);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
+
+     QObject::connect(dView->stackedview->explorer, &ExplorerMin::undoAction, this, &Controller::undoAction);
+
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
@@ -40,7 +45,6 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
 
     QObject::connect(dView, &View::passingContentSearchFromSvtoController, this, &Controller::searchInMultiplefiles);
-
 }
 
 
@@ -49,6 +53,7 @@ Controller::~Controller()
     delete dView;
     delete fileOperations;
     delete dWindow;
+    delete undoController;
 }
 /**
  * @brief Pastes a file or folder from the source path to the destination path.
@@ -72,7 +77,7 @@ void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutA
 
 void Controller::del(fs::path filePath)
 {
-        std::thread t(&FileOperations::del, fileOperations, filePath);
+        std::thread t(&FileOperations::d, fileOperations, filePath);
         t.detach();
 }
 
@@ -108,28 +113,14 @@ std::string removeNameFromPath(std::string path) {
 void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,const std::string& newFileName )
 {
 
-        std::thread t(&FileOperations::renameFile, fileOperations, path, newFileName);
-        t.detach();
+    std::thread t(&FileOperations::renameFile, fileOperations, path, newFileName);
+    t.detach();
+
+    Undo* undo =new UndoRename(path.string(),newFileName);
+    undoController->addActions(undo);
+
 }
 
-
-/*This function will be deleted from here and will be used in Fileoperations.cpp instead */
-void Controller::addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths)
-{
-    paths.push(oldPaths);
-    paths.push(newPaths);
-}
-
-void Controller::undoRename()
-{
-   std::vector<std::string> oldPaths=paths.top();
-   paths.pop();
-   std::vector<std::string> newPaths=paths.top();
-   paths.pop();
-   for(int i=0;i<oldPaths.size();i++){
-        fs::rename(oldPaths[i],newPaths[i]);
-    }
-}
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
    fileOperations->batchRenameFile(oldPaths, newBaseName);
@@ -140,21 +131,35 @@ void Controller::identifyDuplicates()
 {
     IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
    dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
-   dView->stackedview->switchToIndex(1);
+   dView->stackedview->switchToIndex(identifyDuplicatesWidgetIndex);
 
 }
+
+void Controller::undoAction()
+{
+    undoController->undo();
+}
+
 
 void Controller::explorerSlot()
 {
-   dView->stackedview->switchToIndex(0);
+   dView->stackedview->switchToIndex(explorerWidgetIndex);
 }
 void Controller::twoPaneSlot()
 {
-   dView->stackedview->switchToIndex(2);
+   dView->stackedview->switchToIndex(twoPaneWidgetIndex);
 }
 void Controller::searchByContentSlot()
 {
-  dView->stackedview->switchToIndex(3);
+  dView->stackedview->switchToIndex(searchInFileContentWidgetIndex);
+}
+void Controller::StackedWidgetSwitchedDisable(int index)
+{
+  dView->topBar->disableAction(index);
+}
+void Controller::StackedWidgetSwitchedEnable(int index)
+{
+  dView->topBar->enableAction(index);
 }
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
@@ -183,14 +188,7 @@ void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
 }
 
 
-void Controller::StackedWidgetSwitchedDisable(int index)
-{
-        dView->topBar->disableAction(index);
-}
-void Controller::StackedWidgetSwitchedEnable(int index)
-{
-        dView->topBar->enableAction(index);
-}
+
 
 void Controller:: searchInMultiplefiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
 {

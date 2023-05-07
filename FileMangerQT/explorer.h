@@ -11,6 +11,8 @@
 #include <QSortFilterProxyModel>
 #include<thread>
 #include "statistics.h"
+#include "Constants.h"
+#include "conversions.h"
 class DirectoryOnlyFilterProxyModel : public QSortFilterProxyModel
 {
 public:

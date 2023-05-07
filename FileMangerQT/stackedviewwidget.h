@@ -18,8 +18,6 @@ public:
     TwoPane *twoPane;
     searchfilewidget* file_search_wedge_obj;
     IdentifyDuplicatesPageWidget *duplicatesPage;
-    QPushButton *nextButton;
-    QPushButton *previousButton;
 
 public slots:
     void switchToIndex(int index);

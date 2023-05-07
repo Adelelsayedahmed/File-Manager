@@ -79,10 +79,28 @@ set(PROJECT_SOURCES
         stackedviewwidget.h
         rename_widget.h
         rename_widget.cpp
+        undo.cpp
+        undo.h
+        undocopy.cpp
+        undocopy.h
+        undobatchrenaming.cpp
+        undobatchrenaming.h
+        undorename.cpp
+        undorename.h
+        undocut.cpp
+        undocut.h
+        undodelete.cpp
+        undodelete.h
+        undocontroller.cpp
+        undocontroller.h
+        myqueue.cpp
+        myqueue.h
         searchfilewidget.h
         searchfilewidget.cpp
         contentfilessearch.h
         contentfilessearch.cpp
+        Constants.h
+        conversions.h
 
 
 )
