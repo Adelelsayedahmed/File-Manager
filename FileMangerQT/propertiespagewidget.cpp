@@ -22,7 +22,8 @@ void PropertiesPageWidget::showPropertiesWindow()
 
     layout = new QGridLayout(propertiesWindow);
     propertiesWindow->setLayout(layout);
-
+    uintmax_t intermediateSize=0;
+    QString appendingString="";
     QString name;
     QString size;
     QString extension;
@@ -34,7 +35,24 @@ void PropertiesPageWidget::showPropertiesWindow()
     {
         iconLabel->setPixmap(QPixmap( parentPath + "/fileIcon.png"));
         name=QString::fromStdString(path.filename().string());
-        size=QString::fromStdString(std::to_string(boost::filesystem::file_size(path)/1024)+" KB");
+        intermediateSize=boost::filesystem::file_size(path);
+
+        if(intermediateSize>=GIGA){
+            intermediateSize=convertToGB(intermediateSize);
+            appendingString=" GB";
+        }
+        else if(intermediateSize>=MEGA)
+        {
+            intermediateSize=convertToMB(intermediateSize);
+            appendingString=" MB";
+        }else if(intermediateSize>=kILO){
+            intermediateSize=convertToKB(intermediateSize);
+            appendingString=" KB";
+        }else{
+            appendingString=" bytes";
+        }
+        size=QString::number(intermediateSize).append(appendingString);
+
         extension=QString::fromStdString(path.extension().string());
 
         boost::posix_time::ptime modifiedTime = boost::posix_time::from_time_t(last_write_time(path));
@@ -45,7 +63,27 @@ void PropertiesPageWidget::showPropertiesWindow()
     {
         iconLabel->setPixmap(QPixmap( parentPath + "/directoryIcon.png"));
         name=QString::fromStdString(path.filename().string());
-        size=QString::fromStdString(std::to_string(statistics::directory_size(path.string())/1024)+" KB");
+        intermediateSize=statistics::directory_size(path.string());
+        qDebug() << "properties path" << path.string();
+        if(intermediateSize>=GIGA){
+            qDebug() << "before convert to GB"<< intermediateSize;
+            intermediateSize=convertToGB(intermediateSize);
+            qDebug() << "after convert to GB"<< intermediateSize;
+
+            appendingString=" GB";
+        }
+        else if(intermediateSize>=MEGA)
+        {
+            intermediateSize=convertToMB(intermediateSize);
+            appendingString=" MB";
+        }else if(intermediateSize>=kILO){
+            intermediateSize=convertToKB(intermediateSize);
+            appendingString=" KB";
+        }else{
+            appendingString=" bytes";
+        }
+        size=QString::number(intermediateSize).append(appendingString);
+        qDebug() << "size string " << size;
         extension="directory";
 
         statisticsButton = new QPushButton("Charts representation", propertiesWindow);
@@ -97,12 +135,14 @@ void PropertiesPageWidget::showStatistics()
 
     std::unordered_map<std::string, uintmax_t> sizesMap=statsObj->directoryFilesSizes(path);
     piechartpagewidget= new pieChartPageWidget(this);
-    PieChartWidget::chartProperties sizesChartprop("Sizes of files/directories","Arial",true,"KB",false,true,true);
+    PieChartWidget::chartProperties sizesChartprop("Sizes of files/directories","Arial",true,"KB",true,true,true);
     new PieChartWidget(piechartpagewidget->returnTabs(0),sizesMap,sizesChartprop);
 
-    std::unordered_map<std::string,uintmax_t> typesMap=statsObj->directoryFilesTypes(path);
+    std::unordered_map<std::string, uintmax_t> result = statsObj->directoryFilesTypes(path);
 
-    PieChartWidget::chartProperties typesprop("Types of files/directories","Arial",true," items",false,true,true);
+    std::unordered_map<std::string,uintmax_t> typesMap=result;
+
+    PieChartWidget::chartProperties typesprop("Types of files/directories","Arial",false," items",false,true,true);
     new PieChartWidget(piechartpagewidget->returnTabs(1),typesMap,typesprop);
 
 

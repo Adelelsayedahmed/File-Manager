@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <string>
 #include <QString>
+#include "Constants.h"
+#include "conversions.h"
 
 
 class PieChartWidget : public QWidget
@@ -46,7 +48,7 @@ public:
 private:
 
     // Function that fills a QPieSeries with the data from a given stats map and returns a pointer to the series
-    QPieSeries * fillPieSeries(std::unordered_map<std::string,uintmax_t> statsMap);
+    QPieSeries * fillPieSeries(std::unordered_map<std::string,uintmax_t>& statsMap);
 
     // Function that initializes a QChart with a given QPieSeries and title and returns a pointer to the chart
     QChart* initializeTheChart(QPieSeries* series,QString chartTitle);

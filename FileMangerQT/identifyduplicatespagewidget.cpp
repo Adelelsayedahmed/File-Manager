@@ -244,7 +244,8 @@ void IdentifyDuplicatesPageWidget::showMenu(const QModelIndex &index)
         {
         menu.clear();
         selectedDuplicateIndex = index;
-        if(statistics::isFile(value.toStdString())){
+        std::string path =value.toStdString();
+        if(statistics::isFile(path)){
             openAction =menu.addAction("open the selected file");
             connect(openAction, &QAction::triggered, this, [value, this]{
                 openSlot(value);
