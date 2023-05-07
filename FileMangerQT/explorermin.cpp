@@ -111,11 +111,11 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     //disable right click in case it is pressed on empty area.
     QModelIndex ind = table->indexAt(event->pos());
-    if(!ind.isValid())
-    {
-        event->ignore();
-        return;
-    }
+//    if(!ind.isValid())
+//    {
+//        event->ignore();
+//        return;
+//    }
     qInfo() << "right click pressed";
      qInfo() << fileSystemModel->filePath(table->currentIndex());
     // on_tableView_clicked(table->currentIndex());
