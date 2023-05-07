@@ -40,7 +40,6 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
 
     QObject::connect(dView, &View::passingContentSearchFromSvtoController, this, &Controller::searchInMultiplefiles);
-
 }
 
 
@@ -140,21 +139,29 @@ void Controller::identifyDuplicates()
 {
     IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
    dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
-   dView->stackedview->switchToIndex(1);
+   dView->stackedview->switchToIndex(identifyDuplicatesWidgetIndex);
 
 }
 
 void Controller::explorerSlot()
 {
-   dView->stackedview->switchToIndex(0);
+   dView->stackedview->switchToIndex(explorerWidgetIndex);
 }
 void Controller::twoPaneSlot()
 {
-   dView->stackedview->switchToIndex(2);
+   dView->stackedview->switchToIndex(twoPaneWidgetIndex);
 }
 void Controller::searchByContentSlot()
 {
-  dView->stackedview->switchToIndex(3);
+  dView->stackedview->switchToIndex(searchInFileContentWidgetIndex);
+}
+void Controller::StackedWidgetSwitchedDisable(int index)
+{
+  dView->topBar->disableAction(index);
+}
+void Controller::StackedWidgetSwitchedEnable(int index)
+{
+  dView->topBar->enableAction(index);
 }
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
@@ -183,14 +190,7 @@ void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
 }
 
 
-void Controller::StackedWidgetSwitchedDisable(int index)
-{
-        dView->topBar->disableAction(index);
-}
-void Controller::StackedWidgetSwitchedEnable(int index)
-{
-        dView->topBar->enableAction(index);
-}
+
 
 void Controller:: searchInMultiplefiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
 {

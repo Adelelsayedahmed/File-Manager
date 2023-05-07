@@ -6,6 +6,7 @@
 #include <string>
 #include <QDebug>
 
+#include "conversions.h"
 using namespace boost::filesystem;
 
 class statistics
@@ -16,10 +17,10 @@ public:
     statistics();
 
     // function to return map of file names and sizes of files in a directory
-    std::unordered_map<std::string,int> directoryFilesSizes(const path& directortyPath);
+    std::unordered_map<std::string,uintmax_t> directoryFilesSizes(const path& directortyPath);
 
     // function to return map of file types and count of each type in a directory
-    std::unordered_map<std::string,int> directoryFilesTypes(const path& directortyPath);
+    std::unordered_map<std::string,uintmax_t> directoryFilesTypes(const path& directortyPath);
 
     // static function to get the current directory path
     static path getCurrentPath();
@@ -36,20 +37,9 @@ public:
     //static function to determine the size of a selected path
     static uintmax_t getFile_size(std::string& givenPath);
 
-    // function to convert from bytes to kilo bytes
-    static unsigned int convertToKB(uintmax_t bytes);
 
-    // function to convert from bytes to Mega bytes
-    static unsigned int convertToMB(uintmax_t bytes);
 
-    // function to convert from bytes to giga bytes
-    static unsigned int convertToGB(uintmax_t bytes);
 
-    const static unsigned int GIGA=1000000000;
-
-    const static unsigned int MEGA=(1024*1024);
-
-    const static unsigned int kILO=1024;
 };
 
 #endif // STATISTICS_H

@@ -95,12 +95,12 @@ void PropertiesPageWidget::showStatisticsThreaded()
 void PropertiesPageWidget::showStatistics()
 {
 
-    std::unordered_map<std::string, int> sizesMap=statsObj->directoryFilesSizes(path);
+    std::unordered_map<std::string, uintmax_t> sizesMap=statsObj->directoryFilesSizes(path);
     piechartpagewidget= new pieChartPageWidget(this);
     PieChartWidget::chartProperties sizesChartprop("Sizes of files/directories","Arial",true,"KB",false,true,true);
     new PieChartWidget(piechartpagewidget->returnTabs(0),sizesMap,sizesChartprop);
 
-    std::unordered_map<std::string, int> typesMap=statsObj->directoryFilesTypes(path);
+    std::unordered_map<std::string,uintmax_t> typesMap=statsObj->directoryFilesTypes(path);
 
     PieChartWidget::chartProperties typesprop("Types of files/directories","Arial",true," items",false,true,true);
     new PieChartWidget(piechartpagewidget->returnTabs(1),typesMap,typesprop);

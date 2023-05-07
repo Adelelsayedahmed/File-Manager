@@ -41,12 +41,12 @@ public:
     };
 
     // Constructor that takes a parent widget, a map of statistics to display, and chart properties
-    explicit PieChartWidget(QWidget *parent ,std::unordered_map<std::string, int>& statsMap,PieChartWidget::chartProperties& prop);
+    explicit PieChartWidget(QWidget *parent ,std::unordered_map<std::string,uintmax_t>& statsMap,PieChartWidget::chartProperties& prop);
 
 private:
 
     // Function that fills a QPieSeries with the data from a given stats map and returns a pointer to the series
-    QPieSeries * fillPieSeries(std::unordered_map<std::string,int> statsMap);
+    QPieSeries * fillPieSeries(std::unordered_map<std::string,uintmax_t> statsMap);
 
     // Function that initializes a QChart with a given QPieSeries and title and returns a pointer to the chart
     QChart* initializeTheChart(QPieSeries* series,QString chartTitle);
@@ -58,7 +58,7 @@ private:
     void setupChartViewProperties(QChartView* &chartView,struct chartProperties& chartProperties);
 
     // Function that creates a QChartView with a given stats map and chart properties and returns a pointer to the view
-    QChartView* createTheChartView(std::unordered_map<std::string, int> statsMap,struct chartProperties& chartProperties);
+    QChartView* createTheChartView(std::unordered_map<std::string,uintmax_t> statsMap,struct chartProperties& chartProperties);
 
 signals:
 

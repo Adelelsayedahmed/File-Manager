@@ -83,6 +83,8 @@ set(PROJECT_SOURCES
         searchfilewidget.cpp
         contentfilessearch.h
         contentfilessearch.cpp
+        Constants.h
+        conversions.h
 
 
 )

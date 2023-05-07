@@ -1,7 +1,7 @@
 #include "PiechartWidget.h"
 
 
-PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string, int>& statsMap,PieChartWidget::chartProperties& prop)
+PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string,uintmax_t>& statsMap,PieChartWidget::chartProperties& prop)
     : QWidget{parent}
 {
    // Create the QChartView object and set its parent to this widget
@@ -10,7 +10,7 @@ PieChartWidget::PieChartWidget(QWidget *parent,std::unordered_map<std::string, i
 
 }
 
-QPieSeries* PieChartWidget::fillPieSeries(std::unordered_map<std::string,int> statsMap)
+QPieSeries* PieChartWidget::fillPieSeries(std::unordered_map<std::string,uintmax_t> statsMap)
 {
     // Create the QPieSeries object and fill it with data from statsMap
     QPieSeries *series=new QPieSeries();
@@ -82,7 +82,7 @@ QChart* PieChartWidget::initializeTheChart(QPieSeries* series,QString chartTitle
     return chart;
 }
 
-QChartView* PieChartWidget::createTheChartView(std::unordered_map<std::string, int> statsMap,struct chartProperties& chartProperties)
+QChartView* PieChartWidget::createTheChartView(std::unordered_map<std::string,uintmax_t> statsMap,struct chartProperties& chartProperties)
 {
     // Fill the pie series with the statistics map data.
     QPieSeries* series=fillPieSeries(statsMap);

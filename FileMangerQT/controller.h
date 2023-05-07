@@ -9,6 +9,7 @@
 #include "identifyduplicates.h"
 #include "identifyduplicatespagewidget.h"
 #include "searchwindow.h"
+#include "Constants.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>

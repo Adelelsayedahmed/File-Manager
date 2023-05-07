@@ -123,16 +123,16 @@ void Explorer::footer_size(std::string s)
         size=statistics::directory_size(s);
     }
 
-        if(size>=statistics::GIGA){
-            size=statistics::convertToGB(size);
+        if(size>=GIGA){
+            size=convertToGB(size);
             appendingString=" GB";
         }
-        else if(size>=statistics::MEGA)
+        else if(size>=MEGA)
         {
-            size=statistics::convertToMB(size);
+            size=convertToMB(size);
             appendingString=" MB";
-        }else if(size>=statistics::kILO){
-            size=statistics::convertToKB(size);
+        }else if(size>=kILO){
+            size=convertToKB(size);
            appendingString=" KB";
         }else{
            appendingString=" bytes";
