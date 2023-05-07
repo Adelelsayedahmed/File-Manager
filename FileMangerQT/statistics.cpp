@@ -16,12 +16,12 @@ std::unordered_map<std::string,uintmax_t> statistics::directoryFilesSizes(const 
         // if item is a file
         if (is_regular_file(item))
         {
-        dataMap.insert({item.path().filename().string(),convertToKB(file_size(item))});
+        dataMap.insert({item.path().filename().string(),file_size(item)});
         }
         // if item is subdirectory
         else if(is_directory(item))
         {
-        dataMap.insert({item.path().filename().string()+"/",convertToKB(directory_size(item.path().string()))});
+        dataMap.insert({item.path().filename().string()+"/",directory_size(item.path().string())});
 
         }
     }
@@ -87,7 +87,7 @@ path statistics::getCurrentPath()
      return current_path();
 }
 
-uintmax_t statistics::directory_size(std::string givenPath)
+uintmax_t statistics::directory_size(const std::string& givenPath)
 {
      uintmax_t size = 0;
      path directory_path=path(givenPath);
@@ -112,7 +112,7 @@ uintmax_t statistics::directory_size(std::string givenPath)
      return size;
 }
 
- bool statistics::isFile(std::string givenPath)
+ bool statistics::isFile(std::string& givenPath)
 {
      if(is_regular_file(path(givenPath)))
      {
@@ -138,7 +138,7 @@ int statistics::numberOfItems(std::string& givenPath)
      {
         numberOfItems++;
      }
-        } catch (const boost::filesystem::filesystem_error& ex) {
+        } catch (const filesystem_error& ex) {
 
      // Handle the exception caused by permission denied error
      qDebug() << "Error: " << ex.what() << '\n';
