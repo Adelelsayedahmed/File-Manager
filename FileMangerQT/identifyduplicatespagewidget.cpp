@@ -211,15 +211,17 @@ void IdentifyDuplicatesPageWidget::updateDuplicatesTableSlot()
 
 void IdentifyDuplicatesPageWidget::rowSelected(const QItemSelection& selected, const QItemSelection& deselected)
 {
-     if (!deselected.isEmpty())
+    qDebug() <<"here in the row selected slot";
+     if (!selected.isEmpty())
     {
-        removeButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
-        removeButton->setEnabled(false);
+     removeButton->setStyleSheet("background-color: red;");
+     removeButton->setEnabled(true);
+
     }
     else
     {
-        removeButton->setStyleSheet("background-color: red;");
-        removeButton->setEnabled(!selected.isEmpty());
+     removeButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
+     removeButton->setEnabled(false);
     }
 }
 void IdentifyDuplicatesPageWidget::removeSelectedRow()
