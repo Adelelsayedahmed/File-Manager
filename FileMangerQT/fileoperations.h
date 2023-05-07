@@ -8,6 +8,12 @@
 #include <QDebug>
 #include <iostream>
 #include "compression.h"
+#include "undo.h"
+#include "undocopy.h"
+#include "undocut.h"
+#include"undobatchrenaming.h"
+#include "undocontroller.h"
+#include "undodelete.h"
 #include "contentfilessearch.h"
 #include <filesystem>
 namespace fs = boost::filesystem;
@@ -19,6 +25,7 @@ public:
     ~FileOperations();
     void paste(fs::path source_path, fs::path destination_path, CopyCutAction action);
     void del(fs::path filePath);
+    void d(fs::path p);
     void cutFile(const fs::path &path);
     void renameFile(const boost::filesystem::path &path ,const std::string& newFileName );
     void batchRenameFile( std::vector< std::string>& oldPaths,const std::string &newBaseName);
@@ -32,8 +39,9 @@ private:
     contentFilesSearch* contFileSearchObj ;
     fs::path m_cutPath;
     void pasteFromCut(fs::path destination_path);
-    void addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths);
     std::string removeNameFromPath(std::string path);
     void copy_directory(const fs::path &source_path, const fs::path &destination_path);
+    UndoController * undoController;
+    bool Delete=0;
 };
 #endif // FILEOPERATIONS_H
