@@ -66,45 +66,6 @@ void ExplorerMin::registerSignals()
     QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
 }
 
-void ExplorerMin::displayGzContent(QString filePath)
-{
-    qDebug()<<"innnnnnn";
-    struct archive *a;
-    struct archive_entry *entry;
-    int r;
-
-    QByteArray filePathBytes = filePath.toUtf8();
-    a = archive_read_new();
-    archive_read_support_filter_all(a);
-    archive_read_support_format_all(a);
-    r = archive_read_open_filename(a, filePathBytes.constData(), 10240); // open the archive file
-    if (r != ARCHIVE_OK) {
-        // handle error
-    }
-
-    QTextEdit* textEdit = new QTextEdit(this);  // create a new QTextEdit widget
-//    setCentralWidget(textEdit);  // set the new QTextEdit widget as the central widget
-
-    while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
-        // get information about the current entry
-        const char *entryPath = archive_entry_pathname(entry);
-        int entrySize = archive_entry_size(entry);
-
-        // create a QByteArray to hold the content of the current entry
-        QByteArray buffer(entrySize, '\0');
-        r = archive_read_data(a, buffer.data(), buffer.size());
-        if (r < ARCHIVE_OK) {
-            // handle error
-        }
-
-        // convert the QByteArray to a QString and append it to the QTextEdit widget
-        QString content = QString::fromUtf8(buffer.data(), buffer.size());
-        textEdit->append(content);
-    }
-
-    archive_read_close(a);
-    archive_read_free(a);
-}
 
 ExplorerMin::~ExplorerMin()
 {
