@@ -233,7 +233,7 @@ void ExplorerMin::BackButtonClickedFromTree()
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     qInfo()<<index;
-    //this->index = index;
+    this->index = index;
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
     ///////////////////////
