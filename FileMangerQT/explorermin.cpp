@@ -9,6 +9,8 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 {
     rename_widg_obj  = new rename_widget("rename","please enter a valid name","new name");
     batch_rename_widg_obj = new rename_widget("batch rename","please enter a valid base name","new base name");
+    createFileWidget = new rename_widget("Create File","please enter a valid base name","File name");
+    createDirectoryWidget = new rename_widget("create Folder","please enter a valid base name","Folder name");
     setFocusPolicy(Qt::StrongFocus);
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);
@@ -19,13 +21,13 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     fileSystemModel->parent(index);
     search = new SearchBar(this);
 
-  //  topBar = new addOnsBar(this);
-   // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
+    //  topBar = new addOnsBar(this);
+    // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
 
     registerSignals();
     layout->addRow("",ShowTableView());
-     QThread* thread = new QThread(this);
-     FileOperations * object = new FileOperations();
+    QThread* thread = new QThread(this);
+    FileOperations * object = new FileOperations();
     object->moveToThread(thread);
     connect(this, &ExplorerMin::copyFile, object, &FileOperations::paste, Qt::QueuedConnection);
     contentUi = new FileContentView();
@@ -40,7 +42,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 
 void ExplorerMin::registerSignals()
 {
-//    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
+    //    QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),table,SLOT(setRootIndex(QModelIndex)));
     QObject::connect(table,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(on_tableView_doubleClicked(QModelIndex)));
 
     QObject::connect(table, SIGNAL(clicked(QModelIndex)), this, SLOT(on_tableView_clicked(QModelIndex)));
@@ -60,10 +62,15 @@ void ExplorerMin::registerSignals()
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
     QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
-  //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
+    //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
     //QObject::connect(table,SIGNAL(doubleClicked),this,&ExplorerMin::BackButtonClicked);
     QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
     QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
+    QObject::connect(createFileWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFile);
+    QObject::connect(createDirectoryWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFolder);
+    //    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
+
+
 }
 
 
@@ -77,6 +84,8 @@ ExplorerMin::~ExplorerMin()
     delete topBar;
     delete rename_widg_obj ;
     delete batch_rename_widg_obj ;
+    delete createDirectoryWidget;
+    delete createFileWidget;
 }
 
 QTableView* ExplorerMin::ShowTableView()
@@ -84,8 +93,8 @@ QTableView* ExplorerMin::ShowTableView()
 
     table->setModel(fileSystemModel);
     QItemSelectionModel* selectionModel = new QItemSelectionModel(fileSystemModel);
-//    table->setSelectionModel(selectionModel);
-//    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //    table->setSelectionModel(selectionModel);
+    //    table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setRootIndex(index);
     table->setColumnWidth(0,250);
     table->setColumnWidth(3,150);
@@ -113,21 +122,24 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     //disable right click in case it is pressed on empty area.
     QModelIndex ind = table->indexAt(event->pos());
-//    if(!ind.isValid())
-//    {
-//        event->ignore();
-//        return;
-//    }
+    //    if(!ind.isValid())
+    //    {
+    //        event->ignore();
+    //        return;
+    //    }
     qInfo() << "right click pressed";
-     qInfo() << fileSystemModel->filePath(table->currentIndex());
+    qInfo() << fileSystemModel->filePath(table->currentIndex());
     // on_tableView_clicked(table->currentIndex());
-   // emit locationChanged(fileSystemModel->filePath(table->currentIndex()), fileSystemModel->fileName(table->currentIndex()));
+    // emit locationChanged(fileSystemModel->filePath(table->currentIndex()), fileSystemModel->fileName(table->currentIndex()));
     qInfo()<< fileSystemModel->filePath(index);
     QMenu menu(this);
     QAction *cutAction = menu.addAction(tr("Cut"));
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
+    QAction *createFileAction = menu.addAction(tr("Create File"));
+    QAction *createFolderAction = menu.addAction(tr("Create Folder"));
+
     QMenu *subMenu = new QMenu("Compression", this);
 
     compressAction= subMenu->addAction(tr("Compress"));
@@ -149,50 +161,54 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
     QAction *PropertiesAction= menu.addAction(tr("properties"));
 
-        if ( isMultipleSelected() )
-        {
-            batchRenameAction->setEnabled(true);
-            renameAction->setEnabled(false);
+    if ( isMultipleSelected() )
+    {
+        batchRenameAction->setEnabled(true);
+        renameAction->setEnabled(false);
 
-            batchCompressionAction->setEnabled(true);
-            compressAction->setEnabled(false);
+        batchCompressionAction->setEnabled(true);
+        compressAction->setEnabled(false);
 
-            batchDecompressionAction->setEnabled(true);
-            decompressAction->setEnabled(false);
-        }
-        else
-        {
-            batchRenameAction->setEnabled(false);
-            renameAction->setEnabled(true);
+        batchDecompressionAction->setEnabled(true);
+        decompressAction->setEnabled(false);
+    }
+    else
+    {
+        batchRenameAction->setEnabled(false);
+        renameAction->setEnabled(true);
 
-            batchCompressionAction->setEnabled(false);
-            compressAction->setEnabled(true);
+        batchCompressionAction->setEnabled(false);
+        compressAction->setEnabled(true);
 
-            batchDecompressionAction->setEnabled(false);
-            decompressAction->setEnabled(true);
+        batchDecompressionAction->setEnabled(false);
+        decompressAction->setEnabled(true);
 
-        }
+    }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);
     connect(pasteAction, &QAction::triggered, this, &ExplorerMin::onPaste);
     connect(delAction, &QAction::triggered, this, &ExplorerMin::onDel);
     connect(cutAction, &QAction::triggered, this, &ExplorerMin::onCut);
+    connect(createFileAction, &QAction::triggered, this, &ExplorerMin::onCreatingFile);
+    connect(createFolderAction, &QAction::triggered, this, &ExplorerMin::onCreatingFolder);
+
+
     //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
     //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
-        connect(batchCompressionAction,&QAction::triggered, this, &ExplorerMin::onBatchCompressViewSlot );
-        connect(batchDecompressionAction,&QAction::triggered, this, &ExplorerMin::onBatchDecompressViewSlot );
+    connect(batchCompressionAction,&QAction::triggered, this, &ExplorerMin::onBatchCompressViewSlot );
+    connect(batchDecompressionAction,&QAction::triggered, this, &ExplorerMin::onBatchDecompressViewSlot );
 
 
-        connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
-        connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
+    connect(renameAction,&QAction::triggered, this, &ExplorerMin::onRenameFilesViewSlot );
+    connect(batchRenameAction,&QAction::triggered, this, &ExplorerMin::onBatchRenameViewSlot );
 
-        connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
-       //checkSelectedFileForCompression();
+    connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
+    //checkSelectedFileForCompression();
 
-       // checkSelectedFileForCompression();
+    // checkSelectedFileForCompression();
 
 
-        menu.exec(event->globalPos());
+    menu.exec(event->globalPos());
 }
 void ExplorerMin::checkSelectedFileForCompression()
 {
@@ -205,7 +221,7 @@ void ExplorerMin::checkSelectedFileForCompression()
     if (QFileInfo(filePath).suffix() == "txt")
     {qInfo()<<"in compress";
         compressAction->setEnabled(true);
-     decompressAction->setEnabled(false);
+        decompressAction->setEnabled(false);
     }
 
     else if ((QFileInfo(filePath).suffix() == "gz"))
@@ -213,12 +229,12 @@ void ExplorerMin::checkSelectedFileForCompression()
     {
         qInfo()<<"in deecompress";
         compressAction->setEnabled(false);
-     decompressAction->setEnabled(true);
+        decompressAction->setEnabled(true);
     }
 
     else {qInfo()<<"innot ";
         compressAction->setEnabled(false);
-             decompressAction->setEnabled(false);
+        decompressAction->setEnabled(false);
     }
 }
 
@@ -232,6 +248,7 @@ void ExplorerMin::BackButtonClickedFromTree()
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
+    newDirectoryEnteredFlag = false;
     qInfo()<<index;
     this->index = index;
     backFilepath=fileSystemModel->filePath(index);
@@ -249,7 +266,7 @@ void ExplorerMin::onPaste()
 {
     if (!fileSystemModel->isDir(index))
     {
-             index = index.parent();
+        index = index.parent();
     }
     std::string dest =  fileSystemModel->filePath(index).toStdString();
     qInfo()<<sourceFilePathCopy;
@@ -259,8 +276,13 @@ void ExplorerMin::onPaste()
 
 void ExplorerMin::onDel()
 {
-    filePath = fileSystemModel->filePath(index);
-    emit delFile(filePath.toStdString());
+    if(!newDirectoryEnteredFlag)
+    {
+        filePath = fileSystemModel->filePath(index);
+        newDirectoryEnteredFlag = true;
+        emit delFile(filePath.toStdString());
+    }
+
 }
 
 void ExplorerMin::onCut()
@@ -274,6 +296,7 @@ void ExplorerMin::onUndo()
 {
     emit undoAction();
 }
+
 
 void ExplorerMin::onProperties()
 {
@@ -331,14 +354,56 @@ void ExplorerMin::emitingBatchRenameSlot(QString newFileName)
     emit batchRenameViewSignal(oldPaths,newBaseName);
 
 }
+void ExplorerMin::onCreatingFile()
+{
+    createFileWidget->show();
+}
+
+void ExplorerMin::onCreatingFolder()
+{
+    createDirectoryWidget->show();
+}
+
+void ExplorerMin::emittingCreatingFolder(QString dirName)
+{
+    if(fileSystemModel->isDir(index))
+    {
+        filePath = fileSystemModel->filePath(index);
+    }
+    else
+    {
+        QModelIndex parentIndex = fileSystemModel->parent(index);
+        filePath = fileSystemModel->filePath(parentIndex);
+    }
+    emit createFolder(filePath.toStdString() + "/" + dirName.toStdString());
+    createDirectoryWidget->close();
+
+}
+
+void ExplorerMin::emittingCreatingFile(QString filename)
+{
+    if(fileSystemModel->isDir(index))
+    {
+        filePath = fileSystemModel->filePath(index);
+    }
+    else
+    {
+        QModelIndex parentIndex = fileSystemModel->parent(index);
+        filePath = fileSystemModel->filePath(parentIndex);
+    }
+    emit createFile(filePath.toStdString() + "/" + filename.toStdString());
+
+    createFileWidget->close();
+}
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
+    newDirectoryEnteredFlag = true;
     this->index = index;
     filePath = fileSystemModel->filePath(index);
     qInfo() << filePath;
     if (filePath.endsWith(".gz")) {
-//         std::thread t(&ExplorerMin::displayGzContent, this, fileSystemModel->filePath(index));
-//         t.detach();
+        //         std::thread t(&ExplorerMin::displayGzContent, this, fileSystemModel->filePath(index));
+        //         t.detach();
     }
     else
     {
@@ -398,9 +463,9 @@ void  ExplorerMin::folderClicked(QString returnedFilePath)
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
     emit locationChanged(returnedFilePath, fileSystemModel->fileName(index));
-//    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
-//    ui->searchBar->clear();
-//    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(index));
+    //    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
+    //    ui->searchBar->clear();
+    //    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(index));
 }
 
 void ExplorerMin::SearchWindowCreatedSlot(SearchWindow *window)

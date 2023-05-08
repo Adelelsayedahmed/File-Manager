@@ -41,5 +41,6 @@ void rename_widget::onOkClicked()
 
         QString new_file_name  = file_name_edit->text();
         emit new_file_name_button_clicked(new_file_name);
+        file_name_edit->clear();
     }
 }

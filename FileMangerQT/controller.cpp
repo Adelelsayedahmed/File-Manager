@@ -23,7 +23,10 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::delFile, this, &Controller::del);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
 
-     QObject::connect(dView->stackedview->explorer, &ExplorerMin::undoAction, this, &Controller::undoAction);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::undoAction, this, &Controller::undoAction);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::createFile, this, &Controller::createFile);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::createFolder, this, &Controller::createDirectory);
+
 
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
@@ -78,26 +81,47 @@ void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutA
 void Controller::del(fs::path filePath)
 {
     std::thread t(&FileOperations::del, fileOperations, filePath);
-        t.detach();
+    t.detach();
 }
 
 void Controller::cutFile(const fs::path &path)
 {
-        std::thread t(&FileOperations::cutFile, fileOperations, path);
-        t.join();
+    std::thread t(&FileOperations::cutFile, fileOperations, path);
+    t.join();
+}
+
+void Controller::createFile(const std::string &filename)
+{
+    try {
+        fileOperations->createFile(filename);
+        std::cout << "File created successfully" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error creating file: " << e.what() << std::endl;
+    }
+
+}
+
+void Controller::createDirectory(const std::string &dirname)
+{
+    try {
+        fileOperations->createDirectory(dirname);
+        std::cout << "Folder created successfully" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error creating Folder: " << e.what() << std::endl;
+    }
 }
 
 void Controller::propertiesOfFile(const fs::path &path)
 {
-        statistics *statObj = new statistics;
+    statistics *statObj = new statistics;
 
-        pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->stackedview);
+    pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->stackedview);
 
-        PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->stackedview, statObj, pieChartWidget);
+    PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->stackedview, statObj, pieChartWidget);
 
-        propertiesWidget->path=path;
+    propertiesWidget->path=path;
 
-        propertiesWidget->showPropertiesWindow();
+    propertiesWidget->showPropertiesWindow();
 
 }
 
@@ -123,15 +147,15 @@ void Controller::renameFileControllerSlot(const boost::filesystem::path &path ,c
 
 
 void Controller::batchRenamingControllerSlot( std::vector< std::string>& oldPaths,const std::string &newBaseName){
-   fileOperations->batchRenameFile(oldPaths, newBaseName);
+    fileOperations->batchRenameFile(oldPaths, newBaseName);
 
 }
 
 void Controller::identifyDuplicates()
 {
     IdentifyDuplicates* dupsObj=new IdentifyDuplicates;
-   dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
-   dView->stackedview->switchToIndex(identifyDuplicatesWidgetIndex);
+    dView->stackedview->duplicatesPage->setDuplicatesObject(dupsObj);
+    dView->stackedview->switchToIndex(identifyDuplicatesWidgetIndex);
 
 }
 
@@ -143,23 +167,23 @@ void Controller::undoAction()
 
 void Controller::explorerSlot()
 {
-   dView->stackedview->switchToIndex(explorerWidgetIndex);
+    dView->stackedview->switchToIndex(explorerWidgetIndex);
 }
 void Controller::twoPaneSlot()
 {
-   dView->stackedview->switchToIndex(twoPaneWidgetIndex);
+    dView->stackedview->switchToIndex(twoPaneWidgetIndex);
 }
 void Controller::searchByContentSlot()
 {
-  dView->stackedview->switchToIndex(searchInFileContentWidgetIndex);
+    dView->stackedview->switchToIndex(searchInFileContentWidgetIndex);
 }
 void Controller::StackedWidgetSwitchedDisable(int index)
 {
-  dView->topBar->disableAction(index);
+    dView->topBar->disableAction(index);
 }
 void Controller::StackedWidgetSwitchedEnable(int index)
 {
-  dView->topBar->enableAction(index);
+    dView->topBar->enableAction(index);
 }
 void Controller::SearchWindowCreated(SearchWindow *search)
 {

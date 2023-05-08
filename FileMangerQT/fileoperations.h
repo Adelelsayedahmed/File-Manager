@@ -32,8 +32,11 @@ public:
     void batchCompression(std::vector< std::string>& Paths);
     void batchDecompression(std::vector< std::string>& Paths);
     void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);
+    void createFile(const std::string& filename);
+    void createDirectory(const std::string& dirname);
     std::multimap<int, std::string> SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr);
     void setUndoController(UndoController *undoController);
+
 
 private:
     compression* compressionOperationsObj ;

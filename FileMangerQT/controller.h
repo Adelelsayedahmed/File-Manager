@@ -50,6 +50,8 @@ public slots:
     void paste(fs::path source_path, fs::path destination_path, CopyCutAction action);
     void del(fs::path filePath);
     void cutFile(const boost::filesystem::path& path);
+    void createFile(const std::string& filename);
+    void createDirectory(const std::string& dirname);
 
     void propertiesOfFile(const fs::path &path);
     void identifyDuplicates();
