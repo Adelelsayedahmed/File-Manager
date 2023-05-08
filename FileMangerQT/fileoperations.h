@@ -44,5 +44,6 @@ private:
     void copy_directory(const fs::path &source_path, const fs::path &destination_path);
     UndoController * undoController;
     bool Delete=0;
+    std::string path_for_delete;
 };
 #endif // FILEOPERATIONS_H

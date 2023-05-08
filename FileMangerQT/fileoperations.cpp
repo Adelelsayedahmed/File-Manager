@@ -88,14 +88,18 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
     }
     else if(action == CopyCutAction::Cut)
     {
-        fs::path  temp_path = destination_path / m_cutPath.filename();
-        fs::path temp_source= m_cutPath;
-        pasteFromCut(temp_path);
         if(Delete==true){
+            fs::path  temp_path = path_for_delete / m_cutPath.filename();
+            fs::path temp_source= m_cutPath;
+            pasteFromCut(temp_path);
             Undo* undo =new undoDelete(temp_source,temp_path);
             undoController->addActions(undo);
         }
         else{
+            //cut operation
+            fs::path  temp_path = destination_path / m_cutPath.filename();
+            fs::path temp_source= m_cutPath;
+            pasteFromCut(temp_path);
             Undo* undo =new UndoCut(temp_source,temp_path);
             undoController->addActions(undo);
         }
@@ -152,9 +156,18 @@ void FileOperations::del(fs::path filePath)
 void FileOperations::d(boost::filesystem::path p)
 {
     Delete=true;
-    Undo::CreateDirectory(PATH);
-    cutFile(p);
-    paste(p,PATH,CopyCutAction::Cut);
+    std::string home_dir = std::getenv("HOME");
+    if (home_dir.empty()) {
+        std::cerr << "Error: could not get home directory path for user " << home_dir << '\n';
+        return;
+    }
+    else{
+        path_for_delete = home_dir +"/Recycle bin";
+        qInfo()<< path_for_delete << "in fucntion d\n";
+        Undo::CreateDirectory(path_for_delete);
+        cutFile(p);
+        paste(p,path_for_delete,CopyCutAction::Cut);
+    }
     Delete=false;
 }
 void FileOperations::cutFile(const fs::path &path)
