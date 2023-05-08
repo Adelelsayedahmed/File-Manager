@@ -86,8 +86,7 @@ void Controller::del(fs::path filePath)
 
 void Controller::cutFile(const fs::path &path)
 {
-    std::thread t(&FileOperations::cutFile, fileOperations, path);
-    t.join();
+    fileOperations->cutFile(path);
 }
 
 void Controller::createFile(const std::string &filename)
