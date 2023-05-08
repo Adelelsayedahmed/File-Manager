@@ -224,7 +224,8 @@ void FileOperations::createFile(const std::string &filename)
     if (!ofs.is_open()) {
         throw std::runtime_error("Failed to create file: " + filename);
     }
-
+    Undo *undoCreatefile = new UndoCreateFile(filepath);
+    undoController->addActions(undoCreatefile );
     // Close the file stream
     ofs.close();
 }
@@ -242,9 +243,11 @@ void FileOperations::createDirectory(const std::string& dirname) {
     if (!boost::filesystem::create_directory(dirpath)) {
         throw std::runtime_error("Failed to create directory: " + dirname);
     }
+    Undo *undoCreateDirectory = new undocreateDirectory(dirpath);
+    undoController->addActions(undoCreateDirectory);
 }
 void FileOperations::renameFile(const boost::filesystem::path &path ,const std::string& newFileName ){
-   // new_paths.push_back(newFileName);
+   // new_paths.push_back(newFileName);()
     qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
     std::string temp_path = removeNameFromPath(path.string());
     std::string new_path_str  = temp_path + newFileName ;
