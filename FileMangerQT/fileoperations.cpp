@@ -44,6 +44,7 @@ void FileOperations::copy_directory(const fs::path& source_path, const fs::path&
         }
     }
 }
+std::string FileOperations::path_for_delete="";
 void FileOperations::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
 
@@ -266,7 +267,12 @@ std::multimap<int, std::string> FileOperations::SearchContentInFiles(const std::
 
 void FileOperations::setUndoController(UndoController *undoController)
 {
-    this->undoController=undoController;
+     this->undoController=undoController;
+}
+
+const std::string &FileOperations::getDeletePath()
+{
+     return path_for_delete;
 }
 
 

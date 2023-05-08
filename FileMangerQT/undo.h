@@ -3,8 +3,6 @@
 #include <iostream>
 #include <QObject>
 #include <QDebug>
-#include<stack>
-#include <vector>
 #include <string>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -89,10 +87,5 @@ static void CreateDirectory(const fs::path &myPath){
         qInfo() << "Error creating directory";
     }
 }
-public:
-    void undoCut();
-    void undoCopy();
-    void undoBatchRename();
-    void undoDeleteItems();
 };
 #endif // UNDO_H

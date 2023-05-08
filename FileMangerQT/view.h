@@ -38,6 +38,8 @@ public:
     FileContentView *contentUi;
 //  Explorer *explorer;
     stackedviewwidget * stackedview;
+    public slots:
+    void closeEvent(QCloseEvent *event);
 private slots:
         void recieveContentSearchFromSv(const std ::vector<std::string> &filePaths ,const std::string &searchString);
 signals:
