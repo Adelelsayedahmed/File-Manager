@@ -6,6 +6,7 @@
 
 Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,parent)
 {
+// adiing 
     proxy_model = new DirectoryOnlyFilterProxyModel(this);
     proxy_model->setSourceModel(fileSystemModel);
     tree = new QTreeView(this);
@@ -44,6 +45,8 @@ Explorer::Explorer(QString rootPath, QWidget *parent ): ExplorerMin(rootPath,par
     layout->addRow(footerWidget);
     // Set the layout of the footer widget to the footer layout
     footerWidget->setLayout(footerLayout);
+    footerWidget->setStyleSheet("QWidget { border: 1px solid #ccc; padding: 10px; }");
+
     // Align the footer widget to the bottom of the layout
     layout->setFormAlignment(Qt::AlignBottom | Qt::AlignLeft);
 
