@@ -14,6 +14,8 @@
 #include"undobatchrenaming.h"
 #include "undocontroller.h"
 #include "undodelete.h"
+#include "undocreatedirectory.h"
+#include "undocreatefile.h"
 #include "contentfilessearch.h"
 #include <filesystem>
 namespace fs = boost::filesystem;
