@@ -80,8 +80,8 @@ void Controller::paste(fs::path source_path, fs::path destination_path, CopyCutA
 
 void Controller::del(fs::path filePath)
 {
-    std::thread t(&FileOperations::del, fileOperations, filePath);
-    t.detach();
+    std::thread t(&FileOperations::d, fileOperations, filePath);
+        t.detach();
 }
 
 void Controller::cutFile(const fs::path &path)

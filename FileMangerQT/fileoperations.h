@@ -36,8 +36,7 @@ public:
     void createDirectory(const std::string& dirname);
     std::multimap<int, std::string> SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr);
     void setUndoController(UndoController *undoController);
-
-
+    static const std::string& getDeletePath();
 private:
     compression* compressionOperationsObj ;
     contentFilesSearch* contFileSearchObj ;
@@ -47,5 +46,6 @@ private:
     void copy_directory(const fs::path &source_path, const fs::path &destination_path);
     UndoController * undoController;
     bool Delete=0;
+    static std::string path_for_delete;
 };
 #endif // FILEOPERATIONS_H
