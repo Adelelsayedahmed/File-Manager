@@ -23,6 +23,11 @@ void searchfilewidget::recieveSearchContentMapFromCont(const std::multimap<int, 
     fillResultTableModel(result);
 }
 
+void searchfilewidget::onAddPathButton()
+{
+    searchPopUp->show();
+}
+
 void searchfilewidget::CallSearchContentBE()
 {
     // should be called when the search button is pressed
@@ -72,6 +77,7 @@ void searchfilewidget::clearPathsTable()
 void searchfilewidget::mRegisterSignals()
 {
       connect(searchButton,&QPushButton::clicked , this , &searchfilewidget::CallSearchContentBE);
+      connect(addPathButton,&QPushButton::clicked,this,&searchfilewidget::onAddPathButton);
 }
 
 bool searchfilewidget::isValidEnteredString()
@@ -147,7 +153,7 @@ void searchfilewidget::allocateWidget()
     removePathButton = new QPushButton("remove path",this);
     searchButton= new QPushButton("search", this);
     layout = new QVBoxLayout(this);
-    searchPopUp = new rename_widget("add","please enter a valid file path","relative file path");
+    searchPopUp = new rename_widget("add","please enter a valid file path","\tfile path\t");
 }
 
 searchfilewidget::~searchfilewidget()

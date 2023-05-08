@@ -53,6 +53,8 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
     }
     if(action == CopyCutAction::Copy)
     {
+        Undo * undo;
+        std::vector<fs::path> paths;
         try {
             destination_path = destination_path / source_path.filename();
             if (fs::exists(destination_path)) {
@@ -74,6 +76,9 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
             {
                 fs::copy_file(source_path, destination_path);
             }
+            paths.push_back(destination_path);
+            undo= new UndoCopy(paths);
+            undoController->addActions(undo);
             return ;
         }
         catch (const std::exception& ex) {
@@ -83,8 +88,17 @@ void FileOperations::paste(fs::path source_path, fs::path destination_path, Copy
     }
     else if(action == CopyCutAction::Cut)
     {
-        destination_path = destination_path / m_cutPath.filename();
-        pasteFromCut(destination_path);
+        fs::path  temp_path = destination_path / m_cutPath.filename();
+        fs::path temp_source= m_cutPath;
+        pasteFromCut(temp_path);
+        if(Delete==true){
+            Undo* undo =new undoDelete(temp_source,temp_path);
+            undoController->addActions(undo);
+        }
+        else{
+            Undo* undo =new UndoCut(temp_source,temp_path);
+            undoController->addActions(undo);
+        }
     }
 }
 void FileOperations::pasteFromCut(fs::path destination_path)
@@ -134,29 +148,21 @@ void FileOperations::del(fs::path filePath)
         qInfo() << "Error deleting";
     }
 }
+
+void FileOperations::d(boost::filesystem::path p)
+{
+    Delete=true;
+    Undo::CreateDirectory(PATH);
+    cutFile(p);
+    paste(p,PATH,CopyCutAction::Cut);
+    Delete=false;
+}
 void FileOperations::cutFile(const fs::path &path)
 {
     m_cutPath = path;
 }
 
-void FileOperations::renameFile(const boost::filesystem::path &path ,const std::string& newFileName ){
 
-    qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
-    std::string temp_path = removeNameFromPath(path.string());
-    std::string new_path_str  = temp_path + newFileName ;
-
-    qInfo() << "File path = " << QString::fromStdString(temp_path) << QString::fromStdString(new_path_str);
-    fs::path new_path_p(new_path_str);
-    try
-    {
-        fs::rename(path,new_path_p);
-    }
-    catch (const std::exception& ex)
-    {
-        std::cerr << "Error renaming file: " << ex.what() << std::endl;
-    }
-
-}
 void FileOperations:: SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths)
 {
     for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
@@ -191,26 +197,42 @@ void FileOperations:: SearchForFileByName(std::string starting_point_drictory_pa
                 }
             }
 }
+void FileOperations::renameFile(const boost::filesystem::path &path ,const std::string& newFileName ){
+   // new_paths.push_back(newFileName);
+    qInfo() << "File path = " << QString::fromStdString(path.string()) <<"  " << QString::fromStdString(newFileName);
+    std::string temp_path = removeNameFromPath(path.string());
+    std::string new_path_str  = temp_path + newFileName ;
 
+    qInfo() << "File path = " << QString::fromStdString(temp_path) << QString::fromStdString(new_path_str);
+    fs::path new_path_p(new_path_str);
+    try
+    {
+        fs::rename(path,new_path_p);
+    }
+    catch (const std::exception& ex)
+    {
+        std::cerr << "Error renaming file: " << ex.what() << std::endl;
+    }
+
+}
 
 
 void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const std::string &newBaseName){
     unsigned int counter = 1 ;
 
     /*to be used by wafyola*/
-    std::vector< std::string> new_paths ;
+    std::vector< std::string> new_names ;
     std::string tempName ;
     for ( auto & path : oldPaths)
     {
         tempName = newBaseName ;
         FileOperations::renameFile(path,tempName.append(std::to_string(counter)));
-        new_paths.push_back(tempName.append(std::to_string(counter)));
+        new_names.push_back(tempName.append(std::to_string(counter)));
         counter++;
     }
-    FileOperations::addPaths( oldPaths,new_paths);
-
-
-
+    qInfo()  <<"Creating batch rename\n ";
+    Undo *undo  = new UndoBatchRenaming(oldPaths,new_names);
+    undoController->addActions(undo);
 }
 
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
@@ -229,6 +251,11 @@ std::multimap<int, std::string> FileOperations::SearchContentInFiles(const std::
      return resultMap ;
 }
 
+void FileOperations::setUndoController(UndoController *undoController)
+{
+    this->undoController=undoController;
+}
+
 
 std::string FileOperations:: removeNameFromPath(std::string path) {
     size_t found = path.find_last_of("/\\");
@@ -236,9 +263,4 @@ std::string FileOperations:: removeNameFromPath(std::string path) {
         return path.substr(0, found+1);
     }
     return path;
-}
-void FileOperations::addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths)
-{
-//    paths.push(oldPaths);
-//    paths.push(newPaths);
 }

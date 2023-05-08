@@ -47,6 +47,7 @@ public:
     void recieveSearchContentMapFromCont(const std::multimap<int, std::string>& result);
 
 private slots :
+    void onAddPathButton();
     void CallSearchContentBE();
 signals:
     void searchContentPathsSignal(const std ::vector<std::string> &filePaths ,const std::string &searchString);
