@@ -121,17 +121,12 @@ QTableView* ExplorerMin::ShowTableView()
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     //disable right click in case it is pressed on empty area.
-    QModelIndex ind = table->indexAt(event->pos());
-    //    if(!ind.isValid())
-    //    {
-    //        event->ignore();
-    //        return;
-    //    }
+
     qInfo() << "right click pressed";
-    qInfo() << fileSystemModel->filePath(table->currentIndex());
+//    qInfo() << fileSystemModel->filePath(table->currentIndex());
     // on_tableView_clicked(table->currentIndex());
     // emit locationChanged(fileSystemModel->filePath(table->currentIndex()), fileSystemModel->fileName(table->currentIndex()));
-    qInfo()<< fileSystemModel->filePath(index);
+//    qInfo()<< fileSystemModel->filePath(index);
     QMenu menu(this);
     QAction *cutAction = menu.addAction(tr("Cut"));
     QAction *copyAction = menu.addAction(tr("Copy"));

@@ -47,7 +47,7 @@ void FileOperations::copy_directory(const fs::path& source_path, const fs::path&
 std::string FileOperations::path_for_delete="";
 void FileOperations::paste(fs::path source_path, fs::path destination_path, CopyCutAction action)
 {
-
+    qInfo()<<source_path.string();
     if (!fs::exists(source_path)) {
         qInfo() << "Source file does not exist!\n" ;
         return ;
