@@ -47,6 +47,12 @@ View::~View()
 delete ui;
 }
 
+void View::closeEvent(QCloseEvent *event)
+{
+    Undo::del(FileOperations::getDeletePath());
+    qInfo()<<   "program ended\n";
+}
+
 void View::recieveContentSearchFromSv(const std::vector<std::string> &filePaths, const std::string &searchString)
 {
     emit passingContentSearchFromSvtoController(filePaths,searchString);
