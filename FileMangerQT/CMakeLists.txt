@@ -93,8 +93,6 @@ set(PROJECT_SOURCES
         undodelete.h
         undocontroller.cpp
         undocontroller.h
-        myqueue.cpp
-        myqueue.h
         searchfilewidget.h
         searchfilewidget.cpp
         contentfilessearch.h
