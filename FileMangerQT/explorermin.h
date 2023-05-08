@@ -55,6 +55,7 @@ protected:
     QFormLayout *layout;
     MyFileSystemModel* fileSystemModel;
     QModelIndex index;
+    QModelIndex upBouttonIndex;
     CopyCutAction action;
     QString filePath;
     QString sourceFilePathCopy;

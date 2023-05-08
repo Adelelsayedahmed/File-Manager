@@ -20,7 +20,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
     search = new SearchBar(this);
-
+    upBouttonIndex = index;
     //  topBar = new addOnsBar(this);
     // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
 
@@ -398,6 +398,7 @@ void ExplorerMin::emittingCreatingFile(QString filename)
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
     newDirectoryEnteredFlag = true;
+    this->upBouttonIndex = index;
     this->index = index;
     filePath = fileSystemModel->filePath(index);
     qInfo() << filePath;
@@ -426,7 +427,7 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 
 void ExplorerMin::BackButtonClicked()
 {
-    QString path = fileSystemModel->filePath(index);
+    QString path = fileSystemModel->filePath(upBouttonIndex);
     qInfo() << path;
     if (path == "/") folderClicked("");
     else if(path !="")
