@@ -446,6 +446,7 @@ void ExplorerMin::BackButtonClicked()
         }
         folderClicked(path);
     }
+    upBouttonIndex  = fileSystemModel->index(path);
 
 }
 
