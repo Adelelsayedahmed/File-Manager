@@ -20,6 +20,8 @@ void Controller::mRegisterSignals()
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::copyFile, this, &Controller::paste);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::delFile, this, &Controller::del);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::cutFile, this, &Controller::cutFile);
+    QObject::connect(dView->stackedview->explorer, &ExplorerMin::createFile, this, &Controller::createFile);
+
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::renameFileViewSignal, this, &Controller::renameFileControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchRenameViewSignal, this, &Controller::batchRenamingControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::propertiesOfFile,this,&Controller::propertiesOfFile);
@@ -77,6 +79,17 @@ void Controller::cutFile(const fs::path &path)
 {
         std::thread t(&FileOperations::cutFile, fileOperations, path);
         t.join();
+}
+
+void Controller::createFile(const std::string &filename)
+{
+        try {
+            fileOperations->createFile(filename);
+            std::cout << "File created successfully" << std::endl;
+        } catch (const std::exception& e) {
+            std::cerr << "Error creating file: " << e.what() << std::endl;
+        }
+
 }
 
 void Controller::propertiesOfFile(const fs::path &path)

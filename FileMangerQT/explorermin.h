@@ -33,6 +33,8 @@ class ExplorerMin:public QWidget
 private :
     rename_widget* rename_widg_obj;
     rename_widget* batch_rename_widg_obj;
+    rename_widget *createFileWidget;
+    rename_widget *createDirectoryWidget;
     bool isMultipleSelected();
     std::vector<std::string> getSelectedPaths();
 public:
@@ -68,6 +70,7 @@ public slots:
     void onPaste();
     void onDel();
     void onCut();
+    void onCreatingFile();
 
     void onProperties();
 
@@ -75,6 +78,7 @@ public slots:
     void onBatchRenameViewSlot();
     void emitingRenameSlot(QString newFileName) ;
     void emitingBatchRenameSlot(QString newFileName);
+    void emittingCreatingFile(QString filename);
     void onCompress();
     void onDeCompress();
     void onCompressHere();
@@ -94,6 +98,7 @@ signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
     void delFile(std::string filePath);
     void cutFile(std::string filePath);
+    void createFile(std::string filePath);
     void propertiesOfFile(std::string filePath);
     void renameFileViewSignal(std::string filePath , const std::string newFileName);
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
@@ -102,7 +107,7 @@ signals:
     void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
-        void context_menu(QModelIndex index);
+    void context_menu(QModelIndex index);
 
 
 protected slots:

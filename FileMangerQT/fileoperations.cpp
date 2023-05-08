@@ -2,13 +2,13 @@
 
 FileOperations::FileOperations()
 {
-   compressionOperationsObj = new compression ();
+    compressionOperationsObj = new compression ();
 }
 
 FileOperations::~FileOperations()
 {
     delete compressionOperationsObj ;
-   delete contFileSearchObj ;
+    delete contFileSearchObj ;
 }
 
 void FileOperations::copy_directory(const fs::path& source_path, const fs::path& destination_path)
@@ -33,8 +33,8 @@ void FileOperations::copy_directory(const fs::path& source_path, const fs::path&
             continue;
         if (fs::is_directory(source_sub_path))
         {
-                // Recursively copy subdirectory
-                copy_directory(source_sub_path, destination_sub_path);
+            // Recursively copy subdirectory
+            copy_directory(source_sub_path, destination_sub_path);
         }
         else
         {
@@ -161,7 +161,7 @@ void FileOperations:: SearchForFileByName(std::string starting_point_drictory_pa
 {
     for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
 
-//      if(file.is_regular_file())
+        //      if(file.is_regular_file())
         {
             std::string searchbyname = file.path();
             if(searchbyname.find(file_name)!= std::string::npos)
@@ -172,24 +172,41 @@ void FileOperations:: SearchForFileByName(std::string starting_point_drictory_pa
 
         if(file.is_directory())
         {
-           SearchForFileByName(file.path() , file_name , file_paths);
+            SearchForFileByName(file.path() , file_name , file_paths);
         }
     }    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
 
         //      if(file.is_regular_file())
-                {
-                    std::string searchbyname = file.path();
-                    if(searchbyname.find(file_name)!= std::string::npos)
-                        file_paths.push_back(searchbyname);
-                }
-            }
-            for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
+        {
+            std::string searchbyname = file.path();
+            if(searchbyname.find(file_name)!= std::string::npos)
+                file_paths.push_back(searchbyname);
+        }
+    }
+    for (const auto & file: std::filesystem::directory_iterator(starting_point_drictory_path)) {
 
-                if(file.is_directory())
-                {
-                   SearchForFileByName(file.path() , file_name , file_paths);
-                }
-            }
+        if(file.is_directory())
+        {
+            SearchForFileByName(file.path() , file_name , file_paths);
+        }
+    }
+}
+
+void FileOperations::createFile(const std::string &filename)
+{
+    // Set the path and filename of the new file
+    fs::path filepath(filename);
+
+    // Create a new output file stream with the specified file path
+    fs::ofstream ofs(filepath);
+
+    // Check if the file was successfully opened
+    if (!ofs.is_open()) {
+        throw std::runtime_error("Failed to create file: " + filename);
+    }
+
+    // Close the file stream
+    ofs.close();
 }
 
 
@@ -220,13 +237,13 @@ void FileOperations::batchCompression(std::vector<std::string> &Paths)
 
 void FileOperations::batchDecompression(std::vector<std::string> &Paths)
 {
-     compressionOperationsObj->batchDecompress(Paths);
+    compressionOperationsObj->batchDecompress(Paths);
 }
 
 std::multimap<int, std::string> FileOperations::SearchContentInFiles(const std::vector<std::string> &filePaths, const std::string &searchStr)
 {
-     std::multimap<int, std::string> resultMap = contFileSearchObj->searchInMultiplefiles(filePaths,searchStr);
-     return resultMap ;
+    std::multimap<int, std::string> resultMap = contFileSearchObj->searchInMultiplefiles(filePaths,searchStr);
+    return resultMap ;
 }
 
 
@@ -239,6 +256,6 @@ std::string FileOperations:: removeNameFromPath(std::string path) {
 }
 void FileOperations::addPaths(std::vector<std::string> oldPaths, std::vector<std::string> newPaths)
 {
-//    paths.push(oldPaths);
-//    paths.push(newPaths);
+    //    paths.push(oldPaths);
+    //    paths.push(newPaths);
 }

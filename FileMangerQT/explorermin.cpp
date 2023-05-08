@@ -9,6 +9,8 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
 {
     rename_widg_obj  = new rename_widget("rename","please enter a valid name","new name");
     batch_rename_widg_obj = new rename_widget("batch rename","please enter a valid base name","new base name");
+    createFileWidget = new rename_widget("Create File","please enter a valid base name","File name");
+    createDirectoryWidget = new rename_widget("create Folder","please enter a valid base name","Folder name");
     setFocusPolicy(Qt::StrongFocus);
     layout = new QFormLayout(this);
     layout->setContentsMargins(0,0,0,0);
@@ -63,6 +65,9 @@ void ExplorerMin::registerSignals()
 
     QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
     QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
+    QObject::connect(createFileWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFile);
+//    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
+
 
 }
 
@@ -78,6 +83,8 @@ ExplorerMin::~ExplorerMin()
     delete topBar;
     delete rename_widg_obj ;
     delete batch_rename_widg_obj ;
+    delete createDirectoryWidget;
+    delete createFileWidget;
 }
 
 QTableView* ExplorerMin::ShowTableView()
@@ -129,6 +136,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     QAction *copyAction = menu.addAction(tr("Copy"));
     QAction *pasteAction = menu.addAction(tr("Paste"));
     QAction *delAction = menu.addAction(tr("Delete"));
+    QAction *createFileAction = menu.addAction(tr("Create File"));
     QMenu *subMenu = new QMenu("Compression", this);
 
     compressAction= subMenu->addAction(tr("Compress"));
@@ -177,6 +185,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     connect(pasteAction, &QAction::triggered, this, &ExplorerMin::onPaste);
     connect(delAction, &QAction::triggered, this, &ExplorerMin::onDel);
     connect(cutAction, &QAction::triggered, this, &ExplorerMin::onCut);
+    connect(createFileAction, &QAction::triggered, this, &ExplorerMin::onCreatingFile);
+
     //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
     //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
@@ -267,6 +277,8 @@ void ExplorerMin::onCut()
     emit cutFile(filePath.toStdString());
 }
 
+
+
 void ExplorerMin::onProperties()
 {
     qDebug() << "here in the properties slot of the view class";
@@ -323,6 +335,28 @@ void ExplorerMin::emitingBatchRenameSlot(QString newFileName)
     emit batchRenameViewSignal(oldPaths,newBaseName);
 
 }
+void ExplorerMin::onCreatingFile()
+{
+    createFileWidget->show();
+
+}
+
+void ExplorerMin::emittingCreatingFile(QString filename)
+{
+    if(fileSystemModel->isDir(index))
+    {
+             filePath = fileSystemModel->filePath(index);
+    }
+    else
+    {
+             QModelIndex parentIndex = fileSystemModel->parent(index);
+             filePath = fileSystemModel->filePath(parentIndex);
+    }
+     emit createFile(filePath.toStdString() + "/" + filename.toStdString());
+
+    createFileWidget->close();
+}
+
 void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 {
     filePath = fileSystemModel->filePath(index);
