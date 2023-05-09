@@ -276,7 +276,7 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
     {
         tempName = newBaseName ;
         FileOperations::renameFile(path,tempName.append(std::to_string(counter)));
-        new_names.push_back(tempName.append(std::to_string(counter)));
+        new_names.push_back(tempName);
         counter++;
     }
     qInfo()  <<"Creating batch rename\n ";

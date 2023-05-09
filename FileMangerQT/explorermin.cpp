@@ -103,7 +103,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
-    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+   // table->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     //to make the tableView resizable
     for (int i = 0; i < table->horizontalHeader()->count(); ++i) {
