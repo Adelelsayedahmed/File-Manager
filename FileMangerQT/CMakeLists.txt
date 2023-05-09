@@ -103,7 +103,6 @@ set(PROJECT_SOURCES
         undocreatefile.h
         undocreatedirectory.cpp
         undocreatedirectory.h
-        undoclasses.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
