@@ -218,7 +218,7 @@ void FileOperations::createFile(const std::string &filename)
     fs::path filepath(filename);
 
     // Create a new output file stream with the specified file path
-    fs::ofstream ofs(filepath);
+    std::ofstream ofs(filepath);
 
     // Check if the file was successfully opened
     if (!ofs.is_open()) {
