@@ -7,5 +7,5 @@ UndoCreateFile::UndoCreateFile(const fs::path& p)
 
 void UndoCreateFile::undo()
 {
-    Undo::del(p);
+    utilities::del(p);
 }

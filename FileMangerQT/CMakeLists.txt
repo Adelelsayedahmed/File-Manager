@@ -79,7 +79,6 @@ set(PROJECT_SOURCES
         stackedviewwidget.h
         rename_widget.h
         rename_widget.cpp
-        undo.cpp
         undo.h
         undocopy.cpp
         undocopy.h
@@ -103,6 +102,8 @@ set(PROJECT_SOURCES
         undocreatefile.h
         undocreatedirectory.cpp
         undocreatedirectory.h
+        utilities.cpp
+        utilities.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

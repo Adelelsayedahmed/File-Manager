@@ -13,5 +13,5 @@ UndoCut::UndoCut(boost::filesystem::path &source_path, boost::filesystem::path &
 
 void UndoCut::undo()
 {
-    Undo::pasteToUndoCut(dest_path,source_path);
+    utilities::pasteToUndoCut(dest_path,source_path);
 }

@@ -165,7 +165,7 @@ void FileOperations::d(boost::filesystem::path p)
     else{
         path_for_delete = home_dir +"/Recycle bin";
         qInfo()<< path_for_delete << "in fucntion d\n";
-        Undo::CreateDirectory(path_for_delete);
+        utilities::CreateDirectory(path_for_delete);
         cutFile(p);
         paste(p,path_for_delete,CopyCutAction::Cut);
     }

@@ -1,7 +1,7 @@
 #ifndef UNDODELETE_H
 #define UNDODELETE_H
 #include "undo.h"
-
+#include "utilities.h"
 class undoDelete:public Undo
 {
     fs::path old_path,new_path;

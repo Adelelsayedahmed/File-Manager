@@ -14,10 +14,10 @@ void UndoBatchRenaming::undo()
         {
             qInfo()  <<"Undo batch renaming in file path ";
             qInfo()  <<i;
-            std::string str=Undo::removeNameFromPath(oldPaths[i])+newNames[i];
+            std::string str=utilities::removeNameFromPath(oldPaths[i])+newNames[i];
             std::cerr << str;
             qInfo()<<'\n';
-            fs::rename(Undo::removeNameFromPath(oldPaths[i])+newNames[i],oldPaths[i]);
+            fs::rename(utilities::removeNameFromPath(oldPaths[i])+newNames[i],oldPaths[i]);
         }
         catch (const std::exception& ex) {
         std::cerr << "Error renaming file in Undo: " << ex.what() << std::endl;    }

@@ -1,6 +1,7 @@
 #ifndef UNDOCUT_H
 #define UNDOCUT_H
 #include "undo.h"
+#include "utilities.h"
 class UndoCut:public Undo
 {
     fs::path source_path,dest_path;

@@ -1,6 +1,7 @@
 #ifndef UNDOCOPY_H
 #define UNDOCOPY_H
 #include "undo.h"
+#include "utilities.h"
 #include "vector"
 class UndoCopy:public Undo
 {

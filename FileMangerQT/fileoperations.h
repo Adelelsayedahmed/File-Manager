@@ -16,6 +16,7 @@
 #include "undodelete.h"
 #include "undocreatedirectory.h"
 #include "undocreatefile.h"
+#include "utilities.h"
 #include "contentfilessearch.h"
 #include <filesystem>
 namespace fs = boost::filesystem;

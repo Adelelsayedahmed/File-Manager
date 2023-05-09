@@ -6,5 +6,5 @@ undocreateDirectory::undocreateDirectory(const fs::path& p)
 
 void undocreateDirectory::undo()
 {
-     Undo::del(p);
+     utilities::del(p);
 }

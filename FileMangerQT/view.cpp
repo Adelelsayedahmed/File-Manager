@@ -49,7 +49,7 @@ delete ui;
 
 void View::closeEvent(QCloseEvent *event)
 {
-    Undo::del(FileOperations::getDeletePath());
+    utilities::del(FileOperations::getDeletePath());
     qInfo()<<   "program ended\n";
 }
 

@@ -9,7 +9,7 @@ UndoCopy::UndoCopy(std::vector<boost::filesystem::path> &paths)
         fs::path p;
         for(int i=0;i<paths.size();i++){
             p=paths.front();
-            Undo::del(p);
+            utilities::del(p);
         }
     }
 }

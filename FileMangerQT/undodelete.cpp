@@ -12,5 +12,5 @@ undoDelete::undoDelete(boost::filesystem::path &source_path,fs::path& new_path)
 }
 void undoDelete::undo()
 {
-    Undo::pasteToUndoCut(new_path,old_path);
+    utilities::pasteToUndoCut(new_path,old_path);
 }

@@ -1,6 +1,7 @@
 #ifndef UNDORENAME_H
 #define UNDORENAME_H
 #include "undo.h"
+#include"utilities.h"
 class UndoRename:public Undo
 {
     std::string oldPath,newName;

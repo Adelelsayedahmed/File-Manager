@@ -1,5 +1,6 @@
 #ifndef UNDOBATCHRENAMING_H
 #define UNDOBATCHRENAMING_H
+#include "utilities.h"
 #include "undo.h"
 #include "vector"
 class UndoBatchRenaming :public Undo

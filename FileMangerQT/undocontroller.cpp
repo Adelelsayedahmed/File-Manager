@@ -1,12 +1,12 @@
 #include "undocontroller.h"
-
+const int UndoController::max_number_of_actions_supported_for_undo = 10;
 UndoController::UndoController()
 {
 }
 
 void UndoController::addActions(Undo *undo)
 {
-    if(undoActions.size()==10){
+    if(undoActions.size()==max_number_of_actions_supported_for_undo){
        undoActions.pop_front();
     }
     qInfo()  <<"add Undo\n ";
@@ -23,5 +23,10 @@ void UndoController::undo()
         qInfo() << "after undo" << '\n';
     }
     else
-     qInfo() << "undoActions is empty" << '\n';
+        qInfo() << "undoActions is empty" << '\n';
+}
+
+const int UndoController::get_max_number_of_actions_supported_for_undo()
+{
+    return max_number_of_actions_supported_for_undo;
 }
