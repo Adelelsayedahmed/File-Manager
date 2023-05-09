@@ -1,4 +1,0 @@
-#ifndef UNDOCLASSES_H
-#define UNDOCLASSES_H
-
-#endif // UNDOCLASSES_H
