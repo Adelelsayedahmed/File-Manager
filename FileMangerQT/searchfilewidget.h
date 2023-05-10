@@ -28,6 +28,7 @@ private :
         QHBoxLayout * hLayOut ;
         rename_widget* searchPopUp ;
 
+
         std::vector<std::string> filePaths;
         std::string searchString ;
 
@@ -40,6 +41,9 @@ private :
         void clearPathsTable();
         void mRegisterSignals();
         bool isValidEnteredString();
+        void fillPathTableModel(const QString &lineValue);
+        void raiseEmptyStringError();
+        void raiseEmptyPathsError();
 
 public:
     explicit searchfilewidget(QWidget *parent = nullptr);
@@ -49,6 +53,8 @@ public:
 private slots :
     void onAddPathButton();
     void CallSearchContentBE();
+    void recieveFilePathFromPopUp(QString lineValue);
+    void onRemovePathButton();
 signals:
     void searchContentPathsSignal(const std ::vector<std::string> &filePaths ,const std::string &searchString);
 

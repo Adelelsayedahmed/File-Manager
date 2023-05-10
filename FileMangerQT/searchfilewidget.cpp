@@ -3,6 +3,8 @@
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QStandardItemModel>
+#include <QMessageBox>
 
 
 searchfilewidget::searchfilewidget(QWidget *parent)
@@ -30,12 +32,40 @@ void searchfilewidget::onAddPathButton()
 
 void searchfilewidget::CallSearchContentBE()
 {
-    // should be called when the search button is pressed
-    fillPathVector();
-    if (isValidEnteredString())
+    this->clearResultTable();
+    this->fillPathVector();
+    if (isValidEnteredString() == true && filePaths.empty() == false) // check the the Entered String and paths
     {
         emit searchContentPathsSignal(filePaths, searchString);
+        //this->clearPathsTable();
     }
+    else if (!isValidEnteredString()) {
+        this->raiseEmptyStringError();
+    }
+    else if (filePaths.empty()) {
+        this->raiseEmptyPathsError();
+    }
+
+}
+
+void searchfilewidget::recieveFilePathFromPopUp(QString lineValue)
+{
+    // check the valid path
+    this->fillPathTableModel(lineValue);
+
+}
+
+void searchfilewidget::onRemovePathButton()
+{
+    QItemSelectionModel *selectionModel = tablePathsWidget->selectionModel();
+    QModelIndexList selectedRows = selectionModel->selectedRows();
+
+    for (int i = selectedRows.size() - 1; i >= 0; i--) {
+        QModelIndex index = selectedRows.at(i);
+        tablePathsWidget->model()->removeRow(index.row());
+    }
+
+    qInfo()<<"removed\n";
 }
 
 void searchfilewidget::fillResultTableModel(const std::multimap<int, std::string>&result)
@@ -53,14 +83,42 @@ void searchfilewidget::fillResultTableModel(const std::multimap<int, std::string
 
 }
 
+void searchfilewidget::fillPathTableModel(const QString &lineValue)
+{
+    int row = tablePathsWidget->rowCount();
+    tablePathsWidget->insertRow(row);
+    QTableWidgetItem* item = new QTableWidgetItem(lineValue);
+    tablePathsWidget->setItem(row,0,item);
+
+}
+
+void searchfilewidget::raiseEmptyStringError()
+{
+    QMessageBox::warning( this,"Error", QString::fromStdString("enter a non empty search string"));
+
+}
+
+void searchfilewidget::raiseEmptyPathsError()
+{
+    QMessageBox::warning( this,"Error", QString::fromStdString("enter at least file path"));
+
+}
+
+
 void searchfilewidget::fillPathVector()
 {
     filePaths.clear();
-    qInfo() <<"iam here *********" ;
-    filePaths.push_back("/home/adel/playing/file1.txt");
-    filePaths.push_back("/home/adel/playing/file2.txt");
-    // iterate over the table to get the entered paths in the table
+    QStringList paths;
 
+    for (int row = 0; row < tablePathsWidget->model()->rowCount(); ++row) {
+        QModelIndex index = tablePathsWidget->model()->index(row, 0);
+        QString path = tablePathsWidget->model()->data(index).toString();
+        paths << path;
+    }
+
+    for (QString path : paths) {
+        filePaths.push_back(path.toStdString());
+    }
 
 }
 
@@ -78,6 +136,8 @@ void searchfilewidget::mRegisterSignals()
 {
       connect(searchButton,&QPushButton::clicked , this , &searchfilewidget::CallSearchContentBE);
       connect(addPathButton,&QPushButton::clicked,this,&searchfilewidget::onAddPathButton);
+      connect(searchPopUp , &rename_widget::new_file_name_button_clicked,this ,&searchfilewidget::recieveFilePathFromPopUp);
+      connect(removePathButton,&QPushButton::clicked , this , &searchfilewidget::onRemovePathButton);
 }
 
 bool searchfilewidget::isValidEnteredString()
@@ -92,8 +152,9 @@ bool searchfilewidget::isValidEnteredString()
       {
         this->searchString = temp.toStdString();
       }
-  return returnFlag ;
+      return returnFlag ;
 }
+
 
 void searchfilewidget::initiateSearchFilePage()
 {
@@ -119,8 +180,8 @@ void searchfilewidget::initiateSearchFilePage()
 
     addPathButton->setStyleSheet("background-color: green");
 
-    removePathButton->setEnabled(false);
-    removePathButton->setStyleSheet("background-color: #f0f0f0; color: #808080;");
+    removePathButton->setEnabled(true);
+    removePathButton->setStyleSheet("background-color: red");
 
     button_layout->addWidget(addPathButton);
     button_layout->addWidget(removePathButton);
@@ -145,6 +206,9 @@ void searchfilewidget::allocateWidget()
     // Create a new QTableWidget with two column
     tableResultWidget = new QTableWidget(0, 2, this);
     tablePathsWidget  = new QTableWidget(0,1,this);
+    //tablePathsWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    tablePathsWidget->horizontalHeader()->setStyleSheet("QHeaderView::section { border: 1px solid black; }");
+   // tablePathsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     searchLine = new QLineEdit(this);
     hLayOut = new QHBoxLayout();
     button_layout = new QVBoxLayout();
