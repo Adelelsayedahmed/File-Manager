@@ -85,7 +85,7 @@ void Explorer:: footer_update(const QModelIndex &index1)
 QTreeView* Explorer::ShowTreeView(const QString &rootPath)
 {
     tree->setModel(proxy_model);
-tree->setRootIndex(proxy_model->mapFromSource(fileSystemModel->index("/")));
+    tree->setRootIndex(proxy_model->mapFromSource(fileSystemModel->index("/")));
     tree->horizontalScrollBar();
     tree->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     //hide the columns we don't want
@@ -166,7 +166,6 @@ void Explorer::on_treeView_clicked(const QModelIndex &index1)
     t2.detach();
     ExplorerMin::filepath = fileSystemModel->filePath(proxy_model->mapToSource(index1));
     emit backButtonPressedSignalFromTree();
-    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->filePath(proxy_model->mapToSource(index1)));
-
+    emit locationChanged(fileSystemModel->filePath(proxy_model->mapToSource(index1)), fileSystemModel->fileName(proxy_model->mapToSource(index1)));
 }
 

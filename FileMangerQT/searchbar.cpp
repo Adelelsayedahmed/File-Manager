@@ -7,7 +7,7 @@ SearchBar::SearchBar(QWidget *parent)
     layout->setContentsMargins(0,0,0,0);
     findButton = new QPushButton(this);
     searchBar = new QLineEdit(this);
-    locationBar = new QLineEdit(this);
+    locationBar = new LocationBar(this);
     backButton = new QPushButton(this);
 
     QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
@@ -30,12 +30,16 @@ SearchBar::SearchBar(QWidget *parent)
 
 }
 
+void SearchBar::initializeLocationBar(QFileSystemModel  *model, QModelIndex index)
+{
+    locationBar->initialize(model, index);
+}
 void SearchBar::locationChanged(QString filepath, QString filename)
 {
     dfilePath = filepath;
     searchBar->clear();
     searchBar->setPlaceholderText("Search " + filename);
-    locationBar->setPlaceholderText(filepath);
+    locationBar->locationChanged(filepath, filename);
 }
 
 void SearchBar::backButtonPressed()
@@ -49,9 +53,14 @@ void SearchBar::on_findButton_pressed()
     SearchWindow *window = new SearchWindow(this);
     emit SearchWindowCreated(window);
 
-    //Set file path to search in and show results
-    window->search(dfilePath, searchBar->text());
-    window->show();
-
+    //Make sure bar is not emptyy
+    if(!(searchBar->text().isEmpty()))
+        window->search(dfilePath, searchBar->text()); //Set file path to search in and show results
+    else
+        { QMessageBox msg;
+            msg.setText("Please enter a value to search!");
+            msg.setIcon(QMessageBox::Warning);
+            msg.exec();;
+        }
 
 }

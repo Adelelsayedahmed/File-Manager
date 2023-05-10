@@ -20,6 +20,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     index = fileSystemModel->setRootPath(rootPath);
     fileSystemModel->parent(index);
     search = new SearchBar(this);
+    search->initializeLocationBar(fileSystemModel, index);
     upBouttonIndex = index;
     //  topBar = new addOnsBar(this);
     // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
@@ -32,12 +33,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     connect(this, &ExplorerMin::copyFile, object, &FileOperations::paste, Qt::QueuedConnection);
     contentUi = new FileContentView();
     backFilepath = fileSystemModel->filePath(index);
-    emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
-
-
-
-
 
 
 void ExplorerMin::registerSignals()
@@ -238,9 +234,6 @@ void ExplorerMin::BackButtonClickedFromTree()
     backFilepath = ExplorerMin::filepath;
 }
 
-
-
-
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
     newDirectoryEnteredFlag = false;
@@ -248,8 +241,8 @@ void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
     this->index = index;
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
-    ///////////////////////
 }
+
 void ExplorerMin::onCopy()
 {
     qInfo() << "Copying";
