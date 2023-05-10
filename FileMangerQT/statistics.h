@@ -15,13 +15,13 @@ class statistics
 public:
 
     // default constructor
-    statistics() ;
+    statistics()=delete ;
 
     // function to return map of file names and sizes of files in a directory
-    std::unordered_map<std::string,uintmax_t> directoryFilesSizes(const path& directortyPath);
+    static std::unordered_map<std::string,uintmax_t> directoryFilesSizes(const path& directortyPath);
 
     // function to return map of file types and count of each type in a directory
-    std::unordered_map<std::string,uintmax_t> directoryFilesTypes(const path& directortyPath);
+    static std::unordered_map<std::string,uintmax_t> directoryFilesTypes(const path& directortyPath);
 
     // static function to get the current directory path
     static path getCurrentPath();

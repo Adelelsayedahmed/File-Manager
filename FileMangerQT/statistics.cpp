@@ -1,10 +1,7 @@
 #include "statistics.h"
 #include "conversions.h"
 
-statistics::statistics()
-{
 
-}
 
 std::unordered_map<std::string,uintmax_t> statistics::directoryFilesSizes(const path& directortyPath)
 {

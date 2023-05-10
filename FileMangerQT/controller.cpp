@@ -112,11 +112,10 @@ void Controller::createDirectory(const std::string &dirname)
 
 void Controller::propertiesOfFile(const fs::path &path)
 {
-    statistics *statObj = new statistics;
 
     pieChartPageWidget *pieChartWidget = new pieChartPageWidget(dView->stackedview);
 
-    PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->stackedview, statObj, pieChartWidget);
+    PropertiesPageWidget* propertiesWidget = new PropertiesPageWidget(dView->stackedview, pieChartWidget);
 
     propertiesWidget->path=path;
 

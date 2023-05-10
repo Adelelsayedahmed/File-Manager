@@ -19,7 +19,7 @@ class PropertiesPageWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PropertiesPageWidget(QWidget *parent = nullptr,statistics *statsObj=nullptr,pieChartPageWidget *pieChartWidget = nullptr);
+    explicit PropertiesPageWidget(QWidget *parent = nullptr,pieChartPageWidget *pieChartWidget = nullptr);
 
     void showPropertiesWindow();
 
@@ -31,9 +31,6 @@ private:
 
     bool directoryIsEmpty;
     QWidget *parent;
-
-    statistics *statsObj;
-
 
     pieChartPageWidget *piechartpagewidget;
 

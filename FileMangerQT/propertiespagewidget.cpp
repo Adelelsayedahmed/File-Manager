@@ -1,12 +1,12 @@
 #include "propertiespagewidget.h"
 
 
-PropertiesPageWidget::PropertiesPageWidget(QWidget *parent,statistics* statsObj,pieChartPageWidget *pieChartWidget )
+PropertiesPageWidget::PropertiesPageWidget(QWidget *parent,pieChartPageWidget *pieChartWidget )
     : QWidget{parent}
 {
 
     this->parent=parent;
-   this->statsObj=statsObj;
+   //this->statsObj=statsObj;
    // this->piechartpagewidget=pieChartWidget;
 
    propertiesWindow = new QDialog(this);
@@ -145,12 +145,12 @@ void PropertiesPageWidget::showStatisticsThreaded()
 void PropertiesPageWidget::showStatistics()
 {
 
-    std::unordered_map<std::string, uintmax_t> sizesMap=statsObj->directoryFilesSizes(path);
+    std::unordered_map<std::string, uintmax_t> sizesMap=statistics::directoryFilesSizes(path);
     piechartpagewidget= new pieChartPageWidget(this);
     PieChartWidget::chartProperties sizesChartprop("Sizes of files/directories","Arial",true,"KB",true,true,true);
     new PieChartWidget(piechartpagewidget->returnTabs(0),sizesMap,sizesChartprop);
 
-    std::unordered_map<std::string, uintmax_t> result = statsObj->directoryFilesTypes(path);
+    std::unordered_map<std::string, uintmax_t> result = statistics::directoryFilesTypes(path);
 
     std::unordered_map<std::string,uintmax_t> typesMap=result;
 
