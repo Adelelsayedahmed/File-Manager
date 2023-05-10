@@ -69,7 +69,6 @@ void PropertiesPageWidget::showPropertiesWindow()
             qDebug() << "before convert to GB"<< intermediateSize;
             intermediateSize=convertToGB(intermediateSize);
             qDebug() << "after convert to GB"<< intermediateSize;
-
             appendingString=" GB";
         }
         else if(intermediateSize>=MEGA)
@@ -87,7 +86,20 @@ void PropertiesPageWidget::showPropertiesWindow()
         extension="directory";
 
         statisticsButton = new QPushButton("Charts representation", propertiesWindow);
-       connect(statisticsButton, &QPushButton::clicked, this, &PropertiesPageWidget::showStatistics);
+        if(intermediateSize<=10){
+            statisticsButton->setEnabled(false);
+            QFont buttonFont=statisticsButton->font();
+            buttonFont.setPointSize(10);
+            statisticsButton->setFont(buttonFont);
+            QPalette palette;
+            palette.setColor(QPalette::ButtonText,Qt::black);
+            statisticsButton->setPalette(palette);
+            statisticsButton->setText("no available charts for this directory");
+            statisticsButton->setBackgroundRole(QPalette::AlternateBase);
+            statisticsButton->setToolTip("directory size is zero");
+        }else{
+            connect(statisticsButton, &QPushButton::clicked, this, &PropertiesPageWidget::showStatistics);
+        }
         dateModified=getDirectoryLastModifiedTime(path.string());
         layout->addWidget(statisticsButton, 8, 1, 1, 1);
 

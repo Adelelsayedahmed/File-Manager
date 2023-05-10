@@ -29,6 +29,7 @@ public:
 
 private:
 
+    bool directoryIsEmpty;
     QWidget *parent;
 
     statistics *statsObj;
