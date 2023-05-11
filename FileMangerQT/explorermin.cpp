@@ -235,7 +235,7 @@ void ExplorerMin::checkSelectedFileForCompression()
 
 void ExplorerMin::BackButtonClickedFromTree()
 {
-    backFilepath = ExplorerMin::filepath;
+    upBouttonIndex = fileSystemModel->index( ExplorerMin::filepath);
 }
 
 
