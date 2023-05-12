@@ -33,6 +33,7 @@ private slots:
 signals:
     void SearchWindowCreated(SearchWindow *search);
     void backButtonPressedSignal();
+    void changeLocationBar(QString filepath);
 
 };
 

@@ -22,7 +22,7 @@ private:
 
 public slots:
     void initialize(QFileSystemModel *model, QModelIndex index);
-    void locationChanged(QString filepath, QString fileName);
+    void locationChanged(QString filepath);
     void validatePath();
 signals:
     void validPath(QString path);

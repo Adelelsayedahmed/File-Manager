@@ -27,10 +27,11 @@ SearchBar::SearchBar(QWidget *parent)
 
     connect(findButton, &QPushButton::pressed, this, &SearchBar::on_findButton_pressed);
     connect(backButton, &QPushButton::pressed, this, &SearchBar::backButtonPressed);
+    connect(this, &SearchBar::changeLocationBar, locationBar, &LocationBar::locationChanged);
 
 }
 
-void SearchBar::initializeLocationBar(QFileSystemModel  *model, QModelIndex index)
+void SearchBar::initializeLocationBar(QFileSystemModel *model, QModelIndex index)
 {
     locationBar->initialize(model, index);
 }
@@ -39,7 +40,7 @@ void SearchBar::locationChanged(QString filepath, QString filename)
     dfilePath = filepath;
     searchBar->clear();
     searchBar->setPlaceholderText("Search " + filename);
-    locationBar->locationChanged(filepath, filename);
+    emit changeLocationBar(filepath);
 }
 
 void SearchBar::backButtonPressed()

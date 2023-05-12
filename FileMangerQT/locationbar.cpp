@@ -21,11 +21,11 @@ void LocationBar::initialize(QFileSystemModel *model, QModelIndex index)
 
     QShortcut *validate = new QShortcut(QKeySequence("Return"), locationBar);
     QObject::connect(validate, SIGNAL(activated()), this, SLOT(validatePath()));
+    connect(completer, QOverload<const QString &>::of(&QCompleter::activated),this, &LocationBar::validatePath);
 
-//    connect(completer, &QCompleter::activated, this, &LocationBar::validatePath);
 }
 
-void LocationBar::locationChanged(QString filepath,  QString fileName)
+void LocationBar::locationChanged(QString filepath)
 {
     locationBar->setText(filepath);
     dModel->setRootPath(filepath);
