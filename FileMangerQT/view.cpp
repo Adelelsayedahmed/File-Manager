@@ -24,20 +24,20 @@ View::View(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::View)
 {
-ui->setupUi(this);
+    ui->setupUi(this);
+    this->setWindowTitle("File Manager");
 
+    topBar = new addOnsBar(this);
+    stackedview = new stackedviewwidget(this);
 
-topBar = new addOnsBar(this);
-stackedview = new stackedviewwidget(this);
+    QGridLayout* mainLayout = new QGridLayout(this);
+    mainLayout->addWidget(topBar, 0, 0);
+    mainLayout->addWidget(stackedview, 1, 0);
 
-QGridLayout* mainLayout = new QGridLayout(this);
-mainLayout->addWidget(topBar, 0, 0);
-mainLayout->addWidget(stackedview, 1, 0);
-
-QWidget* centralWidget = new QWidget(this);
-centralWidget->setLayout(mainLayout);
-this->setCentralWidget(centralWidget);
-mRegisterSignals();
+    QWidget* centralWidget = new QWidget(this);
+    centralWidget->setLayout(mainLayout);
+    this->setCentralWidget(centralWidget);
+    mRegisterSignals();
 
 }
 

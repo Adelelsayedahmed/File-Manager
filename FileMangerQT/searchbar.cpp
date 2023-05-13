@@ -51,7 +51,5 @@ void SearchBar::on_findButton_pressed()
 
     //Set file path to search in and show results
     window->search(dfilePath, searchBar->text());
-    window->show();
-
 
 }

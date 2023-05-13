@@ -14,7 +14,18 @@ SearchWindow::SearchWindow(QWidget *parent) :
     ui(new Ui::SearchWindow)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Search");
+
+    //Disable edit of results table
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    QStringList labels;
+
+    //Set table labels and dimensions
+    labels <<"Path"<<"Type";
+    ui->tableWidget->setColumnCount(NO_OF_FIELDS);
+    ui->tableWidget->setColumnWidth(0,650);
+    ui->tableWidget->setColumnWidth(1,150);
+    ui->tableWidget->setHorizontalHeaderLabels(labels);
 }
 
 void SearchWindow::search(QString filepath, QString filename)
@@ -22,28 +33,15 @@ void SearchWindow::search(QString filepath, QString filename)
     //Set fillepath to search in
     dfilePath = filepath;
 
-    //Disable edit of results table
-     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-//     //create search shortcut
-//     QShortcut *shortcutSearch = new QShortcut(QKeySequence(Qt::Key_Enter), this);
-//     QObject::connect(shortcutSearch, &QShortcut::activated, this, &SearchWindow::searchForFileByName);
-
-     QStringList labels;
-
-     //Set table labels and dimensions
-     labels <<"Path"<<"Type";
-     ui->tableWidget->setColumnCount(NO_OF_FIELDS);
-     ui->tableWidget->setColumnWidth(0,650);
-     ui->tableWidget->setColumnWidth(1,150);
-     ui->tableWidget->setHorizontalHeaderLabels(labels);
-
      //Initialize search parameters
      std::string path = dfilePath.toStdString();
      std::string file_name = filename.toStdString();
      std::vector<std::string> file_paths;
 
      QString temp;
+
+
+     this->setWindowTitle("Search results for " + filename);
 
      //Emit search signal
      emit searchForFileByName(path, file_name, file_paths);
@@ -89,11 +87,13 @@ void SearchWindow::search(QString filepath, QString filename)
 
               }
          }
+         this->show();
      }
 
      //If no results returned
      else
         { QMessageBox msg;
+          msg.setIcon(QMessageBox::Warning);
           msg.setText("No Results found.");
           msg.exec();;
       }
