@@ -104,6 +104,8 @@ set(PROJECT_SOURCES
         undocreatedirectory.h
         utilities.cpp
         utilities.h
+        locationbar.h
+        locationbar.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
