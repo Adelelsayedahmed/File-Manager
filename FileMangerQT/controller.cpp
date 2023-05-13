@@ -186,7 +186,7 @@ void Controller::StackedWidgetSwitchedEnable(int index)
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
     dWindow = search;
-    QObject::connect(dWindow, &SearchWindow::searchForFileByName, this, &Controller::SearchForFileByName);
+    QObject::connect(dWindow, &SearchWindow::searchForFileByName, fileOperations, &FileOperations::SearchForFileByName);
 
 }
 
