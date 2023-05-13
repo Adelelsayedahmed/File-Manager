@@ -3,5 +3,51 @@
 LocationBar::LocationBar(QWidget *parent)
     : QWidget{parent}
 {
+    locationBar = new QLineEdit(this);
+}
+
+void LocationBar::initialize(QFileSystemModel *model, QModelIndex index)
+{
+    //  Set model of completer
+    dModel = new QFileSystemModel(model);
+    dModel->setFilter(QDir::Dirs);
+    dModel->setRootPath(dModel->filePath(index));
+    currentRoot = dModel->filePath(index);
+    completer = new  QCompleter(model, this);
+    completer->setCompletionMode(QCompleter::PopupCompletion);
+
+    //    Assign completer to location barr
+    locationBar->setText(model->filePath(index));
+    locationBar->setCompleter(completer);
+
+    //    Connect signals
+    connect(locationBar,  SIGNAL(returnPressed()), this, SLOT(validatePath()));
+    connect(completer, QOverload<const QString &>::of(&QCompleter::activated),this, &LocationBar::validatePath);
 
 }
+
+void LocationBar::locationChanged(QString filepath)
+{
+    //   This needs to be connected with a signal sending the new file path when location changes
+    //   Change line edit text and root path of model
+    locationBar->setText(filepath);
+    dModel->setRootPath(filepath);
+    currentRoot = filepath;
+}
+
+void LocationBar::validatePath()
+{
+    //    This validates the path entered when the user clicks on the popup OR presses enter when the location bar is selected
+    //    The signal emitted contains the validated path
+    QDir dir(dModel->rootDirectory());
+    if(dir.exists(locationBar->text()))
+    {
+        qDebug() <<locationBar->text()<<" exists!";
+        emit validPath(locationBar->text());
+
+    }
+    else
+        qDebug() <<"Invalid!!";
+}
+
+
