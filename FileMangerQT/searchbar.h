@@ -15,7 +15,7 @@ class SearchBar : public QWidget
     Q_OBJECT
 public:
     explicit SearchBar(QWidget *parent = nullptr);
-    QPushButton *backButton;
+
     LocationBar *bar;
 
 protected:

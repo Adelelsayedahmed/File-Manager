@@ -5,7 +5,16 @@ LocationBar::LocationBar(QWidget *parent)
 {
     layout =  new QHBoxLayout(this);
     locationBar = new  QLineEdit(this);
-    layout->addWidget(locationBar);
+    backButton = new QPushButton(this);
+
+    QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
+    parentPath +="/up-arrow.png";
+    QPixmap image(parentPath);
+    QIcon icon(image);
+    backButton->setIcon(icon);
+    layout->insertWidget(0,backButton);
+    layout->insertWidget(1,locationBar);
+    connect(backButton, &QPushButton::pressed, this , &LocationBar::backButtonPressed);
 }
 
 void LocationBar::initialize(QFileSystemModel *model, QModelIndex index)
@@ -27,6 +36,7 @@ void LocationBar::initialize(QFileSystemModel *model, QModelIndex index)
     //    Connect signals
     connect(locationBar,  SIGNAL(returnPressed()), this, SLOT(validatePath()));
     connect(completer, QOverload<const QString &>::of(&QCompleter::activated),this, &LocationBar::validatePath);
+
 
 }
 
@@ -52,6 +62,11 @@ void LocationBar::validatePath()
     }
     else
         qDebug() <<"Invalid!!";
+}
+
+void LocationBar::backButtonPressed()
+{
+    emit sigBackButtonPressed();
 }
 
 
