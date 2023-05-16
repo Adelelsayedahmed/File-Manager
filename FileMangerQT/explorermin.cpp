@@ -183,8 +183,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     connect(cutAction, &QAction::triggered, this, &ExplorerMin::onCut);
     connect(createFileAction, &QAction::triggered, this, &ExplorerMin::onCreatingFile);
     connect(createFolderAction, &QAction::triggered, this, &ExplorerMin::onCreatingFolder);
-
-
+    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDecompressHere);
+    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompressHere);
     //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
     //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
@@ -327,12 +327,14 @@ void ExplorerMin::onDeCompress()
 
 void ExplorerMin::onCompressHere()
 {
-
+    std::string Path  = fileSystemModel->filePath(index).toStdString();
+    emit compresshere(Path);
 }
 
 void ExplorerMin::onDecompressHere()
 {
-
+    std::string Path  = fileSystemModel->filePath(index).toStdString();
+    emit decompresshere(Path);
 }
 void ExplorerMin::onBatchRenameViewSlot()
 {

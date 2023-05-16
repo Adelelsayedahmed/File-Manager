@@ -15,12 +15,12 @@ public:
     compression();
     void batchCompress(std::vector< std::string>& Paths);
     void batchDecompress(std::vector< std::string>& Paths);
+    void compress_file_here(const std::string& input_file_path);
+    void decompress_file_here( const std::string& input_file_path);
 
 private :
    void batchCompressionWorkFunction(unsigned workCount , unsigned startIndex , std::vector< std::string>& Paths );
    void batchDecompressionWorkFunction(unsigned workCount , unsigned startIndex , std::vector< std::string>& Paths );
-   void compress_file_here(const std::string& input_file_path);
-   void decompress_file_here( const std::string& input_file_path);
    void decompress_file(const std::string& input_file_path, const std::string& output_file_path);
    void compress_file(const std::string& input_file_path, const std::string& output_file_path);
 };

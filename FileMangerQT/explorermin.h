@@ -86,8 +86,7 @@ public slots:
     void emittingCreatingFolder(QString dirname);
     void onCompress();
     void onDeCompress();
-    void onCompressHere();
-    void onDecompressHere();
+
 
 
     void folderClicked(QString filepath);
@@ -97,6 +96,8 @@ public slots:
 
     void onBatchCompressViewSlot();
     void onBatchDecompressViewSlot ();
+    void onCompressHere();
+    void onDecompressHere();
     void BackButtonClickedFromTree();
 
     LocationBar* initializeLocationBar();
@@ -119,7 +120,8 @@ signals:
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
     void context_menu(QModelIndex index);
-
+    void compresshere( std::string & path);
+    void decompresshere(std::string & path);
 
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
