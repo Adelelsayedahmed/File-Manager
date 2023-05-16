@@ -66,7 +66,7 @@ void ExplorerMin::registerSignals()
     QObject::connect(createFileWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFile);
     QObject::connect(createDirectoryWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFolder);
     //    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
-
+    QObject::connect(search->bar, &LocationBar::validPath, this, &ExplorerMin::folderClicked);
 
 }
 

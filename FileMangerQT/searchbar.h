@@ -16,12 +16,12 @@ class SearchBar : public QWidget
 public:
     explicit SearchBar(QWidget *parent = nullptr);
     QPushButton *backButton;
+    LocationBar *bar;
 
 protected:
     QHBoxLayout *layout;
     QPushButton *findButton;
     QLineEdit *searchBar;
-    LocationBar *bar;
     QString dfilePath;
 
 public slots:
