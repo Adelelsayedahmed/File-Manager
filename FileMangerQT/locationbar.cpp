@@ -3,7 +3,9 @@
 LocationBar::LocationBar(QWidget *parent)
     : QWidget{parent}
 {
-    locationBar = new QLineEdit(this);
+    layout =  new QHBoxLayout(this);
+    locationBar = new  QLineEdit(this);
+    layout->addWidget(locationBar);
 }
 
 void LocationBar::initialize(QFileSystemModel *model, QModelIndex index)
@@ -13,12 +15,14 @@ void LocationBar::initialize(QFileSystemModel *model, QModelIndex index)
     dModel->setFilter(QDir::Dirs);
     dModel->setRootPath(dModel->filePath(index));
     currentRoot = dModel->filePath(index);
-    completer = new  QCompleter(model, this);
+    completer = new QCompleter(model);
     completer->setCompletionMode(QCompleter::PopupCompletion);
 
-    //    Assign completer to location barr
-    locationBar->setText(model->filePath(index));
+    //    Assign completer to location bar
     locationBar->setCompleter(completer);
+
+    locationBar->setText(model->filePath(index));
+
 
     //    Connect signals
     connect(locationBar,  SIGNAL(returnPressed()), this, SLOT(validatePath()));

@@ -24,6 +24,7 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     //  topBar = new addOnsBar(this);
     // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
 
+    search->initializeLocationBarModel(fileSystemModel, index);
     registerSignals();
     layout->addRow("",ShowTableView());
     QThread* thread = new QThread(this);
@@ -34,10 +35,6 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     backFilepath = fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
 }
-
-
-
-
 
 
 void ExplorerMin::registerSignals()
