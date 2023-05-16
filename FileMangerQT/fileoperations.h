@@ -16,6 +16,7 @@
 #include "undodelete.h"
 #include "undocreatedirectory.h"
 #include "undocreatefile.h"
+#include "undocompressdecompress.h"
 #include "utilities.h"
 #include "contentfilessearch.h"
 #include <filesystem>

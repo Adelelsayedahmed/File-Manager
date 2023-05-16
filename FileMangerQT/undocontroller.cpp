@@ -9,7 +9,7 @@ void UndoController::addActions(Undo *undo)
     if(undoActions.size()==max_number_of_actions_supported_for_undo){
        undoActions.pop_front();
     }
-    qInfo()  <<"add Undo\n ";
+    qInfo()  <<"add Undo in undo controller\n ";
     undoActions.push_back(undo);
 }
 

@@ -15,8 +15,8 @@ public:
     compression();
     void batchCompress(std::vector< std::string>& Paths);
     void batchDecompress(std::vector< std::string>& Paths);
-    void compress_file_here(const std::string& input_file_path);
-    void decompress_file_here( const std::string& input_file_path);
+    std::string compress_file_here(const std::string& input_file_path);
+    std::string decompress_file_here( const std::string& input_file_path);
 
 private :
    void batchCompressionWorkFunction(unsigned workCount , unsigned startIndex , std::vector< std::string>& Paths );
