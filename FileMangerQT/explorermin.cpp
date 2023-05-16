@@ -112,6 +112,7 @@ QTableView* ExplorerMin::ShowTableView()
     }
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+    emit  folderChanged(fileSystemModel->filePath(index));
     return table;
 }
 
@@ -245,7 +246,7 @@ void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
     this->index = index;
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
-    ///////////////////////
+    emit  folderChanged(fileSystemModel->filePath(index));
 }
 void ExplorerMin::onCopy()
 {
@@ -414,6 +415,7 @@ void ExplorerMin:: on_tableView_doubleClicked(QModelIndex index)
 
     backFilepath=fileSystemModel->filePath(index);
     emit locationChanged(fileSystemModel->filePath(index), fileSystemModel->fileName(index));
+    emit folderChanged(fileSystemModel->filePath(index));
 
 }
 
@@ -457,6 +459,7 @@ void  ExplorerMin::folderClicked(QString returnedFilePath)
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
     emit locationChanged(returnedFilePath, fileSystemModel->fileName(index));
+    emit folderChanged(returnedFilePath);
     //    ui->locationBar->setPlaceholderText(fileSystemModel->filePath(index));
     //    ui->searchBar->clear();
     //    ui->searchBar->setPlaceholderText("Search " + fileSystemModel->fileName(index));
@@ -513,5 +516,14 @@ std::vector<std::string> ExplorerMin::getSelectedPaths() {
 
     return oldPaths ;
 
+}
 
+LocationBar* ExplorerMin::initializeLocationBar()
+{
+    LocationBar *bar = new LocationBar(this);
+    bar->initialize(fileSystemModel, index);
+
+    QObject::connect(this, &ExplorerMin::folderChanged, bar, &LocationBar::locationChanged);
+    QObject::connect(bar, &LocationBar::validPath, this, &ExplorerMin::folderClicked);
+    return bar;
 }

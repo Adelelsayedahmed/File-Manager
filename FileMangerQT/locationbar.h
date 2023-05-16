@@ -1,13 +1,11 @@
 #ifndef LOCATIONBAR_H
 #define LOCATIONBAR_H
-
 #include <QWidget>
 #include <QLineEdit>
 #include <QCompleter>
 #include <QFileSystemModel>
 #include <QShortcut>
 #include  <QHBoxLayout>
-
 
 class LocationBar : public QWidget
 {

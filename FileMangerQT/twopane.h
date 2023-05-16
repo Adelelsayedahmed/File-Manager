@@ -11,6 +11,9 @@ public:
 public:
     std::unique_ptr<ExplorerMin> leftTable;
     std::unique_ptr<ExplorerMin> rightTable;
+    LocationBar  *leftBar;
+    LocationBar *rightBar;
+
 private slots:
     void onDragEnter(QDragEnterEvent*);
     void dropEvent(QDropEvent* event) ;

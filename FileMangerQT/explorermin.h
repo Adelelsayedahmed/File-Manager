@@ -99,6 +99,8 @@ public slots:
     void onBatchDecompressViewSlot ();
     void BackButtonClickedFromTree();
 
+    LocationBar* initializeLocationBar();
+
 
 signals:
     void copyFile(std::string source_path, std::string destination_path, CopyCutAction action);
@@ -112,6 +114,7 @@ signals:
     void batchRenameViewSignal(std::vector< std::string>& oldPaths,const std::string &newBaseName);
     void SearchWindowCreated(SearchWindow *window);
     void locationChanged(QString filepath, QString filename);
+    void folderChanged(QString filepath);
     void backButtonPressedSignalFromTree();
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
