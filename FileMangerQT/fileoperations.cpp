@@ -272,7 +272,6 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
 void FileOperations::compresshere(std::string &Paths)
 {
     std::string path= compressionOperationsObj->compress_file_here(Paths);
-    qDebug()<<"a7aaaaaaaaaaaa";
     qDebug()<<"come back final in file operation"<<path;
     Undo *undo  = new undoCompressDecompress(path);
     undoController->addActions(undo);

@@ -134,10 +134,9 @@ std::string compression::compress_file_here(const std::string &input_file_path)
 {
     std::string output_file_path= input_file_path + ".gz";
     std::string output_file_path_temp = output_file_path;
-    qDebug()<<"come back in compress file"<<output_file_path_temp;
 
     compress_file(input_file_path,output_file_path);
-    qDebug()<<"a7aaaaaaaaaaaa 5awl";
+
     return output_file_path_temp;
 
 }
