@@ -126,8 +126,11 @@ bool ExplorerMin:: hasGzExtension(const std::string& path) {
 
     return false;
 }
+bool show_flag = false ;
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (show_flag)
+    {
     //disable right click in case it is pressed on empty area.
 
     qInfo() << "right click pressed";
@@ -185,10 +188,15 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
             batchDecompressionAction->setVisible(true);
             batchCompressionAction->setVisible(false);
         }
-        else
+        else if (flag_gz == 0)
         {
             batchDecompressionAction->setVisible(false);
             batchCompressionAction->setVisible(true);
+        }
+        else
+        {
+            batchDecompressionAction->setVisible(false);
+            batchCompressionAction->setVisible(false);
         }
         compressAction->setVisible(false);
         decompressAction->setVisible(false);
@@ -238,6 +246,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
 
     menu.exec(event->globalPos());
+    }
+    show_flag= false;
 }
 void ExplorerMin::checkSelectedFileForCompression()
 {
@@ -283,6 +293,7 @@ void ExplorerMin::BackButtonClickedFromTree()
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
+    show_flag=true;
     newDirectoryEnteredFlag = false;
     qInfo()<<index;
     this->index = index;
