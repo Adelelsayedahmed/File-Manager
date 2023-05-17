@@ -3,7 +3,7 @@
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/iostreams/copy.hpp>
-
+#include <QDebug>
 compression::compression()
 {
 
@@ -130,10 +130,14 @@ void compression::batchDecompressionWorkFunction(unsigned int workCount, unsigne
     }
 }
 
-void compression::compress_file_here(const std::string &input_file_path)
+std::string compression::compress_file_here(const std::string &input_file_path)
 {
     std::string output_file_path= input_file_path + ".gz";
+    std::string output_file_path_temp = output_file_path;
+
     compress_file(input_file_path,output_file_path);
+
+    return output_file_path_temp;
 
 }
 
@@ -149,10 +153,12 @@ void compression::compress_file(const std::string& input_file_path, const std::s
     boost::iostreams::copy(input_file, out);
 }
 
-void compression::decompress_file_here(const std::string &input_file_path){
+std::string compression::decompress_file_here(const std::string &input_file_path){
     std::string output_file_path=input_file_path;
     output_file_path.erase(output_file_path.size() - 3, 3);
+    std::string output_file_path_temp= output_file_path;
     decompress_file(input_file_path,output_file_path);
+    return output_file_path_temp;
 }
 
 void compression::decompress_file(const std::string& input_file_path, const std::string& output_file_path) {

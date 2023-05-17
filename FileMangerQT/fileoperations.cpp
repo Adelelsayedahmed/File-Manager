@@ -269,6 +269,21 @@ void FileOperations::batchRenameFile( std::vector< std::string>& oldPaths,const 
     undoController->addActions(undo);
 }
 
+void FileOperations::compresshere(std::string &Paths)
+{
+    std::string path= compressionOperationsObj->compress_file_here(Paths);
+    Undo *undo  = new undoCompressDecompress(path);
+    undoController->addActions(undo);
+
+}
+
+void FileOperations::decompresshere(std::string &Paths)
+{
+   std::string path= compressionOperationsObj->decompress_file_here(Paths);
+    Undo *undo  = new undoCompressDecompress(path);
+    undoController->addActions(undo);
+}
+
 void FileOperations::batchCompression(std::vector<std::string> &Paths)
 {
     compressionOperationsObj->batchCompress(Paths);

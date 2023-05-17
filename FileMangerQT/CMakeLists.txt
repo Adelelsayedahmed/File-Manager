@@ -92,6 +92,8 @@ set(PROJECT_SOURCES
         undodelete.h
         undocontroller.cpp
         undocontroller.h
+        undocompressdecompress.cpp
+        undocompressdecompress.h
         searchfilewidget.h
         searchfilewidget.cpp
         contentfilessearch.h

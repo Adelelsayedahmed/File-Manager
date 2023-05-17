@@ -1,4 +1,4 @@
-#include "explorermin.h"
+    #include "explorermin.h"
 #include <QBoxLayout>
 #include <QPushButton>
 #include "fileoperations.h"
@@ -23,7 +23,6 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     upBouttonIndex = index;
     //  topBar = new addOnsBar(this);
     // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
-
     search->initializeLocationBarModel(fileSystemModel, index);
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -59,6 +58,7 @@ void ExplorerMin::registerSignals()
     QObject::connect(search, &SearchBar::SearchWindowCreated, this, &ExplorerMin::SearchWindowCreatedSlot);
     QObject::connect(this, &ExplorerMin::locationChanged, search, &SearchBar::locationChanged);
     QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
+//    QObject::connect(search,&SearchBar::backButtonPressedSignal,this,&ExplorerMin::BackButtonClicked);
     //  topBar->connectAction(identifyDuplicatesAction,this,SLOT(on_identifyDuplicatesIconClicked()));
     //QObject::connect(table,SIGNAL(doubleClicked),this,&ExplorerMin::BackButtonClicked);
     QObject::connect(rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingRenameSlot);
@@ -67,7 +67,7 @@ void ExplorerMin::registerSignals()
     QObject::connect(createDirectoryWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFolder);
     //    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
     QObject::connect(search->bar, &LocationBar::validPath, this, &ExplorerMin::folderClicked);
-
+//    QObject::connect(,&LocationBar::sigBackButtonPressed,this,&ExplorerMin::BackButtonClicked);
 }
 
 
@@ -100,7 +100,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
-   // table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     //to make the tableView resizable
     for (int i = 0; i < table->horizontalHeader()->count(); ++i) {
@@ -115,9 +115,22 @@ QTableView* ExplorerMin::ShowTableView()
     emit  folderChanged(fileSystemModel->filePath(index));
     return table;
 }
+bool ExplorerMin:: hasGzExtension(const std::string& path) {
+    // Find the position of the last dot in the path
+    size_t dotPos = path.find_last_of('.');
 
+    // Check if the dot exists and the extension is ".gz"
+    if (dotPos != std::string::npos && path.substr(dotPos) == ".gz") {
+        return true;
+    }
+
+    return false;
+}
+bool show_flag = false ;
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (show_flag)
+    {
     //disable right click in case it is pressed on empty area.
 
     qInfo() << "right click pressed";
@@ -156,25 +169,56 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
     if ( isMultipleSelected() )
     {
-        batchRenameAction->setEnabled(true);
-        renameAction->setEnabled(false);
+        std::vector<std::string> selectedPaths = getSelectedPaths();
+        int  flag_gz = 0 ;
+        int flag_other= 0 ;
+        for(auto p : selectedPaths)
+        {
+            if (hasGzExtension(p))
+            {
+                flag_gz ++;
+            }
+            else
+            {
+                flag_other++;
+            }
+        }
+        if (flag_gz == selectedPaths.size())
+        {
+            batchDecompressionAction->setVisible(true);
+            batchCompressionAction->setVisible(false);
+        }
+        else if (flag_gz == 0)
+        {
+            batchDecompressionAction->setVisible(false);
+            batchCompressionAction->setVisible(true);
+        }
+        else
+        {
+            batchDecompressionAction->setVisible(false);
+            batchCompressionAction->setVisible(false);
+        }
+        compressAction->setVisible(false);
+        decompressAction->setVisible(false);
+        batchRenameAction->setVisible(true);
+        renameAction->setVisible(false);
 
-        batchCompressionAction->setEnabled(true);
-        compressAction->setEnabled(false);
 
-        batchDecompressionAction->setEnabled(true);
-        decompressAction->setEnabled(false);
+
     }
     else
     {
-        batchRenameAction->setEnabled(false);
-        renameAction->setEnabled(true);
+         checkSelectedFileForCompression();
 
-        batchCompressionAction->setEnabled(false);
-        compressAction->setEnabled(true);
+         batchRenameAction->setVisible(false);
 
-        batchDecompressionAction->setEnabled(false);
-        decompressAction->setEnabled(true);
+        renameAction->setVisible(true);
+
+        batchCompressionAction->setVisible(false);
+
+
+        batchDecompressionAction->setVisible(false);
+
 
     }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);
@@ -183,8 +227,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     connect(cutAction, &QAction::triggered, this, &ExplorerMin::onCut);
     connect(createFileAction, &QAction::triggered, this, &ExplorerMin::onCreatingFile);
     connect(createFolderAction, &QAction::triggered, this, &ExplorerMin::onCreatingFolder);
-
-
+    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDecompressHere);
+    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompressHere);
     //    connect(compressAction, &QAction::triggered, this, &ExplorerMin::onCompress);
     //    connect(decompressAction, &QAction::triggered, this, &ExplorerMin::onDeCompress);
 
@@ -198,10 +242,12 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
     //checkSelectedFileForCompression();
 
-    // checkSelectedFileForCompression();
+
 
 
     menu.exec(event->globalPos());
+    }
+    show_flag= false;
 }
 void ExplorerMin::checkSelectedFileForCompression()
 {
@@ -213,8 +259,10 @@ void ExplorerMin::checkSelectedFileForCompression()
     // Enable the compress action if the file is a .txt file, otherwise disable it
     if (QFileInfo(filePath).suffix() == "txt")
     {qInfo()<<"in compress";
-        compressAction->setEnabled(true);
-        decompressAction->setEnabled(false);
+      //  compressAction->setEnabled(true);
+        compressAction->setVisible(true);
+      //  decompressAction->setEnabled(false);
+        decompressAction->setVisible(false);
     }
 
     else if ((QFileInfo(filePath).suffix() == "gz"))
@@ -222,12 +270,16 @@ void ExplorerMin::checkSelectedFileForCompression()
     {
         qInfo()<<"in deecompress";
         compressAction->setEnabled(false);
+        compressAction->setVisible(false);
         decompressAction->setEnabled(true);
+        decompressAction->setVisible(true);
     }
 
     else {qInfo()<<"innot ";
-        compressAction->setEnabled(false);
-        decompressAction->setEnabled(false);
+      compressAction->setEnabled(true);
+        compressAction->setVisible(true);
+       decompressAction->setEnabled(false);
+        decompressAction->setVisible(false);
     }
 }
 
@@ -241,6 +293,7 @@ void ExplorerMin::BackButtonClickedFromTree()
 
 void ExplorerMin::on_tableView_clicked(const QModelIndex &index)
 {
+    show_flag=true;
     newDirectoryEnteredFlag = false;
     qInfo()<<index;
     this->index = index;
@@ -327,12 +380,14 @@ void ExplorerMin::onDeCompress()
 
 void ExplorerMin::onCompressHere()
 {
-
+    std::string Path  = fileSystemModel->filePath(index).toStdString();
+    emit compresshere(Path);
 }
 
 void ExplorerMin::onDecompressHere()
 {
-
+    std::string Path  = fileSystemModel->filePath(index).toStdString();
+    emit decompresshere(Path);
 }
 void ExplorerMin::onBatchRenameViewSlot()
 {
@@ -505,17 +560,18 @@ bool ExplorerMin::isMultipleSelected(){
 
 
 std::vector<std::string> ExplorerMin::getSelectedPaths() {
-    std::vector< std::string> oldPaths ;
-    QItemSelectionModel *selectionModel = table->selectionModel();
+    std::vector<std::string> oldPaths;
+    QItemSelectionModel* selectionModel = table->selectionModel();
     QModelIndexList indexes = selectionModel->selection().indexes();
 
-    foreach (QModelIndex index, indexes)
-    {
-        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+    foreach (QModelIndex index, indexes) {
+        // Only add paths from the first column (column 0)
+        if (index.column() == 0) {
+            oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+        }
     }
 
-    return oldPaths ;
-
+    return oldPaths;
 }
 
 LocationBar* ExplorerMin::initializeLocationBar()
@@ -525,5 +581,7 @@ LocationBar* ExplorerMin::initializeLocationBar()
 
     QObject::connect(this, &ExplorerMin::folderChanged, bar, &LocationBar::locationChanged);
     QObject::connect(bar, &LocationBar::validPath, this, &ExplorerMin::folderClicked);
+    QObject::connect(bar, &LocationBar::sigBackButtonPressed, this, &ExplorerMin::BackButtonClicked);
+
     return bar;
 }

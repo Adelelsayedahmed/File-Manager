@@ -44,6 +44,8 @@ void Controller::mRegisterSignals()
 
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchCompressViewSignal, this, &Controller::Controller::batchCompressControllerSlot);
     QObject::connect(dView->stackedview->explorer, &ExplorerMin::batchDecompressViewSignal, this, &Controller::Controller::batchDecompressControllerSlot);
+     QObject::connect(dView->stackedview->explorer, &ExplorerMin::compresshere, this, &Controller::Controller::compresshere);
+     QObject::connect(dView->stackedview->explorer, &ExplorerMin::decompresshere, this, &Controller::Controller::decompresshere);
     QObject::connect(dView->stackedview->twoPane->leftTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
     QObject::connect(dView->stackedview->twoPane->rightTable->table, &CustomTable::paste, this, &Controller::Controller::paste);
 
@@ -207,6 +209,16 @@ void Controller::batchCompressControllerSlot(std::vector<std::string> &Paths)
 void Controller::batchDecompressControllerSlot(std::vector<std::string> &Paths)
 {
     fileOperations->batchDecompression(Paths);
+}
+
+void Controller::compresshere(std::string &path)
+{
+    fileOperations->compresshere(path);
+}
+
+void Controller::decompresshere(std::string &path)
+{
+    fileOperations->decompresshere(path);
 }
 
 

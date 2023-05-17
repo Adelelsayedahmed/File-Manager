@@ -16,6 +16,7 @@
 #include "undodelete.h"
 #include "undocreatedirectory.h"
 #include "undocreatefile.h"
+#include "undocompressdecompress.h"
 #include "utilities.h"
 #include "contentfilessearch.h"
 #include <filesystem>
@@ -32,6 +33,8 @@ public:
     void cutFile(const fs::path &path);
     void renameFile(const boost::filesystem::path &path ,const std::string& newFileName );
     void batchRenameFile( std::vector< std::string>& oldPaths,const std::string &newBaseName);
+    void compresshere(std::string& Paths);
+    void decompresshere(std::string& Paths);
     void batchCompression(std::vector< std::string>& Paths);
     void batchDecompression(std::vector< std::string>& Paths);
     void SearchForFileByName(std::string starting_point_drictory_path , std::string file_name , std::vector<std::string>& file_paths);

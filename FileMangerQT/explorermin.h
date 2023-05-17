@@ -36,6 +36,7 @@ private :
     rename_widget *createFileWidget;
     rename_widget *createDirectoryWidget;
     bool isMultipleSelected();
+    bool hasGzExtension(const std::string& path);
     std::vector<std::string> getSelectedPaths();
     bool newDirectoryEnteredFlag = false;
 public:
@@ -45,6 +46,7 @@ public:
     QString backFilepath;
     static QString filepath;
     CustomTable *table;
+    LocationBar *bar;
     ~ExplorerMin();
 protected:
     addOnsBar* topBar;
@@ -86,8 +88,7 @@ public slots:
     void emittingCreatingFolder(QString dirname);
     void onCompress();
     void onDeCompress();
-    void onCompressHere();
-    void onDecompressHere();
+
 
 
     void folderClicked(QString filepath);
@@ -97,6 +98,8 @@ public slots:
 
     void onBatchCompressViewSlot();
     void onBatchDecompressViewSlot ();
+    void onCompressHere();
+    void onDecompressHere();
     void BackButtonClickedFromTree();
 
     LocationBar* initializeLocationBar();
@@ -119,7 +122,8 @@ signals:
     void batchCompressViewSignal(std::vector< std::string>&Paths);
     void batchDecompressViewSignal(std::vector< std::string>&Paths);
     void context_menu(QModelIndex index);
-
+    void compresshere( std::string & path);
+    void decompresshere(std::string & path);
 
 protected slots:
     void contextMenuEvent(QContextMenuEvent *event);
