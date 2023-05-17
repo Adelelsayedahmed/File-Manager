@@ -19,6 +19,7 @@ private slots:
     void dropEvent(QDropEvent* event) ;
 private:
     void setupDragAndDrop(QTableView *tableView);
+    void showFirstColumn(QTableView *tableView);
 };
 
 #endif // TWOPANE_H

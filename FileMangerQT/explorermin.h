@@ -46,6 +46,7 @@ public:
     QString backFilepath;
     static QString filepath;
     CustomTable *table;
+    LocationBar *bar;
     ~ExplorerMin();
 protected:
     addOnsBar* topBar;
