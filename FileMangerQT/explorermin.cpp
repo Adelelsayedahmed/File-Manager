@@ -100,7 +100,7 @@ QTableView* ExplorerMin::ShowTableView()
     table->setMinimumHeight(120);
     table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     table->verticalHeader()->hide();
-   // table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     //to make the tableView resizable
     for (int i = 0; i < table->horizontalHeader()->count(); ++i) {
@@ -549,17 +549,18 @@ bool ExplorerMin::isMultipleSelected(){
 
 
 std::vector<std::string> ExplorerMin::getSelectedPaths() {
-    std::vector< std::string> oldPaths ;
-    QItemSelectionModel *selectionModel = table->selectionModel();
+    std::vector<std::string> oldPaths;
+    QItemSelectionModel* selectionModel = table->selectionModel();
     QModelIndexList indexes = selectionModel->selection().indexes();
 
-    foreach (QModelIndex index, indexes)
-    {
-        oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+    foreach (QModelIndex index, indexes) {
+        // Only add paths from the first column (column 0)
+        if (index.column() == 0) {
+            oldPaths.push_back(fileSystemModel->filePath(index).toStdString());
+        }
     }
 
-    return oldPaths ;
-
+    return oldPaths;
 }
 
 LocationBar* ExplorerMin::initializeLocationBar()
