@@ -157,24 +157,23 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     if ( isMultipleSelected() )
     {
         batchRenameAction->setEnabled(true);
-        renameAction->setEnabled(false);
+        renameAction->setVisible(false);
+        batchCompressionAction->setVisible(true);
+        compressAction->setVisible(false);
 
-        batchCompressionAction->setEnabled(true);
-        compressAction->setEnabled(false);
-
-        batchDecompressionAction->setEnabled(true);
-        decompressAction->setEnabled(false);
+        batchDecompressionAction->setVisible(true);
+        decompressAction->setVisible(false);
     }
     else
     {
-        batchRenameAction->setEnabled(false);
-        renameAction->setEnabled(true);
+        batchRenameAction->setVisible(false);
+        renameAction->setVisible(true);
 
-        batchCompressionAction->setEnabled(false);
-        compressAction->setEnabled(true);
+        batchCompressionAction->setVisible(false);
+        compressAction->setVisible(true);
 
-        batchDecompressionAction->setEnabled(false);
-        decompressAction->setEnabled(true);
+        batchDecompressionAction->setVisible(false);
+        decompressAction->setVisible(true);
 
     }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);

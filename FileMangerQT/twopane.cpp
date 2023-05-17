@@ -22,11 +22,20 @@ TwoPane::TwoPane(QWidget *parent):QWidget(parent)
     rightTable->setFocus();
     setupDragAndDrop(leftTable->table);
     setupDragAndDrop(rightTable->table);
+    showFirstColumn(leftTable->table);
+    showFirstColumn(rightTable->table);
 }
 
 TwoPane::~TwoPane()
 {
 
+}
+void TwoPane::showFirstColumn(QTableView *tableView)
+{
+    for(int i = 1; i < 4; i++)
+    {
+        tableView->hideColumn(i);
+    }
 }
 void TwoPane::setupDragAndDrop(QTableView *tableView)
 {
