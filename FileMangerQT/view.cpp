@@ -25,7 +25,7 @@ View::View(QWidget *parent)
     , ui(new Ui::View)
 {
     ui->setupUi(this);
-    this->setWindowTitle("File Manager");
+    this->setWindowTitle("FileBinder");
 
     topBar = new addOnsBar(this);
     stackedview = new stackedviewwidget(this);
