@@ -8,7 +8,6 @@ SearchBar::SearchBar(QWidget *parent)
     findButton = new QPushButton(this);
     searchBar = new QLineEdit(this);
     bar = new LocationBar(this);
-    backButton = new QPushButton(this);
 
 
 
