@@ -23,7 +23,6 @@ ExplorerMin::ExplorerMin(QString rootPath, QWidget *parent): QWidget(parent)
     upBouttonIndex = index;
     //  topBar = new addOnsBar(this);
     // identifyDuplicatesAction=topBar->identifyDuplicatesAction;
-
     search->initializeLocationBarModel(fileSystemModel, index);
     registerSignals();
     layout->addRow("",ShowTableView());
@@ -68,7 +67,7 @@ void ExplorerMin::registerSignals()
     QObject::connect(createDirectoryWidget,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emittingCreatingFolder);
     //    QObject::connect(batch_rename_widg_obj,&rename_widget::new_file_name_button_clicked,this,&ExplorerMin::emitingBatchRenameSlot);
     QObject::connect(search->bar, &LocationBar::validPath, this, &ExplorerMin::folderClicked);
-    QObject::connect(search->bar,&LocationBar::sigBackButtonPressed,this,&ExplorerMin::BackButtonClicked);
+//    QObject::connect(,&LocationBar::sigBackButtonPressed,this,&ExplorerMin::BackButtonClicked);
 }
 
 
@@ -528,5 +527,7 @@ LocationBar* ExplorerMin::initializeLocationBar()
 
     QObject::connect(this, &ExplorerMin::folderChanged, bar, &LocationBar::locationChanged);
     QObject::connect(bar, &LocationBar::validPath, this, &ExplorerMin::folderClicked);
+    QObject::connect(bar, &LocationBar::sigBackButtonPressed, this, &ExplorerMin::BackButtonClicked);
+
     return bar;
 }
