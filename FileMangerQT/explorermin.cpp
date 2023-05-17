@@ -1,4 +1,4 @@
-#include "explorermin.h"
+    #include "explorermin.h"
 #include <QBoxLayout>
 #include <QPushButton>
 #include "fileoperations.h"
@@ -192,8 +192,8 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
         }
         compressAction->setVisible(false);
         decompressAction->setVisible(false);
-        batchRenameAction->setEnabled(true);
-        renameAction->setEnabled(false);
+        batchRenameAction->setVisible(true);
+        renameAction->setVisible(false);
 
 
 
