@@ -116,7 +116,17 @@ QTableView* ExplorerMin::ShowTableView()
     emit  folderChanged(fileSystemModel->filePath(index));
     return table;
 }
+bool ExplorerMin:: hasGzExtension(const std::string& path) {
+    // Find the position of the last dot in the path
+    size_t dotPos = path.find_last_of('.');
 
+    // Check if the dot exists and the extension is ".gz"
+    if (dotPos != std::string::npos && path.substr(dotPos) == ".gz") {
+        return true;
+    }
+
+    return false;
+}
 void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 {
     //disable right click in case it is pressed on empty area.
@@ -157,25 +167,51 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
 
     if ( isMultipleSelected() )
     {
+        std::vector<std::string> selectedPaths = getSelectedPaths();
+        int  flag_gz = 0 ;
+        int flag_other= 0 ;
+        for(auto p : selectedPaths)
+        {
+            if (hasGzExtension(p))
+            {
+                flag_gz ++;
+            }
+            else
+            {
+                flag_other++;
+            }
+        }
+        if (flag_gz == selectedPaths.size())
+        {
+            batchDecompressionAction->setVisible(true);
+            batchCompressionAction->setVisible(false);
+        }
+        else
+        {
+            batchDecompressionAction->setVisible(false);
+            batchCompressionAction->setVisible(true);
+        }
+        compressAction->setVisible(false);
+        decompressAction->setVisible(false);
         batchRenameAction->setEnabled(true);
         renameAction->setEnabled(false);
 
-        batchCompressionAction->setEnabled(true);
-        compressAction->setEnabled(false);
 
-        batchDecompressionAction->setEnabled(true);
-        decompressAction->setEnabled(false);
+
     }
     else
     {
-        batchRenameAction->setEnabled(false);
-        renameAction->setEnabled(true);
+         checkSelectedFileForCompression();
 
-        batchCompressionAction->setEnabled(false);
-        compressAction->setEnabled(true);
+         batchRenameAction->setVisible(false);
 
-        batchDecompressionAction->setEnabled(false);
-        decompressAction->setEnabled(true);
+        renameAction->setVisible(true);
+
+        batchCompressionAction->setVisible(false);
+
+
+        batchDecompressionAction->setVisible(false);
+
 
     }
     connect(copyAction, &QAction::triggered, this, &ExplorerMin::onCopy);
@@ -199,7 +235,7 @@ void ExplorerMin::contextMenuEvent(QContextMenuEvent *event)
     connect(PropertiesAction, &QAction::triggered, this, &ExplorerMin::onProperties);
     //checkSelectedFileForCompression();
 
-    // checkSelectedFileForCompression();
+
 
 
     menu.exec(event->globalPos());
@@ -214,8 +250,10 @@ void ExplorerMin::checkSelectedFileForCompression()
     // Enable the compress action if the file is a .txt file, otherwise disable it
     if (QFileInfo(filePath).suffix() == "txt")
     {qInfo()<<"in compress";
-        compressAction->setEnabled(true);
-        decompressAction->setEnabled(false);
+      //  compressAction->setEnabled(true);
+        compressAction->setVisible(true);
+      //  decompressAction->setEnabled(false);
+        decompressAction->setVisible(false);
     }
 
     else if ((QFileInfo(filePath).suffix() == "gz"))
@@ -223,12 +261,16 @@ void ExplorerMin::checkSelectedFileForCompression()
     {
         qInfo()<<"in deecompress";
         compressAction->setEnabled(false);
+        compressAction->setVisible(false);
         decompressAction->setEnabled(true);
+        decompressAction->setVisible(true);
     }
 
     else {qInfo()<<"innot ";
-        compressAction->setEnabled(false);
-        decompressAction->setEnabled(false);
+      compressAction->setEnabled(true);
+        compressAction->setVisible(true);
+       decompressAction->setEnabled(false);
+        decompressAction->setVisible(false);
     }
 }
 

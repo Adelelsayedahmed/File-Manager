@@ -36,6 +36,7 @@ private :
     rename_widget *createFileWidget;
     rename_widget *createDirectoryWidget;
     bool isMultipleSelected();
+    bool hasGzExtension(const std::string& path);
     std::vector<std::string> getSelectedPaths();
     bool newDirectoryEnteredFlag = false;
 public:
