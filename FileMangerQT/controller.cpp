@@ -186,7 +186,7 @@ void Controller::StackedWidgetSwitchedEnable(int index)
 void Controller::SearchWindowCreated(SearchWindow *search)
 {
     dWindow = search;
-    QObject::connect(dWindow, &SearchWindow::searchForFileByName, fileOperations, &FileOperations::SearchForFileByName);
+    QObject::connect(dWindow, &SearchWindow::searchForFileByName, this, &Controller::SearchForFileByName);
 
 }
 
@@ -194,7 +194,7 @@ void Controller::SearchWindowCreated(SearchWindow *search)
 void Controller::SearchForFileByName(std::string starting_point_directory_path, std::string file_name, std::vector<std::string>& file_paths)
 {
     std::thread t(&FileOperations::SearchForFileByName, fileOperations, starting_point_directory_path, file_name, std::ref(file_paths));
-    t.detach();
+    t.join();
 }
 
 

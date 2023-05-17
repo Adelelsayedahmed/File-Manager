@@ -8,8 +8,6 @@ SearchBar::SearchBar(QWidget *parent)
     findButton = new QPushButton(this);
     searchBar = new QLineEdit(this);
     bar = new LocationBar(this);
-//    bar->locationBar = new  QLineEdit(this);
-//    searchBar->resize(300,25);
     backButton = new QPushButton(this);
 
     QString parentPath=QString::fromStdString(boost::filesystem::path(__FILE__).parent_path().string());
