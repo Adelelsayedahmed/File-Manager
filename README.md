@@ -36,7 +36,7 @@ A file manager/archiver project is a software program designed to help users org
 + Two pane view for dragging and dropping files/directories 
 + Search in any file by content
 ## Launch
-double click on the executable file(the .exe) to run it
+double click on the executable file(.exe) to run it
 ## Technologies
 + C++
 + Qt
